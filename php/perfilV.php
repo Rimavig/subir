@@ -1,4 +1,4 @@
-<!--PERFIL RESIDENTE-->
+<!--PERDIL DE VISITANTE-->
 <?php include ("autenticacion.php"); ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,16 +9,16 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <title>Perfil</title>
-    <link rel="stylesheet" type="text/css" href="..\css\bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css\bootstrap.css">
 
-    <link rel="stylesheet" type="text/css" href="..\Estilos\styles_menu.css"/>
-    <link rel="stylesheet" type="text/css" href="..\Estilos\fonts.css"/>
-    <link rel="stylesheet" type="text/css" href="..\Estilos\estilos.css"/>
-    <link rel="stylesheet" type="text/css" href="..\css\bootstrap-grid.css">
+    <link rel="stylesheet" type="text/css" href="Estilos\styles_menu.css"/>
+    <link rel="stylesheet" type="text/css" href="Estilos\fonts.css"/>
+    <link rel="stylesheet" type="text/css" href="Estilos\estilos.css"/>
+    <link rel="stylesheet" type="text/css" href="css\bootstrap-grid.css">
 
-    <script  src="..\js\registration.js"></script>
-    <script src="..\js\jquery-3.1.1.min.js"></script>
-    <script  src="..\js\menu.js"></script>
+    <script  src="js\registration.js"></script>
+    <script src="js\jquery-3.1.1.min.js"></script>
+    <script  src="js\menu.js"></script>
 </head>
 <body >
   <header>
@@ -28,16 +28,11 @@
     <nav class="nav_bar">
       <ul  >
         <li class=" menu_P">
-          <a  href="main.php" id="menu" onclick="menu('<?php echo $_SESSION["ciudadelas"];?>')"><span class="icon-home" ></span>Inicio</a>
+          <a  href="#" id="menu" onclick="menu('<?php echo $_SESSION["ciudadelas"];?>')"><span class="icon-home" ></span>Inicio</a>
         </li>
         <li>
           <div class="menu1_bar menu_P">
-             <a class="bt1-menu" href="#" id="codigo" onclick="intervalo('<?php echo $_SESSION["status"];?>')"><span class="icon-upload2"></span>Codigo De Acceso</a>
-          </div>
-        </li>
-        <li>
-          <div class="menu2_bar">
-             <a class="bt2-menu" href="#"><span class="icon-upload2"></span>Enviar Invitación</a>
+             <a class="bt1-menu" href="#" id="codigo" onclick="intervaloV('<?php echo $_SESSION["status"];?>')"><span class="icon-upload2"></span>Invitaciones</a>
           </div>
         </li>
         <li>
@@ -78,35 +73,10 @@
           <label for="apellidos"><b>Apellidos</b></label>
           <input type="text" id="apellidos" value="<?php echo $_SESSION["apellidos"];?>" disabled>
         </div>
-
-        <div>
-          <label for="email"><b>Email</b></label>
-            <input type="email" id="email"  value="<?php echo $_SESSION["correo"];?>" disabled>
-        </div>
         <div>
           <label for="cedula"><b>Cedula</b></label>
           <input type="text" id="cedula" value="<?php echo $_SESSION["id"];?>"  disabled >
         </div>
-        <div>
-          <label for="celular"><b>Celular</b></label>
-            <input type="text" id="celular" value="<?php echo $_SESSION["telefono"];?>" disabled>
-        </div>
-        <div>
-            <label for="nacimiento"><b> Nacimiento</b></label>
-            <input type="date" id="nacimiento"  value="<?php echo $_SESSION["fecha_nacimiento"];?>" disabled>
-          </div>
-          <div>
-          <label for="sexo" id="sexo"  ><b>Sexo</b></label>
-          <select name="sexo" disabled>
-            <option value="<?php echo $_SESSION["genero"];?>" ><?php echo $_SESSION["genero"];?></option>
-          </select>
-          </div>
-          <div>
-          <label for="ciudadela" id="ciudadela" ><b>Ciudadela</b></label>
-          <select name="ciudadela" title="Seleccione Ciudadela" disabled >
-            <option value="<?php echo $_SESSION["ciudadelas"];?>" ><?php echo $_SESSION["ciudadelas"];?></option>
-          </select>
-          </div>
     </div >
     </div>
     </div>

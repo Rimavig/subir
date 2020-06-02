@@ -3,9 +3,9 @@
 include ("autenticacion.php");
 $GLOBALS['THRIFT_ROOT'] = 'C:\\Users\\rwiva\\Downloads\\thrift-0.11.0\\thrift-0.11.0\\lib\\php\\lib\\';
 
-require_once '../servidor/Types.php';
-require_once '../servidor/Servidor.php';
-require "../phpqrcode/phpqrcode/qrlib.php";
+require_once 'servidor/Types.php';
+require_once 'servidor/Servidor.php';
+require "phpqrcode/phpqrcode/qrlib.php";
 
 require_once $GLOBALS['THRIFT_ROOT'].'/Thrift/Transport/TTransport.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/Thrift/Transport/TSocket.php';
@@ -84,16 +84,16 @@ if(isset($_GET['link'])){
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <title>Invitación Normal</title>
-    <link rel="stylesheet" type="text/css" href="..\css\bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css\bootstrap.css">
 
-    <link rel="stylesheet" type="text/css" href="..\Estilos\styles_menu.css"/>
-    <link rel="stylesheet" type="text/css" href="..\Estilos\fonts.css"/>
-    <link rel="stylesheet" type="text/css" href="..\Estilos\estilos.css"/>
-    <link rel="stylesheet" type="text/css" href="..\css\bootstrap-grid.css">
+    <link rel="stylesheet" type="text/css" href="Estilos\styles_menu.css"/>
+    <link rel="stylesheet" type="text/css" href="Estilos\fonts.css"/>
+    <link rel="stylesheet" type="text/css" href="Estilos\estilos.css"/>
+    <link rel="stylesheet" type="text/css" href="css\bootstrap-grid.css">
 
-    <script  src="..\js\registration.js"></script>
-    <script src="..\js\jquery-3.1.1.min.js"></script>
-    <script  src="..\js\menu.js"></script>
+    <script  src="js\registration.js"></script>
+    <script src="js\jquery-3.1.1.min.js"></script>
+    <script  src="js\menu.js"></script>
 
 </head>
 <body >
@@ -136,7 +136,7 @@ if(isset($_GET['link'])){
       <div class="container1">
           <form  method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" >
               <div class="Image_container">
-                <img src="..\..\images\espol.png" alt="Avatar" >
+                <img src="images\espol.png" alt="Avatar" >
               </div>
               <label for="nombres"><b>Nombres</b></label>
               <input type="text" placeholder="Ingrese su nombre" name="nombres" pattern="[A-Za-z ]{2,25}"  id="nombres" title="Ingrese sus 2 nombres" required>

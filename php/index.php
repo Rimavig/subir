@@ -9,23 +9,23 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   <title>Login</title>
-  <link rel="stylesheet" type="text/css" href="..\css\bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="css\bootstrap.css">
 
-  <link rel="stylesheet" type="text/css" href="..\Estilos\styles_menu.css"/>
-  <link rel="stylesheet" type="text/css" href="..\Estilos\fonts.css"/>
-  <link rel="stylesheet" type="text/css" href="..\Estilos\estilos.css"/>
-  <link rel="stylesheet" type="text/css" href="..\css\bootstrap-grid.css">
+  <link rel="stylesheet" type="text/css" href="Estilos\styles_menu.css"/>
+  <link rel="stylesheet" type="text/css" href="Estilos\fonts.css"/>
+  <link rel="stylesheet" type="text/css" href="Estilos\estilos.css"/>
+  <link rel="stylesheet" type="text/css" href="css\bootstrap-grid.css">
 
-  <script  src="..\js\registration.js"></script>
-  <script src="..\js\jquery-3.1.1.min.js"></script>
-  <script  src="..\js\menu.js"></script>
-  <link rel = "stylesheet" type="text/css"  href = "..\Estilos\styles_login.css"/>
+  <script  src="js\registration.js"></script>
+  <script src="js\jquery-3.1.1.min.js"></script>
+  <script  src="js\menu.js"></script>
+  <link rel = "stylesheet" type="text/css"  href = "Estilos\styles_login.css"/>
 
 </head>
 <body class="containe2" >
 		<div class="container">
         <div class="Image_container">
-            <img src="..\..\images\logo manrique.png" alt="Avatar" class="logo">
+            <img src="images\logo manrique.png" alt="Avatar" class="logo">
         </div>
         <label for="username"><b>Identificación</b></label>
         <input type="text" placeholder="Ingrese identificación" name="username" title="Ingrese identificación " pattern="[0-9]{10}" id="username" required >

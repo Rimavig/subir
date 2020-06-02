@@ -3,9 +3,9 @@
 include ("autenticacion.php");
 $GLOBALS['THRIFT_ROOT'] = 'C:\\Users\\rwiva\\Downloads\\thrift-0.11.0\\thrift-0.11.0\\lib\\php\\lib\\';
 
-require_once '../servidor/Types.php';
-require_once '../servidor/Servidor.php';
-require "../phpqrcode/phpqrcode/qrlib.php";
+require_once 'servidor/Types.php';
+require_once 'servidor/Servidor.php';
+require "phpqrcode/phpqrcode/qrlib.php";
 
 require_once $GLOBALS['THRIFT_ROOT'].'/Thrift/Transport/TTransport.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/Thrift/Transport/TSocket.php';
@@ -56,7 +56,7 @@ if(isset($_POST["nombres"]) && isset($_POST["apellidos"])&& isset($_POST["email"
 }
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   //Declaramos la ruta y nombre del archivo a generar
-  $filename ='../php/test.png';
+  $filename ='test.png';
   $id= "1";
   date_default_timezone_set('America/Guayaquil');
   $contenido =$_SESSION["id"].$id.date("dHis") ; //Texto
@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $tamaño = 10000; //Tamaño de Pixel
   $level = 'H'; //Precisión Baja
   $framSize = 2; //Tamaño en blanco
-  $filename1 ='../php/test.png?'.rand(1,10000);
+  $filename1 ='test.png?'.rand(1,10000);
         //Enviamos los parametros a la Función para generar código QR
   QRcode::png($contenido, $filename, $level, $tamaño, $framSize);
   $re = $client->registro("invitacionR,".implode(",", $registration));
@@ -93,16 +93,16 @@ $max1=date("Y-m-d",strtotime($min."+ 30 days"));
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <title>Invitacón Recurrente</title>
-    <link rel="stylesheet" type="text/css" href="..\css\bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css\bootstrap.css">
 
-    <link rel="stylesheet" type="text/css" href="..\Estilos\styles_menu.css"/>
-    <link rel="stylesheet" type="text/css" href="..\Estilos\fonts.css"/>
-    <link rel="stylesheet" type="text/css" href="..\Estilos\estilos.css"/>
-    <link rel="stylesheet" type="text/css" href="..\css\bootstrap-grid.css">
+    <link rel="stylesheet" type="text/css" href="Estilos\styles_menu.css"/>
+    <link rel="stylesheet" type="text/css" href="Estilos\fonts.css"/>
+    <link rel="stylesheet" type="text/css" href="Estilos\estilos.css"/>
+    <link rel="stylesheet" type="text/css" href="css\bootstrap-grid.css">
 
-    <script  src="..\js\registration.js"></script>
-    <script src="..\js\jquery-3.1.1.min.js"></script>
-    <script  src="..\js\menu.js"></script>
+    <script  src="js\registration.js"></script>
+    <script src="js\jquery-3.1.1.min.js"></script>
+    <script  src="js\menu.js"></script>
 
 </head>
 <body >

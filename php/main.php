@@ -3,8 +3,8 @@
 include ("autenticacion.php");
 $GLOBALS['THRIFT_ROOT'] = 'C:\\Users\\rwiva\\Downloads\\thrift-0.11.0\\thrift-0.11.0\\lib\\php\\lib\\';
 
-require_once '../servidor/Types.php';
-require_once '../servidor/Servidor.php';
+require_once 'servidor/Types.php';
+require_once 'servidor/Servidor.php';
 
 require_once $GLOBALS['THRIFT_ROOT'].'/Thrift/Transport/TTransport.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/Thrift/Transport/TSocket.php';
@@ -94,16 +94,16 @@ if(isset($_GET['link'])){
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
     <title>Menu</title>
-    <link rel="stylesheet" type="text/css" href="..\css\bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css\bootstrap.css">
 
-    <link rel="stylesheet" type="text/css" href="..\Estilos\styles_menu.css"/>
-    <link rel="stylesheet" type="text/css" href="..\Estilos\fonts.css"/>
-    <link rel="stylesheet" type="text/css" href="..\Estilos\estilos.css"/>
-    <link rel="stylesheet" type="text/css" href="..\css\bootstrap-grid.css">
+    <link rel="stylesheet" type="text/css" href="Estilos\styles_menu.css"/>
+    <link rel="stylesheet" type="text/css" href="Estilos\fonts.css"/>
+    <link rel="stylesheet" type="text/css" href="Estilos\estilos.css"/>
+    <link rel="stylesheet" type="text/css" href="css\bootstrap-grid.css">
 
-    <script  src="..\js\registration.js"></script>
-    <script src="..\js\jquery-3.1.1.min.js"></script>
-    <script  src="..\js\menu.js"></script>
+    <script  src="js\registration.js"></script>
+    <script src="js\jquery-3.1.1.min.js"></script>
+    <script  src="js\menu.js"></script>
 </head>
 <body >
   <header>
@@ -146,7 +146,7 @@ if(isset($_GET['link'])){
         <span class="error">
           <div class="container1" id="container1" >
           <div class="Image_container">
-              <img src="..\..\images\logo manrique.png" alt="Avatar" class="logo">
+              <img src="images\logo manrique.png" alt="Avatar" class="logo">
           </div>
         </div>
       </span>
