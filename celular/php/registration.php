@@ -64,7 +64,7 @@ if(isset($_GET['link'])){
     $link=$_GET['link'];
     if ($link == '1'){
         session_destroy();
-        header("Location: login.php");
+        header("Location: index.php");
         exit();
     }
 }
@@ -148,7 +148,7 @@ if(isset($_GET['link'])){
             </select>
             </div>
             <button type="submit">REGISTRARSE</button>
-            <button onclick="location.href='login.php'">ATRAS</button>
+            <button onclick="location.href='index.php'">ATRAS</button>
         </form>
         </div>
     </div>

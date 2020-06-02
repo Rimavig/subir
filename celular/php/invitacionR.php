@@ -29,7 +29,7 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 
 $host = '127.0.0.1';
-$port = 7911;
+$port = 7912;
 $socket = new Thrift\Transport\TSocket($host,$port);
 $transport = new TBufferedTransport($socket);
 $protocol = new TBinaryProtocol($transport);
@@ -74,7 +74,7 @@ if(isset($_GET['link'])){
     $link=$_GET['link'];
     if ($link == '1'){
         session_destroy();
-        header("Location: login.php");
+        header("Location: index.php");
         exit();
     }
 }

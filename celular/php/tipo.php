@@ -23,7 +23,7 @@ use Thrift\Transport\TFramedTransport;
 use Thrift\Transport\TBufferedTransport;
 
 $host = '127.0.0.1';
-$port = 7911;
+$port = 7912;
 $socket = new Thrift\Transport\TSocket($host,$port);
 $socket->setRecvTimeout("5000");
 $transport = new TBufferedTransport($socket);

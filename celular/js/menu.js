@@ -319,7 +319,7 @@ function inicio(id,tipo) {
 			console.log(id);
 			console.log(tipo);
 			if (tipo=="0") {
-				window.location.href='login.php';
+				window.location.href='index.php';
 			}else if  (tipo=="1") {
 					console.log(tipo);
 					var ciudadela=document.getElementById("ciudadela").value;

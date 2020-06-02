@@ -55,7 +55,7 @@
           $link=$_GET['link'];
           if ($link == '1'){
               session_destroy();
-              header("Location: login.php");
+              header("Location: index.php");
               exit();
           }
       }

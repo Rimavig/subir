@@ -23,7 +23,7 @@ use Thrift\Transport\TFramedTransport;
 use Thrift\Transport\TBufferedTransport;
 
 $host = '127.0.0.1';
-$port = 7911;
+$port = 7912;
 $socket = new Thrift\Transport\TSocket($host,$port);
 $transport = new TBufferedTransport($socket);
 $socket->setRecvTimeout("5000");
@@ -77,7 +77,7 @@ if(isset($_GET['link'])){
     $link=$_GET['link'];
     if ($link == '1'){
         session_destroy();
-          header("Location: login.php");
+          header("Location: index.php");
         exit();
     }
 }

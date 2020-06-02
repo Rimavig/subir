@@ -23,7 +23,7 @@ use Thrift\Transport\TFramedTransport;
 use Thrift\Transport\TBufferedTransport;
 
 $host = '127.0.0.1';
-$port = 7911;
+$port = 7912;
 $socket = new Thrift\Transport\TSocket($host,$port);
 $transport = new TBufferedTransport($socket);
 $protocol = new TBinaryProtocol($transport);
@@ -53,7 +53,7 @@ if(isset($_GET['link'])){
     $link=$_GET['link'];
     if ($link == '1'){
         session_destroy();
-        header("Location: login.php");
+        header("Location: index.php");
         exit();
     }
 }
@@ -101,7 +101,7 @@ if(isset($_GET['link'])){
             <input type="password" placeholder="Confirmar contraseña" name="contraseña1" pattern=".{6,}" id="contraseña1"  title="Ingrese Contraseña nuevamente (Mayor 6 caracterequiredres)" required >
             <script type="text/javascript"> function_alert1( "<?php echo $resultado; ?>" )  </script>
             <button type="submit">REGISTRARSE</button>
-            <button onclick="location.href='login.php'">ATRAS</button>
+            <button onclick="location.href='index.php'">ATRAS</button>
         </form>
         </div>
 
