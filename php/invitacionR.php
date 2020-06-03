@@ -1,7 +1,7 @@
 <!--REALIZA INVITACIONES RECURRENTES-->
 <?php
 include ("autenticacion.php");
-$GLOBALS['THRIFT_ROOT'] = 'C:\\Users\\rwiva\\Downloads\\thrift-0.11.0\\thrift-0.11.0\\lib\\php\\lib\\';
+$GLOBALS['THRIFT_ROOT'] = '/var/www/html/php/thrift-0.11.0/lib/php/lib';
 
 require_once 'servidor/Types.php';
 require_once 'servidor/Servidor.php';
@@ -108,7 +108,7 @@ $max1=date("Y-m-d",strtotime($min."+ 30 days"));
 <body >
   <header>
     <div class="menu_bar">
-      <a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>Codigo de Acceso</a>
+      <a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>Código de Acceso</a>
     </div>
     <nav class="nav_bar">
       <ul  >
@@ -117,7 +117,7 @@ $max1=date("Y-m-d",strtotime($min."+ 30 days"));
         </li>
         <li>
           <div class="menu1_bar menu_P">
-             <a class="bt1-menu" href="#" id="codigo" onclick="intervalo('<?php echo $_SESSION["status"];?>')"><span class="icon-upload2"></span>Codigo De Acceso</a>
+             <a class="bt1-menu" href="#" id="codigo" onclick="intervalo('<?php echo $_SESSION["status"];?>')"><span class="icon-upload2"></span>Código De Acceso</a>
           </div>
         </li>
         <li>
@@ -145,7 +145,7 @@ $max1=date("Y-m-d",strtotime($min."+ 30 days"));
       <div class="container1">
           <form  method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" onsubmit="return validacion1()" >
               <div class="Image_container">
-                <img src="..\..\images\espol.png" alt="Avatar" >
+                <img src="images\espol.png" alt="Avatar" >
               </div>
               <label for="nombres"><b>Nombres</b></label>
               <input type="text" placeholder="Ingrese su nombre" name="nombres" pattern="[A-Za-z ]{2,25}"  id="nombres" title="Ingrese sus 2 nombres" required>

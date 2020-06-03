@@ -12,7 +12,7 @@ date_default_timezone_set('America/Guayaquil');
 $filename ='test.png';
 if ($_SESSION["ciudadelas"]=="Visitante") {
   $id= "2";
-  $contenido =$_SESSION["recurrente"].$id.date("dHis") ; //Texto
+  $contenido =$_SESSION["id"].$id.date("dHis") ; //Texto
 }else{
   $id= "0";
   $contenido =$_SESSION["id"].$id.date("dHis") ; //Texto

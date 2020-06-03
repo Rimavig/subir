@@ -23,7 +23,7 @@
 <body >
   <header>
     <div class="menu_bar">
-      	<a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>Codigo de acceso</a>
+      	<a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>Código de acceso</a>
     </div>
     <nav class="nav_bar">
       <ul  >

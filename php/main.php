@@ -1,7 +1,7 @@
 <!--MENU RESIDENTE-->
 <?php
 include ("autenticacion.php");
-$GLOBALS['THRIFT_ROOT'] = 'C:\\Users\\rwiva\\Downloads\\thrift-0.11.0\\thrift-0.11.0\\lib\\php\\lib\\';
+$GLOBALS['THRIFT_ROOT'] = '/var/www/html/php/thrift-0.11.0/lib/php/lib';
 
 require_once 'servidor/Types.php';
 require_once 'servidor/Servidor.php';
@@ -108,7 +108,7 @@ if(isset($_GET['link'])){
 <body >
   <header>
 		<div class="menu_bar">
-			<a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>Codigo de acceso</a>
+			<a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>Código de acceso</a>
 		</div>
     <nav class="nav_bar">
       <ul  >
@@ -117,7 +117,7 @@ if(isset($_GET['link'])){
         </li>
         <li>
           <div class="menu1_bar menu_P">
-    			   <a class="bt1-menu" href="#" id="codigo" onclick="intervalo('<?php echo $_SESSION["status"];?>')"><span class="icon-upload2"></span>Codigo De Acceso</a>
+    			   <a class="bt1-menu" href="#" id="codigo" onclick="intervalo('<?php echo $_SESSION["status"];?>')"><span class="icon-upload2"></span>Código De Acceso</a>
     		  </div>
         </li>
 				<li>

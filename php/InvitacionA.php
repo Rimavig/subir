@@ -1,10 +1,10 @@
 <!--MUESTRA TODAS LAS INVITACIONES RECURRENTES-->
 <?php
 include ("autenticacion.php");
-$GLOBALS['THRIFT_ROOT'] = 'C:\\Users\\rwiva\\Downloads\\thrift-0.11.0\\thrift-0.11.0\\lib\\php\\lib\\';
+$GLOBALS['THRIFT_ROOT'] = '/var/www/html/php/thrift-0.11.0/lib/php/lib';
 
-require_once '../servidor/Types.php';
-require_once '../servidor/Servidor.php';
+require_once 'servidor/Types.php';
+require_once 'servidor/Servidor.php';
 
 require_once $GLOBALS['THRIFT_ROOT'].'/Thrift/Transport/TTransport.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/Thrift/Transport/TSocket.php';
