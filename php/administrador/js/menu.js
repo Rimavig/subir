@@ -484,16 +484,24 @@ function Bbloquear() {
 	$('.cont2').load('../modificar/bloquear.php', {var1:value1,var2:value2,var3:value3});
 }
 //Boton que abre pagina permisos
-function permisos() {
+function permisos(tipo) {
 	console.log('#permisos');
+	console.log(tipo);
 	tamaño();
 	$(".usuarios").hide();
 	$(".permisos").show();
 	$(".cont2").show();
-	$('.cont2').load('../modificar/permisos.php', {var1:value1,var2:value2});
+	if (tipo=='1') {
+		console.log("asdas");
+		$('.cont2').load('../modificar/permisosA.php', {var1:value1,var2:value2});
+	}else{
+		$('.cont2').load('../modificar/permisos.php', {var1:value1,var2:value2});
+	}
+
 }
+
 //Boton editar permisos
-function Bpermisos() {
+function Bpermisos(tipo) {
 	console.log('Bpermisos');
 	$(".cont3").show();
 	$(".permisos").hide();
@@ -501,7 +509,13 @@ function Bpermisos() {
 	var value3 = document.getElementById("Minvitacion").checked;
 	var value4 = document.getElementById("Mingreso").checked;
 	document.getElementById("texto").innerHTML = "SE REALIZO CORRECTAMENTE";
-	$('.cont2').load('../modificar/permisos.php', {var1:value1,var2:value2,var3:value3,var4:value4});
+	if (tipo=='1') {
+		console.log("asdas");
+		$('.cont2').load('../modificar/permisosA.php', {var1:value1,var2:value2,var3:value3,var4:value4});
+	}else{
+		$('.cont2').load('../modificar/permisos.php', {var1:value1,var2:value2,var3:value3,var4:value4});
+	}
+
 }
 //selecciona usuarios
 function Susuarios(tipo) {

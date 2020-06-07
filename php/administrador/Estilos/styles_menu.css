@@ -28,6 +28,13 @@ div.ventad{
   height: 300px;
   overflow: scroll;
 }
+.campos{
+  width: 110%;
+  font-family: Arial;
+  text-align: right;
+  color: red;
+  font-size: 20px;
+}
 
 div.botonA{
   margin: 5% 0%;
@@ -436,6 +443,9 @@ input.apple-switch:checked:after {
   }
 }
 @media screen and (max-width:700px) {
+  .campos{
+    font-size: 11px;
+  }
   p{  font-size: 20px;}
   h1{font-size: 40px;}
   table{

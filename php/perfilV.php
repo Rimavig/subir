@@ -23,7 +23,7 @@
 <body >
   <header>
     <div class="menu_bar">
-      	<a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>Código de acceso</a>
+      	<a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>QR-TICKET</a>
     </div>
     <nav class="nav_bar">
       <ul  >
@@ -74,7 +74,7 @@
           <input type="text" id="apellidos" value="<?php echo $_SESSION["apellidos"];?>" disabled>
         </div>
         <div>
-          <label for="cedula"><b>Cedula</b></label>
+          <label for="cedula"><b>Cédula</b></label>
           <input type="text" id="cedula" value="<?php echo $_SESSION["id"];?>"  disabled >
         </div>
     </div >

@@ -100,7 +100,7 @@ if(isset($_GET['link'])){
 <body >
   <header>
     <div class="menu_bar">
-      <a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>Código de Acceso</a>
+      <a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>QR-TICKET</a>
     </div>
     <nav class="nav_bar">
       <ul  >
@@ -140,12 +140,13 @@ if(isset($_GET['link'])){
               <div class="Image_container">
                 <img src="images\logo.png" alt="Avatar" class="logo">
               </div>
-              <label for="nombres"><b>Nombres</b></label>
+              <label for="nombres"><b>Nombres*</b></label>
               <input type="text" placeholder="Ingrese su nombre" name="nombres" pattern="[A-Za-z ]{2,25}"  id="nombres" title="Ingrese sus 2 nombres" required>
-              <label for="apellidos"><b>Apellidos</b></label>
+              <label for="apellidos"><b>Apellidos*</b></label>
               <input type="text" placeholder="Ingrese sus apellidos" name="apellidos" pattern="[A-Za-z ]{2,25}"  id="apellidos" title="Ingrese sus 2 apellidos" required>
               <label for="email"><b>Correo</b></label>
               <input type="email" placeholder="Ingrese su email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Ingrese email correcto" id="email"  autocomplete="email">
+              <label class="campos" ><b> Campos con * son obligadorios</b></label>
               <script type="text/javascript"> function_alert2( "<?php echo $resultado; ?>" )  </script>
               <div class="botonA" >
                   <button class="tableB" type="submit">Enviar</button>

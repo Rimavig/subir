@@ -76,7 +76,13 @@ label{
     padding:10px 200px 10px 30px;
     font-size: 40px;
 }
-
+.campos{
+  width: 110%;
+  font-family: Arial;
+  text-align: right;
+  color: red;
+  font-size: 12px;
+}
 
 select{
   width: 50%;
@@ -642,7 +648,13 @@ input.apple-switch:checked:after {
   }
 
 }
+@media screen and (max-width:450px) {
+  .campos{
+    width: 120%;
+  }
+}
 @media screen and (max-width:350px) {
+
   p{  font-size: 10px;}
   h1{font-size: 17px;}
   label.tableB{

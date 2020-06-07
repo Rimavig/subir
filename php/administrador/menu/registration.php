@@ -93,7 +93,7 @@ if(isset($_GET['link'])){
 <body >
   <header>
 		<div class="menu_bar">
-			<a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>Menu</a>
+			<a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>QR-TICKET</a>
 		</div>
 
     <nav class="nav_bar">
@@ -163,36 +163,36 @@ if(isset($_GET['link'])){
             <div class="Image_container">
               <img src="..\images\logo.png" alt="Avatar" class="logoA" >
             </div>
-            <label for="nombres"><b>Nombres</b></label>
+            <label for="nombres"><b>Nombres*</b></label>
             <input type="text" placeholder="Ingrese su nombre" name="nombres" pattern="[A-Za-z ]{2,25}"  id="nombres" title="Ingrese sus 2 nombres" required>
-            <label for="apellidos"><b>Apellidos</b></label>
+            <label for="apellidos"><b>Apellidos*</b></label>
             <input type="text" placeholder="Ingrese sus apellidos" name="apellidos" pattern="[A-Za-z ]{2,25}"  id="apellidos" title="Ingrese sus 2 apellidos" required>
             <!--label for="username"><b>Usuario</b></label>
             <input type="text" placeholder="Ingrese nombre de usuario" name="username" pattern="[A-Za-z0-9._%+-]{4,25}" id="username" title="Ingrese usuario mayor a 4 digitos"  required -->
             <label for="email"><b>Correo</b></label>
-            <input type="email" placeholder="Ingrese su email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Ingrese email correcto" id="email"  autocomplete="email" required>
+            <input type="email" placeholder="Ingrese su email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Ingrese email correcto" id="email"  autocomplete="email" >
             <span class="error" aria-live="polite"></span>
-            <label for="contraseña"><b>Contraseña</b></label>
+            <label for="contraseña"><b>Contraseña*</b></label>
             <input type="password" placeholder="Ingrese su Contraseña" name="contraseña" pattern=".{6,}" id="contraseña"  title="Ingrese Contraseña (Mayor 6 caracteres)" required  >
-            <label for="contraseña1"><b>Contraseña</b></label>
+            <label for="contraseña1"><b>Contraseña*</b></label>
             <input type="password" placeholder="Confirmar contraseña" name="contraseña1" pattern=".{6,}" id="contraseña1"  title="Ingrese Contraseña nuevamente (Mayor 6 caracterequiredres)" required >
-            <label for="cedula"><b>Cedula</b></label>
+            <label for="cedula"><b>Cédula*</b></label>
             <input type="text" placeholder="Ingrese su cedula" name="cedula" title="Ingrese cedula correcta " pattern="[0-9]{10}" id="cedula" required >
-            <label for="celular"><b>Celular</b></label>
+            <label for="celular"><b>Celular*</b></label>
             <input type="text" placeholder="Ingrese su celular" name="celular" title="Ingrese celular(09########) "  pattern="[0-9]{10}" id="celular" required >
             <div>
-              <label for="nacimiento"><b>Fecha de Nacimiento</b></label>
+              <label for="nacimiento"><b>Fecha de Nacimiento*</b></label>
               <input type="date" id="nacimiento" name="nacimiento" min="1910-04-01" max="2020-04-30" title="Ingrese Fecha de nacimiento "  required >
             </div>
             <div>
-            <label for="sexo" id="sexo"  ><b>Sexo</b></label>
+            <label for="sexo" id="sexo"  ><b>Sexo*</b></label>
             <select name="sexo">
               <option value="Masculino">Masculino</option>
               <option value="Femenino">Femenino</option>
             </select>
             </div>
             <div>
-            <label for="ciudadela" id="ciudadela" ><b>Ciudadela</b></label>
+            <label for="ciudadela" id="ciudadela" ><b>Ciudadela*</b></label>
             <select name="ciudadela" title="Seleccione Ciudadela" >
               <?php
 
@@ -217,6 +217,8 @@ if(isset($_GET['link'])){
               ?>
             </select>
             </div>
+            <label class="campos" ><b> Campos con * son obligadorios</b></label>
+
             <script type="text/javascript"> function_alert1( "<?php echo $resultado; ?>" )  </script>
             <button type="submit">REGISTRARSE</button>
         </form>

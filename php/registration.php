@@ -37,15 +37,19 @@ $resultado = "".$re;
 $valor_array = explode(';',$resultado);
 $registration[]=null;
 
-if(isset($_POST["nombres"]) && isset($_POST["apellidos"])&& isset($_POST["email"])
+if(isset($_POST["nombres"]) && isset($_POST["apellidos"])
 && isset($_POST["contraseña"])&& isset($_POST["contraseña1"])&& isset($_POST["cedula"])
-&& isset($_POST["celular"])&& isset($_POST["nacimiento"])&& isset($_POST["sexo"])
+&& isset($_POST["celular"])&& isset($_POST["sexo"])
 && isset($_POST["ciudadela"])){
 
   $registration[0]=$_POST['nombres'];
   $registration[1]=$_POST['apellidos'];
+  if (isset($_POST["email"])) {
+    $registration[3]=$_POST['email'];
+  }else{
+    $registration[3]="none";
+  }
 
-  $registration[3]=$_POST['email'];
   if($_POST['contraseña']==$_POST['contraseña1']){
     $encryptPass = password_hash($_POST['contraseña'],PASSWORD_DEFAULT);
     $registration[4]=$encryptPass;
@@ -56,6 +60,7 @@ if(isset($_POST["nombres"]) && isset($_POST["apellidos"])&& isset($_POST["email"
   $registration[8]=$_POST['sexo'];
   $registration[9]= $_POST['ciudadela'];
 }
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
   $re = $client->registro("registro,".implode(",", $registration));
   $resultado = "".$re;
@@ -99,34 +104,34 @@ if(isset($_GET['link'])){
             <div class="Image_container">
               <img src="images\logo.png" alt="Avatar" >
             </div>
-            <label for="nombres"><b>Nombres</b></label>
+            <label for="nombres"><b>Nombres*</b></label>
             <input type="text" placeholder="Ingrese su nombre" name="nombres" pattern="[A-Za-z ]{2,25}"  id="nombres" title="Ingrese sus 2 nombres" required>
-            <label for="apellidos"><b>Apellidos</b></label>
+            <label for="apellidos"><b>Apellidos*</b></label>
             <input type="text" placeholder="Ingrese sus apellidos" name="apellidos" pattern="[A-Za-z ]{2,25}"  id="apellidos" title="Ingrese sus 2 apellidos" required>
             <label for="email"><b>Correo</b></label>
-            <input type="email" placeholder="Ingrese su email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Ingrese email correcto" id="email"  autocomplete="email" required>
+            <input type="email" placeholder="Ingrese su email" name="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Ingrese email correcto" id="email"  autocomplete="email" >
             <span class="error" aria-live="polite"></span>
-            <label for="contraseña"><b>Contraseña</b></label>
+            <label for="contraseña"><b>Contraseña*</b></label>
             <input type="password" placeholder="Ingrese su Contraseña" name="contraseña" pattern=".{6,}" id="contraseña"  title="Ingrese Contraseña (Mayor 6 caracteres)" required  >
-            <label for="contraseña1"><b>Contraseña</b></label>
-            <input type="password" placeholder="Confirmar contraseña" name="contraseña" pattern=".{6,}" id="contraseña1"  title="Ingrese Contraseña nuevamente (Mayor 6 caracterequiredres)" required >
-            <label for="cedula"><b>Cedula</b></label>
+            <label for="contraseña1"><b>Contraseña*</b></label>
+            <input type="password" placeholder="Confirmar contraseña" name="contraseña1" pattern=".{6,}" id="contraseña1"  title="Ingrese Contraseña nuevamente (Mayor 6 caracterequiredres)" required >
+            <label for="cedula"><b>Cédula*</b></label>
             <input type="text" placeholder="Ingrese su cedula" name="cedula" title="Ingrese cedula correcta " pattern="[0-9]{10}" id="cedula" required >
-            <label for="celular"><b>Celular</b></label>
+            <label for="celular"><b>Celular*</b></label>
             <input type="text" placeholder="Ingrese su celular" name="celular" title="Ingrese celular(09########) "  pattern="[0-9]{10}" id="celular" required >
             <div>
-              <label for="nacimiento"><b>Fecha de Nacimiento</b></label>
-              <input type="datetime" id="nacimiento" name="nacimiento" min="1910-04-01" max="2020-04-30" title="Ingrese Fecha de nacimiento "  required >
+              <label for="nacimiento"><b>Fecha de Nacimiento*</b></label>
+              <input type="datetime-local" id="nacimiento" name="nacimiento" min="1910-04-01" max="2020-04-30" title="Ingrese Fecha de nacimiento " required >
             </div>
             <div>
-            <label for="sexo" id="sexo"  ><b>Sexo</b></label>
+            <label for="sexo" id="sexo"  ><b>Sexo*</b></label>
             <select name="sexo">
               <option value="Masculino">Masculino</option>
               <option value="Femenino">Femenino</option>
             </select>
             </div>
             <div>
-            <label for="ciudadela" id="ciudadela" ><b>Ciudadela</b></label>
+            <label for="ciudadela" id="ciudadela" ><b>Ciudadela*</b></label>
             <select name="ciudadela" title="Seleccione Ciudadela" >
               <?php
               //Leo cuantos elementos hay en el array
@@ -147,6 +152,7 @@ if(isset($_GET['link'])){
                 <script type="text/javascript"> function_alert1( "<?php echo $resultado; ?>" )  </script>
             </select>
             </div>
+            <label class="campos" ><b> Campos con * son obligadorios</b></label>
             <button type="submit">REGISTRARSE</button>
             <button onclick="location.href='index.php'">ATRAS</button>
         </form>

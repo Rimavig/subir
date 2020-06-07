@@ -96,7 +96,7 @@ if (isset($_POST["var1"])) {
   </div >
 
   <div class="botonA" >
-      <button class="tableB" onclick=" permisos()" id="permisos"><span class="icon-user-tie"></span>Permisos</button>
+      <button class="tableB" onclick=" permisos('1')" id="permisos"><span class="icon-user-tie"></span>Permisos</button>
   </div >
 
 </div >

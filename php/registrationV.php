@@ -93,7 +93,7 @@ if(isset($_GET['link'])){
             <input type="text" placeholder="Ingrese su nombre" name="nombres" pattern="[A-Za-z ]{2,25}"  id="nombres" title="Ingrese sus 2 nombres" required>
             <label for="apellidos"><b>Apellidos</b></label>
             <input type="text" placeholder="Ingrese sus apellidos" name="apellidos" pattern="[A-Za-z ]{2,25}"  id="apellidos" title="Ingrese sus 2 apellidos" required>
-            <label for="cedula"><b>Cedula</b></label>
+            <label for="cedula"><b>Cédula</b></label>
             <input type="text" placeholder="Ingrese su cedula" name="cedula" title="Ingrese cedula correcta " pattern="[0-9]{10}" id="cedula" required >
             <label for="contraseña"><b>Contraseña</b></label>
             <input type="password" placeholder="Ingrese su Contraseña" name="contraseña" pattern=".{6,}" id="contraseña"  title="Ingrese Contraseña (Mayor 6 caracteres)" required  >

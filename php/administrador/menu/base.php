@@ -24,7 +24,7 @@
 <body >
   <header>
 		<div class="menu_bar">
-			<a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>Menu</a>
+			<a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>QR-TICKET</a>
 		</div>
 
     <nav class="nav_bar">
