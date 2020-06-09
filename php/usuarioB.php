@@ -28,7 +28,7 @@ $filename1 ='test.png?'.rand(1,10000);
 QRcode::png($contenido, $filename, $level, $tamaño, $framSize);
 ?>
 <span class="error">
-  <div class="container1 menu_P" id="container1" >
+  <div class="container12 menu_P" id="container1" >
     <img src="<?php echo $filename1?>" alt="Avatar" class="logoB" >
   </div >
 </span>

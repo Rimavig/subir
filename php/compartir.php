@@ -1,5 +1,5 @@
-<!--PERDIL DE VISITANTE-->
-<?php include ("autenticacion.php"); ?>
+<?php
+include ("autenticacion.php");?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,20 +19,26 @@
     <script  src="js\registration.js"></script>
     <script src="js\jquery-3.1.1.min.js"></script>
     <script  src="js\menu.js"></script>
+
 </head>
 <body >
   <header>
     <div class="menu_bar">
-      	<a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>QR TICKET</a>
+      <a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>QR TICKET</a>
     </div>
     <nav class="nav_bar">
       <ul  >
         <li class=" menu_P">
-          <a  href="#" id="menu" onclick="menu('<?php echo $_SESSION["ciudadelas"];?>')"><span class="icon-home" ></span>Inicio</a>
+          <a  href="main.php" id="menu" onclick="menu('<?php echo $_SESSION["ciudadelas"];?>')"><span class="icon-home" ></span>Inicio</a>
         </li>
         <li>
           <div class="menu1_bar menu_P">
-             <a class="bt1-menu" href="#" id="codigo" onclick="intervaloV('<?php echo $_SESSION["status"];?>')"><span class="icon-list2"></span>Invitaciones</a>
+             <a class="bt1-menu" href="#" id="codigo" onclick="intervalo('<?php echo $_SESSION["status"];?>')"><span class="icon-list2"></span>Código De Acceso</a>
+          </div>
+        </li>
+        <li>
+          <div class="menu2_bar">
+             <a class="bt2-menu" href="#" onclick="limpiar()"><span class="icon-uusers"></span>Enviar Invitación</a>
           </div>
         </li>
         <li>
@@ -50,35 +56,22 @@
       </ul>
     </nav>
   </li>
-    <?php
-      if(isset($_GET['link'])){
-          $link=$_GET['link'];
-          if ($link == '1'){
-              session_destroy();
-              header("Location: login.php");
-              exit();
-          }
-      }
-    ?>
 	</header>
   <div class="prueba menu_P">
-  <div class="container-fluid">
-    <div class="container1">
-      <div class="bloquear table-responsive text-nowrap"  >
-        <div>
-          <label for="nombres" ><b>Nombres</b></label>
-          <input type="text" id="nombres" value="<?php echo $_SESSION["nombres"];?>" disabled>
-        </div>
-        <div>
-          <label for="apellidos"><b>Apellidos</b></label>
-          <input type="text" id="apellidos" value="<?php echo $_SESSION["apellidos"];?>" disabled>
-        </div>
-        <div>
-          <label for="cedula"><b>Cédula</b></label>
-          <input type="text" id="cedula" value="<?php echo $_SESSION["id"];?>"  disabled >
-        </div>
-    </div >
-    </div>
+    <div class="container-fluid">
+      <div class="container12">
+          <div class="col2">
+              <h1>Invitación Generada</h1>
+          </div>
+          <div class="Image_container">
+            <img src="images\logo.png" alt="Avatar" class="logoA" >
+          </div>
+          <div class="botonA" >
+              <button  class="tableB" onclick="salir()">Salir</button>
+              <?php  $resultado1="Hola, ".$_SESSION["nombres"]." te ha dado acceso a su ciudadela. Para obtener ese acceso, descarga nuestra app y regístrate: https://google.com"?>
+              <button onclick="compartir1('<?php echo $resultado1;?>')" class="tableB">Compartir</button>
+          </div >
+      </div>
     </div>
   </div>
 </body>

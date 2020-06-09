@@ -74,7 +74,7 @@ if(isset($_GET['link'])){
     $link=$_GET['link'];
     if ($link == '1'){
         session_destroy();
-        header("Location: index.php");
+        header("Location: login.php");
         exit();
     }
 }
@@ -92,7 +92,7 @@ $max1=date("Y-m-d",strtotime($min."+ 30 days"));
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <title>Invitacón Recurrente</title>
+    <title>QR TICKET</title>
     <link rel="stylesheet" type="text/css" href="css\bootstrap.css">
 
     <link rel="stylesheet" type="text/css" href="Estilos\styles_menu.css"/>
@@ -108,7 +108,7 @@ $max1=date("Y-m-d",strtotime($min."+ 30 days"));
 <body >
   <header>
     <div class="menu_bar">
-      <a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>QR-TICKET</a>
+      <a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>QR TICKET</a>
     </div>
     <nav class="nav_bar">
       <ul  >
@@ -164,7 +164,7 @@ $max1=date("Y-m-d",strtotime($min."+ 30 days"));
                 <input type="datetime-local" id="inicio" name="inicio" min="<?php echo $min;?>T00:00" max="<?php echo $max;?>T00:00" title="Ingrese Fecha de inicio "  required >
               </div>
               <div>
-                <label for="termino"><b>Termino*</b></label>
+                <label for="termino"><b>Término*</b></label>
                 <input type="datetime-local" id="termino" name="termino"min="<?php echo $min;?>T00:00" max="<?php echo $max1;?>T00:00" title="Ingrese Fecha de termino "  required >
               </div>
               <label class="campos" ><b> Campos con * son obligadorios</b></label>

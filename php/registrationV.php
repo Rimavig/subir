@@ -53,7 +53,7 @@ if(isset($_GET['link'])){
     $link=$_GET['link'];
     if ($link == '1'){
         session_destroy();
-        header("Location: index.php");
+        header("Location: login.php");
         exit();
     }
 }
@@ -67,14 +67,14 @@ if(isset($_GET['link'])){
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <title>Menu</title>
+    <title>QR TICKET</title>
     <link rel="stylesheet" type="text/css" href="css\bootstrap.css">
 
     <link rel="stylesheet" type="text/css" href="Estilos\styles_menu.css"/>
     <link rel="stylesheet" type="text/css" href="Estilos\fonts.css"/>
     <link rel="stylesheet" type="text/css" href="Estilos\estilos.css"/>
     <link rel="stylesheet" type="text/css" href="css\bootstrap-grid.css">
-
+    <link rel ="icon" type="text/css"  href = "images\logo.ico"/>
     <script  src="js\registration.js"></script>
     <script src="js\jquery-3.1.1.min.js"></script>
     <script  src="js\menu.js"></script>
@@ -101,7 +101,7 @@ if(isset($_GET['link'])){
             <input type="password" placeholder="Confirmar contraseña" name="contraseña1" pattern=".{6,}" id="contraseña1"  title="Ingrese Contraseña nuevamente (Mayor 6 caracterequiredres)" required >
             <script type="text/javascript"> function_alert1( "<?php echo $resultado; ?>" )  </script>
             <button type="submit">REGISTRARSE</button>
-            <button onclick="location.href='index.php'">ATRAS</button>
+            <button onclick="location.href='login.php'">ATRAS</button>
         </form>
         </div>
 

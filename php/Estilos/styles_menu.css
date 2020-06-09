@@ -31,6 +31,16 @@ div.container1{
     margin-left: auto;
     margin-top: 4%;
 }
+div.container12{
+    background: white;
+    width: 100%;
+    border: 10px solid #f1f1f1;
+    padding: 1%;
+    margin-right: auto;
+    margin-bottom: auto;
+    margin-left: auto;
+    margin-top: 30%;
+}
 div.prueba{
   height: 100vh;
 }
@@ -282,7 +292,7 @@ img{
     width: 50%;
 }
 .logoB{
-    width: 90%;
+    width: 100%;
 }
 .logoA{
     width: 40%;

@@ -228,7 +228,13 @@ function intervaloV(tipo) {
 function compartir() {
 	 window.open('test.png');
 }
-
+function compartir1(tipo) {
+	console.log(tipo);
+	 window.open("https://api.whatsapp.com/send?text=" + encodeURIComponent(tipo));
+}
+function salir() {
+	window.location.href='main.php';
+}
 //Crea Invitacion normal
 //Residente
 function invitacionN(tipo) {
@@ -319,7 +325,7 @@ function inicio(id,tipo) {
 			console.log(id);
 			console.log(tipo);
 			if (tipo=="0") {
-				window.location.href='index.php';
+				window.location.href='login.php';
 			}else if  (tipo=="1") {
 					console.log(tipo);
 					var ciudadela=document.getElementById("ciudadela").value;
@@ -390,7 +396,7 @@ function Search(tipo,tipo2)
          for (let j = 0; j < cellsOfRow.length && !found; j++) {
              const compareWith = cellsOfRow[j].innerHTML.toLowerCase();
              // Buscamos el texto en el contenido de la celda
-             if (searchText.length == 0 || compareWith.indexOf(searchText) > -1) {
+             if (searchText.length == 0 || compareWith.loginOf(searchText) > -1) {
                  found = true;
                  total++;
              }

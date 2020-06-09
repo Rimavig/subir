@@ -71,7 +71,7 @@ if(isset($_GET['link'])){
     $link=$_GET['link'];
     if ($link == '1'){
         session_destroy();
-        header("Location: index.php");
+        header("Location: login.php");
         exit();
     }
 }
@@ -84,7 +84,7 @@ if(isset($_GET['link'])){
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-    <title>Invitación Normal</title>
+    <title>QR TICKET</title>
     <link rel="stylesheet" type="text/css" href="css\bootstrap.css">
 
     <link rel="stylesheet" type="text/css" href="Estilos\styles_menu.css"/>
@@ -100,7 +100,7 @@ if(isset($_GET['link'])){
 <body >
   <header>
     <div class="menu_bar">
-      <a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>QR-TICKET</a>
+      <a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>QR TICKET</a>
     </div>
     <nav class="nav_bar">
       <ul  >

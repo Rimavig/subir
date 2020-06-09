@@ -129,6 +129,27 @@ button:hover {
 img.logo {
     width: 60%;
 }
+.splass{
+  background: black;
+  width:100%;
+  height:100%;
+}
+.licono{
+  color: white;
+  font-size: 12px;
+  text-align: center;
+}
+
+.icono {
+  width: 55%;
+  margin-top: 20%;
+  margin-left: 25%;
+}
+.icono1 {
+  width: 23%;
+  margin-top: 50%;
+  margin-left: 40%;
+}
 select{
   width: 100%;
   padding: 12px 20px;

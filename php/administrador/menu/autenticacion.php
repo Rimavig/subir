@@ -6,7 +6,7 @@
   //COMPRUEBA QUE EL USUARIO ESTA AUTENTICADO
   if ($_SESSION["autenticado"] != "SI") {
   //si no existe, va a la página de autenticacion
-  header("Location: ../menu/index.php");
+  header("Location: ../menu/login.php");
   //salimos de este script
   exit();
   }
@@ -17,7 +17,7 @@
         $sessionTTL = time() - $_SESSION["timeout"];
         if($sessionTTL > $inactividad){
             session_destroy();
-              header("Location: ../menu/index.php");
+              header("Location: ../menu/login.php");
             exit();
         }
     }

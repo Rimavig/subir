@@ -40,7 +40,7 @@ $valor_array = explode(';',$resultado);
 $texto =$texto=$texto2=  "";
 ?>
 <span class="error">
-  <div class="container4">
+    <br>
     <div class="table-responsive text-nowrap" >
         <label  class="tableB" for="filtrar"><b>Filtrar</b></label>
         <input  class="tableB" id="searchTerm" type="text" onkeyup="doSearch()" />
@@ -96,6 +96,6 @@ $texto =$texto=$texto2=  "";
             ?>
             </tbody>
         </table>
-    </div >
+
   </div >
 </span>

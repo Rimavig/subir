@@ -66,7 +66,7 @@ return false;
 function function_alert3($message) {
   if( $message=="true" ) {
     console.log($message);
-    alert('Se envio correctamente la invitacion');
+    window.location.href='compartir.php';
     return true;
   } else if ( $message=="false" ) {
     alert('Error-El usuario ya tiene una invitacion');
