@@ -512,7 +512,7 @@ function Search(tipo,tipo2)
          for (let j = 0; j < cellsOfRow.length && !found; j++) {
              const compareWith = cellsOfRow[j].innerHTML.toLowerCase();
              // Buscamos el texto en el contenido de la celda
-             if (searchText.length == 0 || compareWith.loginOf(searchText) > -1) {
+             if (searchText.length == 0 || compareWith.indexOf(searchText) > -1) {
                  found = true;
                  total++;
              }
