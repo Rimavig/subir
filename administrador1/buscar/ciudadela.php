@@ -2,9 +2,9 @@
 <?php
 include ("../menu/autenticacion.php");
 include ("../menu/conect.php");
-
 $resultado= "";
-$re = $client->registro("ciudadela");
+$var1 = $_SESSION["usuario"];
+$re = $client->registro("ciudadela,".$var1);
 $resultado = "".$re;
 $valor_array = explode(';',$resultado);
 ?>
@@ -12,7 +12,7 @@ $valor_array = explode(';',$resultado);
   <div class="container1" id="container1" >
       <div class="menu_container">
           <label for="ciudadela" class="tableA"><b>Ciudadelas</b></label>
-           <button  class="tableA " onclick="aprobacion()" id="buscar"><span class="icon-search"></span>  Buscar</button>
+           <button  class="tableA " onclick="ciudadelas()" id="buscar"><span class="icon-search"></span>  Buscar</button>
       </div >
       <div class="buscar table-responsive text-nowrap" >
         <label  class="tableB" for="filtrar"><b>Filtrar</b></label>
@@ -63,7 +63,7 @@ $valor_array = explode(';',$resultado);
         <label class="tableC" id="texto"><b>Ciudadelas</b></label>
         <label class="tableC"><img src="..\images\aceptar.png" alt="Avatar" class="logoA" ></label>
         <div class="botonA" >
-            <button class="tableB" onclick=" cargar('aprobacion')"  id="cargar"><span class="icon-point-up"></span>Aceptar</button>
+            <button class="tableB" onclick=" cargar('ciudadela')"  id="cargar"><span class="icon-point-up"></span>Aceptar</button>
         </div >
       </div >
   </div >

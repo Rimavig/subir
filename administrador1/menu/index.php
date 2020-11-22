@@ -9,17 +9,13 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <title>QR TICKET</title>
   <link rel = "stylesheet" type="text/css"  href = "..\Estilos\styles_login.css"/>
-  <script >
-  window.onload=timeout;
-  function timeout()
-  {
-    window.setTimeout("redirect()",3000)
-  }
+  <script >window.onload=timeout;
+  function timeout(){
+  window.setTimeout("redirect()",3000)}
 
   function redirect(){
-    window.location="login.php"
-    return}
-  </script>
+  window.location="login.php"
+  return}</script>
 
 </head>
 <body class="splass" >

@@ -1,11 +1,11 @@
-<!--MUESTRA LAS INVITACIONES ENVIADAS-->
+<!--MUESTRA LAS INVITACIONES RECIBIDAS-->
 <?php
 include ("../menu/autenticacion.php");
 include ("../menu/conect.php");
 $resultado="";
-if (isset($_POST["var1"]) ) {
+if (isset($_POST["var1"])) {
   $var1 = $_POST['var1'];
-  $re = $client->login("InvitacionR","".$var1);
+  $re = $client->login("IngresoN",$var1);
   $resultado = "".$re;
   $valor_array = explode(';',$resultado);
 }
@@ -14,11 +14,11 @@ if (isset($_POST["var1"]) ) {
   <div class="menu_container" >
       <div class="row">
           <div class="col1">
-              <img src="..\images\logo.png" alt="Avatar" class="logoC">
+              <img src="..\images\logo.png" alt="Avatar" class="logoB">
       </div>
       <div class="col2">
           <h1>Manrique Security</h1>
-          <p>Invitaciones Rechazadas.</p>
+          <p>Invitaciones Normales que Ingresaron.</p>
       </div>
     </div>
   </div >
@@ -28,13 +28,12 @@ if (isset($_POST["var1"]) ) {
     <table class="table table-striped"  id="tusuarios"  >
         <thead>
           <tr>
-            <th>Nombres</th>
-            <th>Cédula</th>
-            <th>Número de Personas</th>
-            <th>Actividad a Realizar</th>
-            <th>Observaciones</th>
-            <th>Fecha</th>
-            <th>Empresa</th>
+            <th>Celular Residente</th>
+            <th>Nombres Invitado</th>
+            <th>Apellidos Invitado</th>
+            <th>Fecha de ingreso</th>
+            <th>Ciudadela</th>
+            <th>Puerta</th>
           </tr>
         </thead>
         <tbody>
@@ -59,13 +58,11 @@ if (isset($_POST["var1"]) ) {
                <td> <?php if (isset($noticias[3])) {echo $noticias[3]; }  ?> </td>
                <td> <?php if (isset($noticias[4])) {echo $noticias[4]; }  ?> </td>
                <td> <?php if (isset($noticias[5])) {echo $noticias[5]; }  ?> </td>
-               <td> <?php if (isset($noticias[7])) {echo $noticias[7]; }  ?> </td>
                </tr>
-                <?php
+               <?php
 
               }
           }
-
           $transport->close();
           ?>
           <tr class='noSearch hide'>
@@ -74,5 +71,6 @@ if (isset($_POST["var1"]) ) {
           </tbody>
     </table>
   </div >
+
 </div >
 <div class=" cont2" ></div >

@@ -21,17 +21,9 @@
     <script  src="..\js\registration.js"></script>
     <script src="..\js\jquery-3.1.1.min.js"></script>
     <script  src="..\js\menu.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/0.0.11/push.min.js"></script>
-    <script>
-      setInterval(function() {
-      	$('.notificacion').load('notificacion.php');
-      },20000);
-    </script>
 </head>
 <body>
   <header>
-    <div class="notificacion">
-    </div>
 		<div class="menu_bar">
 			<a class="bt-menu" href="#" style="font-size: 27px"><span class="icon-menu"></span>QR-TICKET</a>
 		</div>
@@ -41,7 +33,7 @@
 				<li><a href="#" id="menu" class="prueba"><span class="icon-home"></span>Inicio</a></li>
         <li>
           <div class="menu1_bar">
-    			   <a class="bt1-menu" href="#" id="aprobar"><span class="icon-search"></span>Aprobar</a>
+    			   <a class="bt1-menu" href="#"><span class="icon-search"></span>Buscar</a>
     		  </div>
         </li>
 				<li>
@@ -49,16 +41,49 @@
              <a class="bt2-menu" href="#"><span class="icon-upload2"></span>Invitaciones</a>
           </div>
         </li>
+        <!--li>
+          <div class="menu3_bar">
+             <a class="bt3-menu" href="#"><span class="icon-upload2"></span>Estadistica</a>
+          </div>
+        </li-->
+        <li>
+          <div class="menu4_bar">
+             <a class="bt4-menu" href="#"><span class="icon-user-plus"></span>Generar</a>
+          </div>
+        </li>
         <li><a href="?link=1" name="link1" id="link1"><span class="icon-exit"></span>Cerrar Sesión</a></li>
+			</ul>
+    </nav>
+    <nav class="nav1_bar prueba">
+      <ul  >
+				<li><a href="#" id="ciudadela" ><span class="icon-users"></span>Ciudadela</a></li>
+        <li><a href="#" id="usuarioB" ><span class="icon-users"></span>Usuario</a></li>
+        <li><a href="#" id="familia"><span class="icon-users"></span>Visitantes</a></li>
+        <li><a href="#" id="ingreso"><span class="icon-users"></span>Ingreso</a></li>
 			</ul>
     </nav>
     <nav class="nav2_bar prueba">
       <ul>
-        <li><a href="#" id="aprobados" ><span class="icon-upload2"></span>Aprobadas</a></li>
-        <li><a href="#" id="rechazados" ><span class="icon-download2"></span>Rechazadas</a></li>
+        <li><a href="#" id="enviados" ><span class="icon-upload2"></span>Enviadas</a></li>
+        <li><a href="#" id="recibidos" ><span class="icon-download2"></span>Ingresadas</a></li>
         <!--li><a href="#" id="invitacion"><span class="icon-download2"></span>Crear</a></li-->
       </ul>
     </nav>
+    <nav class="nav3_bar prueba">
+      <ul>
+        <li><a href="#" id="resumida" ><span class="icon-upload2"></span>Resumida</a>
+        <li><a href="#" id="global" ><span class="icon-download2"></span>Global</a></li>
+      </ul>
+    </nav>
+    <nav class="nav4_bar prueba">
+      <ul>
+        <li><a href="#" id="registroR" ><span class="icon-user-plus"></span>Residente</a>
+        <li><a href="#" id="registroV" ><span class="icon-user-plus"></span>Visitante</a>
+        <li><a href="#" id="aprobacion" ><span class="icon-user-plus"></span>Aprobación</a>
+        <!--li><a href="#" id="codigo"><span class="icon-users"></span>Codigo</a-->
+      </ul>
+    </nav>
+
   </li>
     <?php
       if(isset($_GET['link'])){

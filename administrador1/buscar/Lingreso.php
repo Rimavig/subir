@@ -5,11 +5,11 @@ include ("../menu/conect.php");
 $resultado="";
 if (isset($_POST["var1"])) {
   $var1 = $_POST['var1'];
-  $re = $client->login("aprobar",$var1);
+  $usuario = $_SESSION["usuario"];
+  $re = $client->login("Lingreso",$usuario.":".$var1);
   $resultado = "".$re;
   $valor_array = explode(';',$resultado);
 }
-
 ?>
 <div class="usuarios table-responsive text-nowrap" >
   <div class="menu_container" >
@@ -19,7 +19,7 @@ if (isset($_POST["var1"])) {
       </div>
       <div class="col2">
           <h1>Manrique Security</h1>
-          <p>Aprobaciones para Ingreso de Visitantes.</p>
+          <p>Ingreso de Residentes.</p>
       </div>
     </div>
   </div >
@@ -29,14 +29,12 @@ if (isset($_POST["var1"])) {
     <table class="table table-striped"  id="tusuarios"  >
         <thead>
           <tr>
-            <th>ID</th>
             <th>Nombres</th>
-            <th>Cédula</th>
-            <th>Número de Personas</th>
-            <th>Actividad a Realizar</th>
-            <th>Observaciones</th>
-            <th>Fecha</th>
-            <th>Estado</th>
+            <th>Apellidos</th>
+            <th>Celular</th>
+            <th>Fecha de ingreso</th>
+            <th>Ciudadela</th>
+            <th>Puerta</th>
           </tr>
         </thead>
         <tbody>
@@ -56,13 +54,12 @@ if (isset($_POST["var1"])) {
                ?>
                <tr>
                <td> <?php if (isset($noticias[0])) {echo $noticias[0]; }  ?> </td>
-               <td> <?php if (isset($noticias[0])) {echo $noticias[1]; }  ?> </td>
-               <td> <?php if (isset($noticias[1])) {echo $noticias[2]; }  ?> </td>
-               <td> <?php if (isset($noticias[2])) {echo $noticias[3]; }  ?> </td>
-               <td> <?php if (isset($noticias[3])) {echo $noticias[5]; }  ?> </td>
-               <td> <?php if (isset($noticias[4])) {echo $noticias[6]; }  ?> </td>
-               <td> <?php if (isset($noticias[5])) {echo $noticias[4]; }  ?> </td>
-               <td> <?php if (isset($noticias[6])) {echo $noticias[7]; }  ?> </td>
+               <td> <?php if (isset($noticias[1])) {echo $noticias[1]; }  ?> </td>
+               <td> <?php if (isset($noticias[2])) {echo $noticias[2]; }  ?> </td>
+               <td> <?php if (isset($noticias[3])) {echo $noticias[3]; }  ?> </td>
+               <td> <?php if (isset($noticias[4])) {echo $noticias[4]; }  ?> </td>
+               <td> <?php if (isset($noticias[5])) {echo $noticias[5]; }  ?> </td>
+               <td> <?php if (isset($noticias[6])) {echo $noticias[6]; }  ?> </td>
                </tr>
                <?php
 
@@ -75,9 +72,7 @@ if (isset($_POST["var1"])) {
          </tr>
           </tbody>
     </table>
-    </div >
-    <div class="botonA" >
-        <button class="tableB" onclick=" editar('0')"  id="editar"><span class="icon-user-tie"></span>Seleccionar</button>
-    </div >
+  </div >
+
 </div >
 <div class=" cont2" ></div >

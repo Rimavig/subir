@@ -47,9 +47,9 @@ include ("../menu/conect.php");
         <?php
               session_start();
               if ($resultado=="true"){
+                $_SESSION["usuario"]=$username;
                 $_SESSION["timeout"] = time();
                 $_SESSION["autenticado"]= "SI";
-                $_SESSION["usuario"]= $username;
               } else {
                 session_destroy();
               }
