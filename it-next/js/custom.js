@@ -85,7 +85,7 @@ var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 }
 function salir() {
   $('html, body').animate({scrollTop:0}, 'slow');
-	$('.cuerpo').load('index.html');
+	$('.cuerpo').load('bases.html');
 }
 function about() {
   $('html, body').animate({scrollTop:0}, 'slow');
