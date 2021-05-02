@@ -218,7 +218,7 @@ class MainController extends BaseController
         if ($item==false) {
           $out["status"] = "Usuario No existe";
           $response->getBody()->write(json_encode($out));
-          return $response->withStatus(500);
+          return $response;
         }else{
             if ($item){
                 if ($item->password == $password) {
@@ -226,7 +226,7 @@ class MainController extends BaseController
                 }else{
                   $out["status"] = "Contraseña Incorrecta";
                   $response->getBody()->write(json_encode($out));
-                  return $response->withStatus(500);
+                  return $response;
                 }
             }
         }
@@ -313,7 +313,7 @@ class MainController extends BaseController
         if ($item==false) {
           $out["status"] = "Tienda No existe";
           $response->getBody()->write(json_encode($out));
-          return $response->withStatus(500);
+          return $response;
         }else{
           $response->getBody()->write(json_encode($item));
         }
@@ -368,7 +368,7 @@ class MainController extends BaseController
        if ($band) {
          $out["status"] = "Tienda No existe";
          $response->getBody()->write(json_encode($out));
-         return $response->withStatus(500);
+         return $response;
        }else{
            $response->getBody()->write(json_encode($puertas));
        }
@@ -394,7 +394,7 @@ class MainController extends BaseController
         }
         // FIN VALIDACION
         //Realizo consulta de puertas a DB
-        $sql = "SELECT * FROM ofertas";
+        $sql = "SELECT * FROM ofertas_productos";
         $statement = $db->prepare($sql);
         try {
             $result = $statement->execute();
@@ -407,14 +407,314 @@ class MainController extends BaseController
             return $response->withStatus(500);
         }
         while($item = $statement->fetch()){
-            $puertas['Ofertas'][] = array( 'id_categoria'=> $item->id_categoria, 'estado'=> $item->estado);
+            $puertas['Ofertas'][] = array( 'id_producto'=> $item->id_producto, 'precio_oferta'=> $item->precio_oferta, 'descuento'=> $item->descuento,'tipo'=> $item->tipo, 'estado'=> $item->estado, 'ruta'=> $item->ruta);
         }
         $response = $response->withHeader('Content-Type', 'application/json');
         $response->getBody()->write(json_encode($puertas));
         return $response;
 
     }
+    public function getTop10($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        //Realizo consulta de puertas a DB
+        $sql = "SELECT * FROM productos p2 ORDER BY calificacion DESC  LIMIT 10";
+        $statement = $db->prepare($sql);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $errocode = $th->getCode();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"] = "ErrorServerCode: $errocode";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        while($item = $statement->fetch()){
+          $puertas['top10'][] = array('nombre'=> $item->nombre, 'descripcion'=> $item->descripcion, 'peso'=> $item->peso,'precio_oficial'=> $item->precio_oficial,'cantidad'=> $item->cantidad, 'width'=> $item->image_width,
+          'height'=> $item->image_height,'calificacion'=> $item->calificacion,'productos_vendidos'=> $item->productos_vendidos, 'rute'=> 'http://35.192.70.196/subir/imagen/Productos/'.$item->rute, 'calificacion'=> $item->calificacion);
+        }
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $response->getBody()->write(json_encode($puertas));
+        return $response;
 
+    }
+    public function getTop10_vendidos($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        //Realizo consulta de puertas a DB
+        $sql = "SELECT * FROM productos p2 ORDER BY productos_vendidos DESC  LIMIT 10";
+        $statement = $db->prepare($sql);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $errocode = $th->getCode();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"] = "ErrorServerCode: $errocode";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        while($item = $statement->fetch()){
+          $puertas['top10'][] = array('nombre'=> $item->nombre, 'descripcion'=> $item->descripcion, 'peso'=> $item->peso,'precio_oficial'=> $item->precio_oficial,'cantidad'=> $item->cantidad, 'width'=> $item->image_width,
+          'height'=> $item->image_height,'calificacion'=> $item->calificacion,'productos_vendidos'=> $item->productos_vendidos, 'rute'=> 'http://35.192.70.196/subir/imagen/Productos/'.$item->rute, 'calificacion'=> $item->calificacion);
+        }
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $response->getBody()->write(json_encode($puertas));
+        return $response;
+
+    }
+    public function getFavoritos($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body["id_usuario"]) )){
+            return $response->withStatus(400);
+        }
+        //Realizo consulta de puertas a DB
+        $id_usuario= trim($body['id_usuario']);
+        $sql = "SELECT * FROM favoritos where id_usuario =:id_usuario";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':id_usuario', $id_usuario, \PDO::PARAM_STR);
+          //Realizo consulta de puertas a DB
+          try {
+              $result = $statement->execute();
+          } catch (\PDOException $th) {
+              $result = false;
+              $errocode = $th->getCode();
+              $response = $response->withHeader('Content-Type', 'application/json');
+              $out["status"] = "ErrorServerCode: $errocode";
+              $response->getBody()->write(json_encode($out));
+              return $response->withStatus(500);
+          }
+          $response = $response->withHeader('Content-Type', 'application/json');
+          $band=true;
+          while($item = $statement->fetch()){
+            $band=false;
+            $puertas['favoritos'][] = array('id_producto'=> $item->id_producto);
+          }
+         if ($band) {
+           $out["status"] = "Tienda No existe";
+           $response->getBody()->write(json_encode($out));
+           return $response;
+         }else{
+             $response->getBody()->write(json_encode($puertas));
+         }
+          return $response;
+
+    }
+    public function getOfertas_producto($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body["id_oferta"]) )){
+            return $response->withStatus(400);
+        }
+        //Realizo consulta de puertas a DB
+        $id_oferta= trim($body['id_oferta']);
+        $sql = "SELECT * FROM ofertas_productos where id =:id_oferta";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':id_oferta', $id_oferta, \PDO::PARAM_STR);
+          //Realizo consulta de puertas a DB
+          try {
+              $result = $statement->execute();
+          } catch (\PDOException $th) {
+              $result = false;
+              $errocode = $th->getCode();
+              $response = $response->withHeader('Content-Type', 'application/json');
+              $out["status"] = "ErrorServerCode: $errocode";
+              $response->getBody()->write(json_encode($out));
+              return $response->withStatus(500);
+          }
+          $response = $response->withHeader('Content-Type', 'application/json');
+          $band=true;
+          while($item = $statement->fetch()){
+            $band=false;
+            $puertas['Oferta'][] = array('precio_oferta'=> $item->precio_oferta,'descuento'=> $item->descuento,'tipo'=> $item->tipo,'ruta'=> $item->ruta,'estado'=> $item->estado);
+          }
+         if ($band) {
+           $out["status"] = "Tienda No existe";
+           $response->getBody()->write(json_encode($out));
+           return $response;
+         }else{
+             $response->getBody()->write(json_encode($puertas));
+         }
+          return $response;
+
+    }
+
+    public function getOfertas_categoria($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body["id_tienda"]) )){
+            return $response->withStatus(400);
+        }
+
+        $categoria = trim($body['id_tienda']);
+        $sql = "SELECT t2.*  FROM categorias c2 INNER JOIN  ofertas_categoria t2 ON c2.id =t2.id_categoria and c2.id_tienda =:categoria";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':categoria', $categoria, \PDO::PARAM_STR);
+
+        //Realizo consulta de puertas a DB
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $errocode = $th->getCode();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"] = "ErrorServerCode: $errocode";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+
+       $response = $response->withHeader('Content-Type', 'application/json');
+       $band=true;
+       while($item = $statement->fetch()){
+         $band=false;
+         $puertas['Ofertas'][] = array('id_categoria'=> $item->id_categoria,'descuento'=> $item->descuento,'ruta'=> $item->ruta,'tipo'=> $item->tipo,'estado'=> $item->estado);
+
+       }
+      if ($band) {
+        $out["status"] = "Ninguna categoria tiene ofertas";
+        $response->getBody()->write(json_encode($out));
+        return $response;
+      }else{
+          $response->getBody()->write(json_encode($puertas));
+      }
+        return $response;
+
+    }
+    public function getOfertas_tienda($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body["id_tienda"]) )){
+            return $response->withStatus(400);
+        }
+
+        $categoria = trim($body['id_tienda']);
+        $sql = "SELECT *  FROM ofertas_tienda where id_tienda =:categoria";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':categoria', $categoria, \PDO::PARAM_STR);
+
+        //Realizo consulta de puertas a DB
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $errocode = $th->getCode();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"] = "ErrorServerCode: $errocode";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $band=true;
+        while($item = $statement->fetch()){
+          $band=false;
+          $puertas['Ofertas'][] = array('id_tienda'=> $item->id_tienda,'descuento'=> $item->descuento,'ruta'=> $item->ruta,'tipo'=> $item->tipo,'estado'=> $item->estado);
+
+        }
+       if ($band) {
+         $out["status"] = "la tienda no tiene ofertas";
+         $response->getBody()->write(json_encode($out));
+         return $response;
+       }else{
+           $response->getBody()->write(json_encode($puertas));
+       }
+         return $response;
+
+    }
     public function getProductos($request, $response, $args){
         $corpName = $request->getAttribute('corpName');
         $db = $this->container->get('db');
@@ -456,13 +756,13 @@ class MainController extends BaseController
         $band=true;
         while($item = $statement->fetch()){
           $band=false;
-          $puertas['productos'][] = array('nombre'=> $item->nombre, 'descripcion'=> $item->descripcion, 'peso'=> $item->peso,'precio_oficial'=> $item->precio_oficial,'precio_oferta'=> $item->precio_oferta, 'width'=> $item->image_width,
-          'height'=> $item->image_height,'descuento'=> $item->descuento, 'rute'=> 'http://35.192.70.196/subir/imagen/Productos/'.$item->rute, 'calificacion'=> $item->calificacion);
+          $puertas['productos'][] = array('nombre'=> $item->nombre, 'descripcion'=> $item->descripcion, 'peso'=> $item->peso,'precio_oficial'=> $item->precio_oficial,'cantidad'=> $item->cantidad, 'width'=> $item->image_width,
+          'height'=> $item->image_height,'productos_vendidos'=> $item->productos_vendidos, 'rute'=> 'http://35.192.70.196/subir/imagen/Productos/'.$item->rute, 'calificacion'=> $item->calificacion);
         }
        if ($band) {
          $out["status"] = "No existen productos en la categoria ingresada";
          $response->getBody()->write(json_encode($out));
-         return $response->withStatus(500);
+         return $response;
        }else{
            $response->getBody()->write(json_encode($puertas));
        }
@@ -520,7 +820,7 @@ class MainController extends BaseController
             $out["status"] = 'El correo ya esta registrado';
           }
           $response->getBody()->write(json_encode($out));
-          return $response->withStatus(500);
+          return $response;
         }
 
 
@@ -593,7 +893,7 @@ class MainController extends BaseController
           $response = $response->withHeader('Content-Type', 'application/json');
           $out["status"] = 'La Tienda ya existe';
           $response->getBody()->write(json_encode($out));
-          return $response->withStatus(500);
+          return $response;
         }
 
 
@@ -666,7 +966,7 @@ class MainController extends BaseController
           $response = $response->withHeader('Content-Type', 'application/json');
           $out["status"] = 'Tienda No existe';
           $response->getBody()->write(json_encode($out));
-          return $response->withStatus(500);
+          return $response;
         }else{
           if ($item->nombre===$body["tienda"]) {
             $id_tienda = $item->id;
@@ -764,14 +1064,16 @@ class MainController extends BaseController
         // Validacion de Body
         $json = $request->getBody();
         $body = json_decode($json, true);
-        if (!(isset($body["nombre"]) && isset($body['descripcion']) && isset($body['precio_oficial']) && isset($body['width']) && isset($body['height']) && isset($body['id_categoria']) && isset($body['id_oferta']))){
+        if (!(isset($body["nombre"]) && isset($body['descripcion']) && isset($body['cantidad']) && isset($body['peso']) && isset($body['precio_oficial']) && isset($body['width']) && isset($body['height']) && isset($body['id_categoria']) && isset($body['id_oferta']))){
             return $response->withStatus(400);
         }
 
-        $sql = "INSERT INTO productos (`nombre`,`descripcion`,`precio_oficial`,`image_width`,`image_height`,`id_categoria`,`id_oferta`) VALUES (:nombre, :descripcion, :precio_oficial, :width, :height, :id_categoria, :id_oferta)";
+        $sql = "INSERT INTO productos (`nombre`,`descripcion`,`cantidad`,`peso`,`precio_oficial`,`image_width`,`image_height`,`id_categoria`,`id_oferta`) VALUES (:nombre, :descripcion, :cantidad, :precio, :precio_oficial, :width, :height, :id_categoria, :id_oferta)";
         $statement = $db->prepare($sql);
         $statement->bindValue(':nombre',  $body["nombre"], \PDO::PARAM_STR);
         $statement->bindValue(':descripcion',  $body["descripcion"], \PDO::PARAM_STR);
+        $statement->bindValue(':cantidad',  $body["cantidad"], \PDO::PARAM_STR);
+        $statement->bindValue(':peso',  $body["peso"], \PDO::PARAM_STR);
         $statement->bindValue(':precio_oficial',  $body["precio_oficial"], \PDO::PARAM_STR);
         $statement->bindValue(':width',  $body["width"], \PDO::PARAM_STR);
         $statement->bindValue(':height',  $body["height"], \PDO::PARAM_STR);
