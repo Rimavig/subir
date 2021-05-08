@@ -3,7 +3,7 @@ use Firebase\JWT\JWT;
 
 class Auth
 {
-    private static $secret_key = 'qr2020l1anM@v1G';
+    private static $secret_key = 'RimavigHotm@il003';
     private static $encrypt = ['HS256'];
     private static $aud = null;
 

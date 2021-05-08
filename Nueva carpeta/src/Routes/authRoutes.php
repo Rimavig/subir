@@ -18,7 +18,7 @@ $app->group('/v1', function (RouteCollectorProxy $group) {
         $e_response = new Response();
         /////////////////////////////////////////
         //$jwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJJZCI6IjA5NTg5NDIwMDYifX0.5t7psQM_ZdCmJPTnK-MeR2EgbgvDw42eyZFldCx116k";
-        $key = "qr2020l1anM@v1G";
+        $key = "RimavigHotm@il003";
         if (!$request->hasHeader('Authorization')) {
             return $e_response->withStatus(401);
         }
@@ -41,7 +41,7 @@ $app->group('/v1', function (RouteCollectorProxy $group) {
         $e_response = new Response();
         /////////////////////////////////////////
         //$jwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJkYXRhIjp7InVzZXJJZCI6IjA5NTg5NDIwMDYifX0.5t7psQM_ZdCmJPTnK-MeR2EgbgvDw42eyZFldCx116k";
-        $key = "qr2020l1anM@v1G";
+        $key = "RimavigHotm@il003";
         if (!$request->hasHeader('Authorization')) {
             return $e_response->withStatus(401);
         }
@@ -62,12 +62,32 @@ $app->group('/v1', function (RouteCollectorProxy $group) {
         $response = $handler->handle($request);
         return $response;
     };
-    $group->get('/getpuertas', 'App\Controllers\MainController:getPuertas')->add($mw_corp);
-    $group->patch('/updatetoken', 'App\Controllers\MainController:getPuertas')->add($mw_admin);
+    $group->get('/getUsuarios', 'App\Controllers\MainController:getUsuarios')->add($mw_corp);
+    $group->get('/getTiendas', 'App\Controllers\MainController:getTiendas')->add($mw_corp);
+    $group->get('/getOfertas', 'App\Controllers\MainController:getOfertas')->add($mw_corp);
+    $group->get('/getTop10', 'App\Controllers\MainController:getTop10')->add($mw_corp);
+    $group->get('/getTop10_vendidos', 'App\Controllers\MainController:getTop10_vendidos')->add($mw_corp);
+
+    $group->patch('/updatetoken', 'App\Controllers\MainController:getUsuarios')->add($mw_admin);
     $group->post('/createcorp', 'App\Controllers\MainController:createCorp')->add($mw_admin);
     $group->post('/adminsignin', 'App\Controllers\MainController:signInAdmin'); //->add($mw);
-    $group->post('/addpaciente', 'App\Controllers\MainController:agregarPaciente')->add($mw_corp);
-    $group->post('/updatepaciente', 'App\Controllers\MainController:updatePaciente')->add($mw_corp);
+
+    $group->post('/getUsuario', 'App\Controllers\MainController:getUsuario')->add($mw_corp);
+    $group->post('/getTienda', 'App\Controllers\MainController:getTienda')->add($mw_corp);
+    $group->post('/getCategorias', 'App\Controllers\MainController:getCategorias')->add($mw_corp);
+    $group->post('/getProductos', 'App\Controllers\MainController:getProductos')->add($mw_corp);
+    $group->post('/getOfertas_categoria', 'App\Controllers\MainController:getOfertas_categoria')->add($mw_corp);
+    $group->post('/getOfertas_tienda', 'App\Controllers\MainController:getOfertas_tienda')->add($mw_corp);
+    $group->post('/getFavoritos', 'App\Controllers\MainController:getFavoritos')->add($mw_corp);
+    $group->post('/getOfertas_producto', 'App\Controllers\MainController:getOfertas_producto')->add($mw_corp);
+
+    $group->post('/addUsuario', 'App\Controllers\MainController:agregarUsuario')->add($mw_corp);
+    $group->post('/addTienda', 'App\Controllers\MainController:agregarTienda')->add($mw_corp);
+    $group->post('/addCategoria', 'App\Controllers\MainController:agregarCategoria')->add($mw_corp);
+    $group->post('/addOfertas', 'App\Controllers\MainController:agregarOfertas')->add($mw_corp);
+    $group->post('/addProducto', 'App\Controllers\MainController:agregarProducto')->add($mw_corp);
+
+    $group->post('/updatePaciente', 'App\Controllers\MainController:updatePaciente')->add($mw_corp);
     $group->post('/deletecita', 'App\Controllers\MainController:deleteCita')->add($mw_corp);
 
     // $group->post('/signup', 'App\Controllers\MainController:signUp');
