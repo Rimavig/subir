@@ -76,10 +76,14 @@ $app->group('/v1', function (RouteCollectorProxy $group) {
     $group->post('/getTienda', 'App\Controllers\MainController:getTienda')->add($mw_corp);
     $group->post('/getCategorias', 'App\Controllers\MainController:getCategorias')->add($mw_corp);
     $group->post('/getProductos', 'App\Controllers\MainController:getProductos')->add($mw_corp);
+    $group->post('/getProductos_oferta', 'App\Controllers\MainController:getProductos_oferta')->add($mw_corp);
     $group->post('/getOfertas_categoria', 'App\Controllers\MainController:getOfertas_categoria')->add($mw_corp);
     $group->post('/getOfertas_tienda', 'App\Controllers\MainController:getOfertas_tienda')->add($mw_corp);
     $group->post('/getFavoritos', 'App\Controllers\MainController:getFavoritos')->add($mw_corp);
     $group->post('/getOfertas_producto', 'App\Controllers\MainController:getOfertas_producto')->add($mw_corp);
+    $group->post('/getPrecio_envio', 'App\Controllers\MainController:getPrecio_envio')->add($mw_corp);
+    $group->post('/getPrecio', 'App\Controllers\MainController:getPrecio')->add($mw_corp);
+    $group->post('/getConcidencia', 'App\Controllers\MainController:getConcidencia')->add($mw_corp);
 
     $group->post('/addUsuario', 'App\Controllers\MainController:agregarUsuario')->add($mw_corp);
     $group->post('/addTienda', 'App\Controllers\MainController:agregarTienda')->add($mw_corp);
@@ -87,6 +91,7 @@ $app->group('/v1', function (RouteCollectorProxy $group) {
     $group->post('/addOfertas', 'App\Controllers\MainController:agregarOfertas')->add($mw_corp);
     $group->post('/addProducto', 'App\Controllers\MainController:agregarProducto')->add($mw_corp);
 
+    $group->post('/updateFavorito', 'App\Controllers\MainController:updateFavorito')->add($mw_corp);
     $group->post('/updatePaciente', 'App\Controllers\MainController:updatePaciente')->add($mw_corp);
     $group->post('/deletecita', 'App\Controllers\MainController:deleteCita')->add($mw_corp);
 
