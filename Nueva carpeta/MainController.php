@@ -12,7 +12,6 @@ class MainController extends BaseController
     const KEY_CONST = "RimavigHotm@il003";
 
 
-
     public function signInAdmin($request, $response, $args){
         $response = $response->withHeader('Content-Type', 'application/json');
         $json = $request->getBody();
@@ -265,7 +264,8 @@ class MainController extends BaseController
             return $response->withStatus(500);
         }
         while($item = $statement->fetch()){
-            $puertas['tiendas'][] = array('id'=> $item->id_tienda, 'nombre'=> $item->nombre, 'descripcion'=> $item->descripcion, 'width'=> $item->image_width, 'height'=> $item->image_height, 'rute'=> 'http://35.192.70.196/subir/imagen/Tiendas/'.$item->rute, 'estado'=> $item->estado,
+            $puertas['tiendas'][] = array('id'=> $item->id_tienda, 'nombre'=> $item->nombre, 'descripcion'=> $item->descripcion, 'width'=> $item->image_width, 'height'=> $item->image_height, 'latitud'=> $item->latitud, 'longitud'=> $item->longitud,
+             'cantidad_ventas'=> $item->cantidad_ventas, 'calificacion'=> $item->calificacion ,  'rute'=> 'http://35.192.70.196/subir/imagen/Tiendas/'.$item->rute, 'estado'=> $item->estado,
           'descuento'=> $item->descuento,'tipo'=> $item->tipo);
         }
         $response = $response->withHeader('Content-Type', 'application/json');
@@ -492,6 +492,88 @@ class MainController extends BaseController
           $puertas['top10'][] = array('id'=> $item->id, 'nombre'=> $item->nombre, 'descripcion'=> $item->descripcion, 'peso'=> $item->peso,'precio_oficial'=> $item->precio_oficial,'cantidad'=> $item->cantidad, 'width'=> $item->image_width,
           'height'=> $item->image_height,'calificacion'=> $item->calificacion,'productos_vendidos'=> $item->productos_vendidos, 'rute'=> 'http://35.192.70.196/subir/imagen/Productos/'.$item->rute, 'calificacion'=> $item->calificacion);
         }
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $response->getBody()->write(json_encode($puertas));
+        return $response;
+
+    }
+
+    public function getTop10_tiendas($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        //Realizo consulta de puertas a DB
+        $sql = "SELECT *, c2.id  AS id_tienda FROM tiendas c2 INNER JOIN  ofertas_tienda t2 ON c2.id_ofertas_tienda =t2.id ORDER BY calificacion DESC  LIMIT 10";
+        $statement = $db->prepare($sql);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $errocode = $th->getCode();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"] = "ErrorServerCode: $errocode";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        while($item = $statement->fetch()){
+          $puertas['tiendas'][] = array('id'=> $item->id_tienda, 'nombre'=> $item->nombre, 'descripcion'=> $item->descripcion, 'width'=> $item->image_width, 'height'=> $item->image_height, 'latitud'=> $item->latitud, 'longitud'=> $item->longitud,
+           'cantidad_ventas'=> $item->cantidad_ventas, 'calificacion'=> $item->calificacion ,  'rute'=> 'http://35.192.70.196/subir/imagen/Tiendas/'.$item->rute, 'estado'=> $item->estado,
+             'descuento'=> $item->descuento,'tipo'=> $item->tipo);
+            }
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $response->getBody()->write(json_encode($puertas));
+        return $response;
+
+    }
+
+    public function getTop10_vendidos_tiendas($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        //Realizo consulta de puertas a DB
+        $sql = "SELECT *, c2.id  AS id_tienda FROM tiendas c2 INNER JOIN  ofertas_tienda t2 ON c2.id_ofertas_tienda =t2.id ORDER BY cantidad_ventas DESC  LIMIT 10";
+        $statement = $db->prepare($sql);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $errocode = $th->getCode();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"] = "ErrorServerCode: $errocode";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        while($item = $statement->fetch()){
+          $puertas['tiendas'][] = array('id'=> $item->id_tienda, 'nombre'=> $item->nombre, 'descripcion'=> $item->descripcion, 'width'=> $item->image_width, 'height'=> $item->image_height, 'latitud'=> $item->latitud, 'longitud'=> $item->longitud,
+           'cantidad_ventas'=> $item->cantidad_ventas, 'calificacion'=> $item->calificacion ,  'rute'=> 'http://35.192.70.196/subir/imagen/Tiendas/'.$item->rute, 'estado'=> $item->estado,
+             'descuento'=> $item->descuento,'tipo'=> $item->tipo);
+            }
         $response = $response->withHeader('Content-Type', 'application/json');
         $response->getBody()->write(json_encode($puertas));
         return $response;
@@ -861,7 +943,7 @@ class MainController extends BaseController
           $band1=false;
           $favoritos[] = $item->id_producto;
         }
-        $sql = "SELECT *, p2.id  AS id_producto FROM productos p2 INNER JOIN  ofertas_productos t2 ON id_oferta =t2.id INNER JOIN  categorias c2 ON c2.id =p2.id_categoria
+        $sql = "SELECT p2.*,t2.*, p2.id  AS id_producto FROM productos p2 INNER JOIN  ofertas_productos t2 ON id_oferta =t2.id INNER JOIN  categorias c2 ON c2.id =p2.id_categoria
                and c2.id_tienda=:tienda and id_oferta != '1'" ;
         $statement = $db->prepare($sql);
         $statement->bindValue(':tienda', $tienda, \PDO::PARAM_STR);
@@ -1015,7 +1097,7 @@ class MainController extends BaseController
         return $response;
     }
 
-    public function getConcidencia($request, $response, $args){
+    public function getConcidencias_producto($request, $response, $args){
         $corpName = $request->getAttribute('corpName');
         $db = $this->container->get('db');
         // VALIDACION DE TOKEN
@@ -1096,7 +1178,7 @@ class MainController extends BaseController
           }
         }
        if ($band) {
-         $out["status"] = "No existen productos en la categoria ingresada";
+         $out["status"] = "No existen Concidencias de productos";
          $response->getBody()->write(json_encode($out));
          return $response;
        }else{
@@ -1104,6 +1186,423 @@ class MainController extends BaseController
        }
 
         return $response;
+    }
+
+    public function getConcidencias_tienda($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body["palabra"]))){
+            return $response->withStatus(400);
+        }
+        $palabra = trim($body['palabra']);
+        $sql = "SELECT *, t2.id  AS id_tienda FROM tiendas t2 INNER JOIN  ofertas_tienda c2 ON id_ofertas_tienda =c2.id ";
+        $statement = $db->prepare($sql);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $errocode = $th->getCode();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"] = "ErrorServerCode: $errocode";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $band=true;
+
+        while($item = $statement->fetch()){
+
+          if (strlen(stristr($item->nombre, $palabra ))>0) {
+            $band=false;
+              $puertas['tiendas'][] = array('id'=> $item->id_tienda, 'nombre'=> $item->nombre, 'descripcion'=> $item->descripcion, 'width'=> $item->image_width, 'height'=> $item->image_height, 'rute'=> 'http://35.192.70.196/subir/imagen/Tiendas/'.$item->rute, 'estado'=> $item->estado,
+              'descuento'=> $item->descuento,'tipo'=> $item->tipo);
+          }
+        }
+       if ($band) {
+         $out["status"] = "No existen Concidencias de tiendas";
+         $response->getBody()->write(json_encode($out));
+         return $response;
+       }else{
+           $response->getBody()->write(json_encode($puertas));
+       }
+
+        return $response;
+    }
+
+    public function getConcidencias($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body["palabra"]) && isset($body['id_usuario']) && isset($body['id_tienda']) )){
+            return $response->withStatus(400);
+        }
+
+        $palabra = trim($body['palabra']);
+        $usuario = trim($body['id_usuario']);
+        $tienda = trim($body['id_tienda']);
+        $sql = "SELECT * FROM favoritos where id_usuario=:id_usuario ";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $errocode = $th->getCode();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"] = "ErrorServerCode: $errocode";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $band1=true;
+        $favoritos = array();
+        while($item = $statement->fetch()){
+          $band1=false;
+          $favoritos[] = $item->id_producto;
+        }
+        $sql = "SELECT p2.*,t2.*, p2.id  AS id_producto FROM productos p2 INNER JOIN  ofertas_productos t2 ON id_oferta =t2.id INNER JOIN  categorias c2 ON c2.id =p2.id_categoria
+               and c2.id_tienda=:tienda ";
+       $statement = $db->prepare($sql);
+       $statement->bindValue(':tienda', $tienda, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $errocode = $th->getCode();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"] = "ErrorServerCode: $errocode";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $band=true;
+        while($item = $statement->fetch()){
+          $band=false;
+          if (strlen(stristr($item->nombre, $palabra ))>0) {
+            if ($band1) {
+              $puertas['productos'][] = array('id'=> $item->id_producto, 'nombre'=> $item->nombre, 'descripcion'=> $item->descripcion, 'peso'=> $item->peso,'precio_oficial'=> $item->precio_oficial,'cantidad'=> $item->cantidad, 'width'=> $item->image_width,
+              'height'=> $item->image_height,'productos_vendidos'=> $item->productos_vendidos, 'rute'=> 'http://35.192.70.196/subir/imagen/Productos/'.$item->rute, 'calificacion'=> $item->calificacion,'favorito'=> 'false',  'precio_oferta'=> $item->precio_oferta
+            , 'descuento'=> $item->descuento, 'tipo'=> $item->tipo);
+            }else{
+              if (in_array($item->id_producto,$favoritos )) {
+                $puertas['productos'][] = array('id'=> $item->id_producto, 'nombre'=> $item->nombre, 'descripcion'=> $item->descripcion, 'peso'=> $item->peso,'precio_oficial'=> $item->precio_oficial,'cantidad'=> $item->cantidad, 'width'=> $item->image_width,
+                'height'=> $item->image_height,'productos_vendidos'=> $item->productos_vendidos, 'rute'=> 'http://35.192.70.196/subir/imagen/Productos/'.$item->rute, 'calificacion'=> $item->calificacion,'favorito'=> 'true',  'precio_oferta'=> $item->precio_oferta
+               , 'descuento'=> $item->descuento, 'tipo'=> $item->tipo);
+             }else{
+               $puertas['productos'][] = array('id'=> $item->id_producto, 'nombre'=> $item->nombre, 'descripcion'=> $item->descripcion, 'peso'=> $item->peso,'precio_oficial'=> $item->precio_oficial,'cantidad'=> $item->cantidad, 'width'=> $item->image_width,
+               'height'=> $item->image_height,'productos_vendidos'=> $item->productos_vendidos, 'rute'=> 'http://35.192.70.196/subir/imagen/Productos/'.$item->rute, 'calificacion'=> $item->calificacion,'favorito'=> 'false',  'precio_oferta'=> $item->precio_oferta
+             , 'descuento'=> $item->descuento, 'tipo'=> $item->tipo);
+             }
+            }
+          }
+        }
+       if ($band) {
+         $out["status"] = "No existen Concidencias de productos";
+         $response->getBody()->write(json_encode($out));
+         return $response;
+       }else{
+           $response->getBody()->write(json_encode($puertas));
+       }
+
+        return $response;
+    }
+
+    public function getCupones($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body["cupon"]) && isset($body['tipo']) )){
+            return $response->withStatus(400);
+        }
+        $cupon = trim($body['cupon']);
+        $tipo = trim($body['tipo']);
+
+        if ($tipo=='1') {
+          $sql = "SELECT * , cp.id  AS id_cupon FROM cupones_producto cp INNER JOIN  ofertas_productos c2 ON id_ofertas_producto =c2.id where nombre=:nombre and estado='A'";
+        }else if ($tipo=='2'){
+            $sql = "SELECT * , cp.id  AS id_cupon FROM cupones_categoria cp INNER JOIN  ofertas_categoria c2 ON id_ofertas_categoria =c2.id where nombre=:nombre  and estado='A'";
+        }else{
+          $sql = "SELECT * , cp.id  AS id_cupon FROM cupones_tienda cp INNER JOIN  ofertas_tienda c2 ON id_ofertas_tienda =c2.id  where nombre=:nombre and estado='A'";
+        }
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':nombre', $cupon, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $errocode = $th->getCode();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"] = "ErrorServerCode: $errocode";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $band1=true;
+        $item = $statement->fetch();
+       if ($item==false) {
+         $out["status"] = "Cupón no válido";
+         $response->getBody()->write(json_encode($out));
+         return $response;
+       }else{
+         $response->getBody()->write(json_encode($item));
+       }
+        return $response;
+    }
+
+    public function getUbicaciones($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body['id_usuario']) )){
+            return $response->withStatus(400);
+        }
+        $usuario = trim($body['id_usuario']);
+        $sql = "SELECT * FROM ubicaciones  where id_usuario=:usuario";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':usuario', $usuario, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $errocode = $th->getCode();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"] = "ErrorServerCode: $errocode";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $band=true;
+
+        while($item = $statement->fetch()){
+          $band=false;
+          $puertas['ubicaciones'][] = array('id'=> $item->id, 'nombre'=> $item->nombre, 'latitud'=> $item->latitud, 'longitud'=> $item->longitud, 'direccion'=> $item->direccion);
+        }
+       if ($band) {
+         $out["status"] = "No tiene ubicaciones el usuario";
+         $response->getBody()->write(json_encode($out));
+         return $response;
+       }else{
+         $response->getBody()->write(json_encode($puertas));
+       }
+        return $response;
+    }
+
+    public function getfacturacion($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body['id_usuario']) )){
+            return $response->withStatus(400);
+        }
+        $usuario = trim($body['id_usuario']);
+        $sql = "SELECT * FROM factura  where id_usuario=:usuario";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':usuario', $usuario, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $errocode = $th->getCode();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"] = "ErrorServerCode: $errocode";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $band=true;
+
+        while($item = $statement->fetch()){
+          $band=false;
+          $puertas['facturas'][] = array('id'=> $item->id, 'nombre'=> $item->nombre, 'cedula'=> $item->cedula, 'telefono'=> $item->telefono, 'direccion'=> $item->direccion, 'correo'=> $item->correo);
+        }
+       if ($band) {
+         $out["status"] = "No tiene datos de facturació
+         n";
+         $response->getBody()->write(json_encode($out));
+         return $response;
+       }else{
+         $response->getBody()->write(json_encode($puertas));
+       }
+        return $response;
+    }
+
+    public function agregarUbicacion($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        // Validacion de Body
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body["id_usuario"]) && isset($body['nombre']) && isset($body['latitud']) && isset($body['longitud']) && isset($body['direccion']))){
+            return $response->withStatus(400);
+        }
+        // FIN Validacion
+        $sql = "INSERT INTO ubicaciones (`id_usuario`, `nombre`, `latitud`, `longitud`,`direccion`) VALUES (:id_usuario, :nombre, :latitud, :longitud, :direccion)";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':id_usuario',  $body["id_usuario"], \PDO::PARAM_STR);
+        $statement->bindValue(':nombre',  $body["nombre"], \PDO::PARAM_STR);
+        $statement->bindValue(':latitud',  $body["latitud"], \PDO::PARAM_STR);
+        $statement->bindValue(':longitud',  $body["longitud"], \PDO::PARAM_STR);
+        $statement->bindValue(':direccion',  $body["direccion
+        "], \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $errocode = $th->getCode();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"] = "ErrorServerCode: $errocode";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $out["status"] = 'Operación realizada OK';
+        $response->getBody()->write(json_encode($out));
+
+        return $response;
+
+    }
+
+    public function agregarFacturacion($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        // Validacion de Body
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body["id_usuario"]) && isset($body['nombre']) && isset($body['cedula']) && isset($body['telefono']) && isset($body['direccion']) && isset($body['correo']))){
+            return $response->withStatus(400);
+        }
+        // FIN Validacion
+        $sql = "INSERT INTO factura (`id_usuario`, `nombre`, `cedula`, `telefono`,`direccion`,`correo`) VALUES (:id_usuario, :nombre, :cedula, :telefono, :direccion, :correo)";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':id_usuario',  $body["id_usuario"], \PDO::PARAM_STR);
+        $statement->bindValue(':nombre',  $body["nombre"], \PDO::PARAM_STR);
+        $statement->bindValue(':cedula',  $body["cedula"], \PDO::PARAM_STR);
+        $statement->bindValue(':telefono',  $body["telefono"], \PDO::PARAM_STR);
+        $statement->bindValue(':direccion',  $body["direccion"], \PDO::PARAM_STR);
+        $statement->bindValue(':correo',  $body["correo
+        "], \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $errocode = $th->getCode();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"] = "ErrorServerCode: $errocode";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $out["status"] = 'Operación realizada OK';
+        $response->getBody()->write(json_encode($out));
+
+        return $response;
+
     }
 
     public function agregarUsuario($request, $response, $args){
@@ -1435,6 +1934,206 @@ class MainController extends BaseController
 
     }
 
+    public function agregarCompra($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        // Validacion de Body
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body["id_usuario"]) && isset($body['calificacion']) && isset($body['precio']) && isset($body['id_tienda']) && isset($body['productos']))){
+            return $response->withStatus(400);
+        }
+        $id_tienda=$body['id_tienda'];
+        $calificacion=$body['calificacion'];
+        $band=true;
+        $array = explode(":", $body['productos']);
+        $longitud = count($array);
+        for($i=0; $i<$longitud; $i++){
+          $parts = explode(",", $array[$i]);
+          $sql = "SELECT * FROM productos where id=:id_producto";
+          $statement = $db->prepare($sql);
+          $statement->bindValue(':id_producto',  $parts[0], \PDO::PARAM_STR);
+          try {
+              $result = $statement->execute();
+          } catch (\PDOException $th) {
+              $result = false;
+              $errocode = $th->getCode();
+              $response = $response->withHeader('Content-Type', 'application/json');
+              $out["status"] = "ErrorServerCode: $errocode";
+              $response->getBody()->write(json_encode($out));
+              return $response->withStatus(500);
+          }
+          $item = $statement->fetch();
+          $cantidad_productos=$item->cantidad;
+          if ($cantidad_productos <$parts[1]) {
+            $band=false;
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"][] = array('mensaje'=>'No existe stock de producto '.$item->nombre,'id'=> $item->id);
+          }
+        }
+
+        if ($band) {
+            $sql = "SELECT * FROM tiendas where id=:id_tienda";
+            $statement = $db->prepare($sql);
+            $statement->bindValue(':id_tienda',  $id_tienda, \PDO::PARAM_STR);
+            try {
+                $result = $statement->execute();
+            } catch (\PDOException $th) {
+                $result = false;
+                $errocode = $th->getCode();
+                $response = $response->withHeader('Content-Type', 'application/json');
+                $out["status"] = "ErrorServerCode: $errocode";
+                $response->getBody()->write(json_encode($out));
+                return $response->withStatus(500);
+            }
+            $item = $statement->fetch();
+            $calificacion_total=(float) $item->calificacion;
+            $cantidad_ventas=(float) $item->cantidad_ventas;
+            $x=$calificacion_total*$cantidad_ventas+$calificacion;
+            $y=$cantidad_ventas+1;
+            $total1=$x/($y);
+            $total=number_format((float)$total1, 1, '.', '');;
+            $sql = "UPDATE tiendas	SET calificacion=:calificacion, cantidad_ventas=:cantidad_ventas WHERE id=:id_tienda";
+            $statement = $db->prepare($sql);
+            $statement->bindValue(':calificacion', $total, \PDO::PARAM_STR);
+            $statement->bindValue(':cantidad_ventas', $y, \PDO::PARAM_STR);
+            $statement->bindValue(':id_tienda',  $id_tienda, \PDO::PARAM_STR);
+
+            try {
+                $result = $statement->execute();
+            } catch (\PDOException $th) {
+                $result = false;
+                $errocode = $th->getCode();
+                $response = $response->withHeader('Content-Type', 'application/json');
+                $out["status"] = "ErrorServerCode: $errocode";
+                $response->getBody()->write(json_encode($out));
+                return $response->withStatus(500);
+            }
+            // FIN Validacion
+            date_default_timezone_set('America/Lima');
+            $hoy = (string) date("Y-m-d H:i:s");
+            $sql = "INSERT INTO vendidos (`id_usuario`, `calificacion`, `precio_total`, `fecha_compra`) VALUES (:id_usuario, :calificacion, :precio, :fecha)";
+            $statement = $db->prepare($sql);
+            $statement->bindValue(':id_usuario',  $body["id_usuario"], \PDO::PARAM_STR);
+            $statement->bindValue(':calificacion',  $body["calificacion"], \PDO::PARAM_STR);
+            $statement->bindValue(':precio',  $body["precio"], \PDO::PARAM_STR);
+            $statement->bindValue(':fecha',  $hoy, \PDO::PARAM_STR);
+            try {
+                $result = $statement->execute();
+            } catch (\PDOException $th) {
+                $result = false;
+                $errocode = $th->getCode();
+                $response = $response->withHeader('Content-Type', 'application/json');
+                $out["status"] = "ErrorServerCode: $errocode";
+                $response->getBody()->write(json_encode($out));
+                return $response->withStatus(500);
+            }
+
+            $sql = "SELECT * FROM vendidos t2 where id_usuario=:id_usuario and fecha_compra=:fecha";
+            $statement = $db->prepare($sql);
+            $statement->bindValue(':fecha', $hoy, \PDO::PARAM_STR);
+            $statement->bindValue(':id_usuario',  $body["id_usuario"], \PDO::PARAM_STR);
+
+            try {
+                $result = $statement->execute();
+            } catch (\PDOException $th) {
+                $result = false;
+                $errocode = $th->getCode();
+                $response = $response->withHeader('Content-Type', 'application/json');
+                $out["status"] = "ErrorServerCode: $errocode";
+                $response->getBody()->write(json_encode($out));
+                return $response->withStatus(500);
+            }
+            //update_calificacion_tienda($body["id_tienda"], $body["calificacion"]) ;
+            $item = $statement->fetch();
+             for($i=0; $i<$longitud; $i++){
+               $parts = explode(",", $array[$i]);
+               $sql = "INSERT INTO productos_vendidos (`id_producto`, `id_vendidos`, `calificacion`, `cantidad`,`precio`,`id_tienda`) VALUES (:id_producto, :id_vendido, :calificacion, :cantidad, :precio, :id_tienda)";
+               $statement = $db->prepare($sql);
+               $statement->bindValue(':id_producto', $parts[0], \PDO::PARAM_STR);
+               $statement->bindValue(':id_vendido',  $item->id, \PDO::PARAM_STR);
+               $statement->bindValue(':calificacion',  $body["calificacion"], \PDO::PARAM_STR);
+               $statement->bindValue(':cantidad',  $parts[1], \PDO::PARAM_STR);
+               $statement->bindValue(':precio',   $parts[2], \PDO::PARAM_STR);
+               $statement->bindValue(':id_tienda', $body['id_tienda'], \PDO::PARAM_STR);
+               try {
+                   $result = $statement->execute();
+               } catch (\PDOException $th) {
+                   $result = false;
+                   $errocode = $th->getCode();
+                   $response = $response->withHeader('Content-Type', 'application/json');
+                   $out["status"] = "ErrorServerCode: $errocode";
+                   $response->getBody()->write(json_encode($out));
+                   return $response->withStatus(500);
+               }
+
+               $sql = "SELECT * FROM productos where id=:id_producto";
+               $statement = $db->prepare($sql);
+               $statement->bindValue(':id_producto',  $parts[0], \PDO::PARAM_STR);
+               try {
+                   $result = $statement->execute();
+               } catch (\PDOException $th) {
+                   $result = false;
+                   $errocode = $th->getCode();
+                   $response = $response->withHeader('Content-Type', 'application/json');
+                   $out["status"] = "ErrorServerCode: $errocode";
+                   $response->getBody()->write(json_encode($out));
+                   return $response->withStatus(500);
+               }
+
+               $item = $statement->fetch();
+               $calificacion_total=(float) $item->calificacion;
+               $cantidad_ventas=(float) $item->productos_vendidos;
+               $cantidad_productos=$item->cantidad;
+               $x=$calificacion_total*$cantidad_ventas+$calificacion;
+               $y=$cantidad_ventas+1;
+               $z=$cantidad_productos- $parts[1];
+               $total1=$x/($y);
+               $total=number_format((float)$total1, 1, '.', '');
+               $sql = "UPDATE productos	SET productos_vendidos=:productos_vendidos, calificacion=:calificacion, cantidad=:cantidad WHERE id=:id_producto";
+               $statement = $db->prepare($sql);
+               $statement->bindValue(':calificacion', $total, \PDO::PARAM_STR);
+               $statement->bindValue(':cantidad', $z, \PDO::PARAM_STR);
+                $statement->bindValue(':productos_vendidos', $y, \PDO::PARAM_STR);
+               $statement->bindValue(':id_producto',  $parts[0], \PDO::PARAM_STR);
+
+               try {
+                   $result = $statement->execute();
+               } catch (\PDOException $th) {
+                   $result = false;
+                   $errocode = $th->getCode();
+                   $response = $response->withHeader('Content-Type', 'application/json');
+                   $out["status"] = "ErrorServerCode: $errocode";
+                   $response->getBody()->write(json_encode($out));
+                   return $response->withStatus(500);
+               }
+             }
+
+             $response = $response->withHeader('Content-Type', 'application/json');
+             $out["status"] = 'Operación realizada OK';
+             $response->getBody()->write(json_encode($out));
+        }else{
+          $response->getBody()->write(json_encode($out));
+        }
+
+        return $response;
+
+    }
+
     public function updateFavorito($request, $response, $args){
         $corpName = $request->getAttribute('corpName');
         $db = $this->container->get('db');
@@ -1527,6 +2226,8 @@ class MainController extends BaseController
         return $response;
 
     }
+
+
 
 
 
