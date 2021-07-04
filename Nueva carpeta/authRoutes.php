@@ -63,7 +63,7 @@ $app->group('/v1', function (RouteCollectorProxy $group) {
         return $response;
     };
     $group->get('/getUsuarios', 'App\Controllers\MainController:getUsuarios')->add($mw_corp);
-    $group->get('/getTiendas', 'App\Controllers\MainController:getTiendas')->add($mw_corp);
+    $group->post('/getTiendas', 'App\Controllers\MainController:getTiendas')->add($mw_corp);
     $group->get('/getOfertas', 'App\Controllers\MainController:getOfertas')->add($mw_corp);
     $group->get('/getTop10', 'App\Controllers\MainController:getTop10')->add($mw_corp);
     $group->get('/getTop10_vendidos', 'App\Controllers\MainController:getTop10_vendidos')->add($mw_corp);
@@ -93,6 +93,10 @@ $app->group('/v1', function (RouteCollectorProxy $group) {
     $group->post('/getUbicaciones', 'App\Controllers\MainController:getUbicaciones')->add($mw_corp);
     $group->post('/getFacturacion', 'App\Controllers\MainController:getfacturacion')->add($mw_corp);
     $group->post('/getCompra', 'App\Controllers\MainController:getCompra')->add($mw_corp);
+    $group->post('/getCompras_activas', 'App\Controllers\MainController:getCompras_activas')->add($mw_corp);
+    $group->post('/getCompras_empacando', 'App\Controllers\MainController:getCompras_empacando')->add($mw_corp);
+    $group->post('/getCompras_enviando', 'App\Controllers\MainController:getCompras_enviando')->add($mw_corp);
+    $group->post('/getCompras_entregado', 'App\Controllers\MainController:getCompras_entregado')->add($mw_corp);
 
     $group->post('/addUsuario', 'App\Controllers\MainController:agregarUsuario')->add($mw_corp);
     $group->post('/addTienda', 'App\Controllers\MainController:agregarTienda')->add($mw_corp);
