@@ -1142,9 +1142,11 @@ class MainController extends BaseController
                $x=(float) $item->distancia;
                $precio=(float) $item->precio;
                $total=$precio_minimo+($distancia*$precio)/$x;
-               $puertas['precio'][] = $total;
+               $tiempo_minimo=(float) $item->tiempo_minimo;
+               $tiempo=(float) $item->tiempo;
+               $total1=$tiempo_minimo+($distancia*$tiempo)/$x;
+               $puertas['precio'][] = array('precio'=> $total, 'tiempo'=> $total1);
                $response->getBody()->write(json_encode($puertas));
-
            }
        }
 
@@ -1190,12 +1192,15 @@ class MainController extends BaseController
       $response = $response->withHeader('Content-Type', 'application/json');
        $item = $statement->fetch();
        if ($item){
-           $precio_minimo=(float) $item->precio_minimo;
-           $x=(float) $item->distancia;
-           $precio=(float) $item->precio;
-           $total=$precio_minimo+($distancia*$precio)/$x;
-          $puertas['precio'][] = $total;
-          $response->getBody()->write(json_encode($puertas));
+         $precio_minimo=(float) $item->precio_minimo;
+         $x=(float) $item->distancia;
+         $precio=(float) $item->precio;
+         $total=$precio_minimo+($distancia*$precio)/$x;
+         $tiempo_minimo=(float) $item->tiempo_minimo;
+         $tiempo=(float) $item->tiempo;
+         $total1=$tiempo_minimo+($distancia*$tiempo)/$x;
+         $puertas['precio'][] = array('precio'=> $total, 'tiempo'=> $total1);
+         $response->getBody()->write(json_encode($puertas));
        }
         return $response;
     }
@@ -1496,6 +1501,58 @@ class MainController extends BaseController
         return $response;
     }
 
+    public function getCompras($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body["id_usuario"]))){
+            return $response->withStatus(400);
+        }
+        $usuario= trim($body['id_usuario']);
+        $sql = "SELECT v2.* ,p2.nombre,p2.rute ,mt2.descripcion FROM vendidos v2 INNER JOIN  tiendas p2 ON p2.id=v2.id_tienda INNER JOIN  metodo_pago mt2 ON mt2.id=v2.id_pago and v2.id_usuario=:id_usuario";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $errocode = $th->getCode();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"] = "ErrorServerCode: $errocode";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $band=true;
+        while($item = $statement->fetch()){
+            $band=false;
+            $puertas['productos'][] = array('id'=> $item->id, 'fecha'=> $item->fecha_compra, 'precio_total'=> $item->precio_total, 'calificacion'=> $item->calificacion,'id_factura'=> $item->id_factura,  'nombre'=> $item->nombre
+          , 'imagen'=> 'http://35.192.70.196/subir/imagen/Tiendas/'.$item->rute, 'latitud'=> $item->latitud, 'longitud'=> $item->longitud, 'metodo_pago'=> $item->descripcion,'cupon'=> $item->cupon,'estado'=> $item->estado);
+        }
+       if ($band) {
+         $out["status"] = "No existe Compra";
+         $response->getBody()->write(json_encode($out));
+         return $response;
+       }else{
+           $response->getBody()->write(json_encode($puertas));
+       }
+        return $response;
+    }
 
     public function getCompras_activas($request, $response, $args){
         $corpName = $request->getAttribute('corpName');
@@ -1521,7 +1578,7 @@ class MainController extends BaseController
         }
 
         $usuario= trim($body['id_usuario']);
-        $sql = "SELECT v2.*,t2.latitud ,t2.longitud ,p2.nombre,p2.rute ,mt2.descripcion FROM vendidos v2 INNER JOIN  ubicaciones t2 ON t2.id=v2.id_ubicacion
+        $sql = "SELECT v2.*,p2.nombre,p2.rute ,mt2.descripcion FROM vendidos v2
         INNER JOIN  tiendas p2 ON p2.id=v2.id_tienda INNER JOIN  metodo_pago mt2 ON mt2.id=v2.id_pago and v2.id_usuario=:id_usuario and v2.estado !='F'";
         $statement = $db->prepare($sql);
         $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
@@ -1578,7 +1635,7 @@ class MainController extends BaseController
         }
 
         $usuario= trim($body['id_usuario']);
-        $sql = "SELECT v2.*,t2.latitud ,t2.longitud ,p2.nombre,p2.rute ,mt2.descripcion FROM vendidos v2 INNER JOIN  ubicaciones t2 ON t2.id=v2.id_ubicacion
+        $sql = "SELECT v2.*, p2.nombre,p2.rute ,mt2.descripcion FROM vendidos v2
         INNER JOIN  tiendas p2 ON p2.id=v2.id_tienda INNER JOIN  metodo_pago mt2 ON mt2.id=v2.id_pago and v2.id_usuario=:id_usuario and v2.estado ='P'";
         $statement = $db->prepare($sql);
         $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
@@ -1635,7 +1692,7 @@ class MainController extends BaseController
         }
 
         $usuario= trim($body['id_usuario']);
-        $sql = "SELECT v2.*,t2.latitud ,t2.longitud ,p2.nombre,p2.rute ,mt2.descripcion FROM vendidos v2 INNER JOIN  ubicaciones t2 ON t2.id=v2.id_ubicacion
+        $sql = "SELECT v2.* ,p2.nombre,p2.rute ,mt2.descripcion FROM vendidos v2
         INNER JOIN  tiendas p2 ON p2.id=v2.id_tienda INNER JOIN  metodo_pago mt2 ON mt2.id=v2.id_pago and v2.id_usuario=:id_usuario and v2.estado ='D'";
         $statement = $db->prepare($sql);
         $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
@@ -1692,8 +1749,8 @@ class MainController extends BaseController
         }
 
         $usuario= trim($body['id_usuario']);
-        $sql = "SELECT v2.*,t2.latitud ,t2.longitud ,p2.nombre,p2.rute ,mt2.descripcion FROM vendidos v2 INNER JOIN  ubicaciones t2 ON t2.id=v2.id_ubicacion
-        INNER JOIN  tiendas p2 ON p2.id=v2.id_tienda INNER JOIN  metodo_pago mt2 ON mt2.id=v2.id_pago and v2.id_usuario=:id_usuario and v2.estado ='F'";
+        $sql = "SELECT v2.* ,p2.nombre,p2.rute ,mt2.descripcion FROM vendidos v2
+        INNER JOIN  tiendas p2 ON p2.id=v2.id_tienda INNER JOIN  metodo_pago mt2 ON mt2.id=v2.id_pago and v2.id_usuario=:id_usuario and v2.estado !='F'";
         $statement = $db->prepare($sql);
         $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
         try {
@@ -1918,8 +1975,7 @@ class MainController extends BaseController
         $statement->bindValue(':nombre',  $body["nombre"], \PDO::PARAM_STR);
         $statement->bindValue(':latitud',  $body["latitud"], \PDO::PARAM_STR);
         $statement->bindValue(':longitud',  $body["longitud"], \PDO::PARAM_STR);
-        $statement->bindValue(':direccion',  $body["direccion
-        "], \PDO::PARAM_STR);
+        $statement->bindValue(':direccion',  $body["direccion"], \PDO::PARAM_STR);
         try {
             $result = $statement->execute();
         } catch (\PDOException $th) {
@@ -2541,7 +2597,7 @@ class MainController extends BaseController
         $json = $request->getBody();
         $body = json_decode($json, true);
         if (!(isset($body["id_usuario"]) && isset($body['id_factura']) && isset($body['precio']) && isset($body['id_tienda']) && isset($body['productos'])
-        && isset($body['id_ubicacion']) && isset($body['id_metodo']) && isset($body['cupon']))){
+        && isset($body['latitud']) && isset($body['longitud']) && isset($body['id_metodo']) && isset($body['cupon']))){
             return $response->withStatus(400);
         }
         try {
@@ -2583,14 +2639,15 @@ class MainController extends BaseController
               $statement->bindValue(':id_tienda',  $id_tienda, \PDO::PARAM_STR);
               $result = $statement->execute();
 
-              $sql = "INSERT INTO vendidos (`id_usuario`,`id_factura`, `precio_total`, `fecha_compra` ,`id_tienda`, `id_ubicacion`,`id_pago`,`cupon`) VALUES (:id_usuario, :id_factura,  :precio, :fecha, :id_tienda, :id_ubicacion, :id_pago, :cupon )";
+              $sql = "INSERT INTO vendidos (`id_usuario`,`id_factura`, `precio_total`, `fecha_compra` ,`id_tienda`, `latitud`, `longitud`, `id_pago`,`cupon`) VALUES (:id_usuario, :id_factura,  :precio, :fecha, :id_tienda, :latitud, :longitud, :id_pago, :cupon )";
               $statement = $db->prepare($sql);
               $statement->bindValue(':id_usuario',  $body["id_usuario"], \PDO::PARAM_STR);
               $statement->bindValue(':precio',  $body["precio"], \PDO::PARAM_STR);
               $statement->bindValue(':id_factura',  $body["id_factura"], \PDO::PARAM_STR);
               $statement->bindValue(':fecha',  $hoy, \PDO::PARAM_STR);
               $statement->bindValue(':id_tienda', $body['id_tienda'], \PDO::PARAM_STR);
-              $statement->bindValue(':id_ubicacion', $body['id_ubicacion'], \PDO::PARAM_STR);
+              $statement->bindValue(':latitud', $body['latitud'], \PDO::PARAM_STR);
+              $statement->bindValue(':longitud', $body['longitud'], \PDO::PARAM_STR);
               $statement->bindValue(':id_pago', $body['id_metodo'], \PDO::PARAM_STR);
               $statement->bindValue(':cupon', $body['cupon'], \PDO::PARAM_STR);
               $result = $statement->execute();
@@ -2631,9 +2688,26 @@ class MainController extends BaseController
                  $result = $statement->execute();
 
                }
-               $response = $response->withHeader('Content-Type', 'application/json');
-               $out["status"][] = array('mensaje'=>'Operación realizada OK','id'=> $id_Vendido->id);
-               $response->getBody()->write(json_encode($out));
+
+               $sql = "SELECT v2.* ,p2.nombre,p2.rute ,mt2.descripcion FROM vendidos v2 INNER JOIN  tiendas p2 ON p2.id=v2.id_tienda INNER JOIN  metodo_pago mt2 ON mt2.id=v2.id_pago and v2.id =:id_vendido";
+               $statement = $db->prepare($sql);
+               $statement->bindValue(':id_vendido', $id_Vendido->id, \PDO::PARAM_STR);
+               $result = $statement->execute();
+               $band=true;
+               while($item = $statement->fetch()){
+                   $band=false;
+                   $puertas['productos'][] = array('id'=> $item->id, 'fecha'=> $item->fecha_compra, 'precio_total'=> $item->precio_total, 'calificacion'=> $item->calificacion,'id_factura'=> $item->id_factura,  'nombre'=> $item->nombre
+                 , 'imagen'=> 'http://35.192.70.196/subir/imagen/Tiendas/'.$item->rute, 'latitud'=> $item->latitud, 'longitud'=> $item->longitud, 'metodo_pago'=> $item->descripcion,'cupon'=> $item->cupon,'estado'=> $item->estado);
+
+               }
+              $response = $response->withHeader('Content-Type', 'application/json');
+              if ($band) {
+                $out["status"] = "No existe Compra";
+                $response->getBody()->write(json_encode($out));
+                return $response;
+              }else{
+                $response->getBody()->write(json_encode($puertas));
+              }
           }else{
             $response->getBody()->write(json_encode($out));
           }
@@ -2883,6 +2957,50 @@ class MainController extends BaseController
         }
     }
 
+    public function deleteUbicacion($request, $response, $args){
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        // Validacion de Body
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body['id_ubicacion']))){
+            return $response->withStatus(400);
+        }
+        // FIN Validacion
+        $sql = "DELETE FROM ubicaciones WHERE id=:id_ubicacion";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':id_ubicacion',  $body["id_ubicacion"], \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $errocode = $th->getCode();
+            $response = $response->withHeader('Content-Type', 'application/json');
+            $out["status"] = "ErrorServerCode: $errocode";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
 
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $out["status"] = 'Operación realizada OK';
+        $response->getBody()->write(json_encode($out));
+
+        return $response;
+
+    }
 
 }

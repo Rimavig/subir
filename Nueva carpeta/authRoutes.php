@@ -93,6 +93,7 @@ $app->group('/v1', function (RouteCollectorProxy $group) {
     $group->post('/getUbicaciones', 'App\Controllers\MainController:getUbicaciones')->add($mw_corp);
     $group->post('/getFacturacion', 'App\Controllers\MainController:getfacturacion')->add($mw_corp);
     $group->post('/getCompra', 'App\Controllers\MainController:getCompra')->add($mw_corp);
+    $group->post('/getCompras', 'App\Controllers\MainController:getCompras')->add($mw_corp);
     $group->post('/getCompras_activas', 'App\Controllers\MainController:getCompras_activas')->add($mw_corp);
     $group->post('/getCompras_empacando', 'App\Controllers\MainController:getCompras_empacando')->add($mw_corp);
     $group->post('/getCompras_enviando', 'App\Controllers\MainController:getCompras_enviando')->add($mw_corp);
@@ -111,7 +112,7 @@ $app->group('/v1', function (RouteCollectorProxy $group) {
     $group->post('/updateEstado_compra', 'App\Controllers\MainController:updateEstado_compra')->add($mw_corp);
     $group->post('/updateFavorito', 'App\Controllers\MainController:updateFavorito')->add($mw_corp);
     $group->post('/updatePaciente', 'App\Controllers\MainController:updatePaciente')->add($mw_corp);
-    $group->post('/deletecita', 'App\Controllers\MainController:deleteCita')->add($mw_corp);
+    $group->post('/deleteUbicacion', 'App\Controllers\MainController:deleteUbicacion')->add($mw_corp);
 
     // $group->post('/signup', 'App\Controllers\MainController:signUp');
     // $group->post('/invResidente', 'App\Controllers\MainController:checkInvitacionesResidente')->add($mw);
