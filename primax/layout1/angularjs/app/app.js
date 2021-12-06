@@ -28,6 +28,10 @@ var MakeApp = angular
             templateUrl: 'dashboard/principal.php',
             controller: 'dashboardCtrl'
         })
+        .when('/estado_equipos', {
+            templateUrl: 'dashboard/estado_equipos.php',
+            controller: 'dashboardCtrl'
+        })
         .when('/frontend', {
             templateUrl: 'frontend/frontend.html',
             controller: 'frontendCtrl'

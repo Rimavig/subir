@@ -123,16 +123,8 @@ if ($_SESSION["lockscreen"] == "SI") {
                       </div>
                     <ul class="nav nav-sidebar">
                         <li ng-class="{ active  : isActive('/')}"><a href="#/"><i class="icon-home"></i><span>Principal</span></a></li>
-                        <li class="nav-parent">
-                            <a href=""><i class="fa fa-table"></i><span>Estadisticas</span><span class="fa arrow"></span></a>
-                            <ul class="children collapse">
-                                <li ng-class="{ active  : isActive('/estadistica-bomba')}"><a href="#estadistica-bomba"> Bomba de Agua</a></li>
-                                <li ng-class="{ active  : isActive('/estadistica-compresor')}"><a href="#estadistica-compresor"> Compresor de Aire</a></li>
-                                <li ng-class="{ active  : isActive('/estadistica-generador')}"><a href="#estadistica-generador"> Generador</a></li>
-                                <li ng-class="{ active  : isActive('/estadistica-rci')}"><a href="#estadistica-rci"> Red Contra Incendio</a></li>
-                                <li ng-class="{ active  : isActive('/estadistica-tanque')}"><a href="#estadistica-tanque"> Tanques</a></li>
-                            </ul>
-                        </li>
+                        <li ng-class="{ active  : isActive('/estado_equipos')}"><a href="#estado_equipos"><i class="icon-home"></i><span>Estado Equipos</span></a></li>
+                        <li ng-class="{ active  : isActive('/forms-sliders')}"><a href="#forms-sliders"><i class="icon-home"></i><span>Telemetría</span></a></li>
                         <li class="nav-parent">
                             <a href=""><i class="fa fa-table"></i><span>Historial</span><span class="fa arrow"></span></a>
                             <ul class="children collapse">
@@ -146,12 +138,7 @@ if ($_SESSION["lockscreen"] == "SI") {
                                 <li ng-class="{ active  : isActive('/historial-fallas')}"><a href="#historial-fallas"> Fallas</a></li>
                             </ul>
                         </li>
-                        <li class="nav-parent">
-                            <a href=""><i class="icon-cup"></i><span>Mantenimiento</span><span class="fa arrow"></span></a>
-                            <ul class="children collapse">
-                                <li ng-class="{ active  : isActive('/forms-sliders')}"><a href="#forms-sliders"> Indicadores</a></li>
-                            </ul>
-                        </li>
+                        
                     </ul>
                     <!-- SIDEBAR WIDGET FOLDERS -->
                     
@@ -619,7 +606,7 @@ if ($_SESSION["lockscreen"] == "SI") {
         </div>
         <!-- END QUICKVIEW SIDEBAR -->
         <!-- BEGIN SEARCH -->
-        <!--div id="morphsearch" class="morphsearch">
+        <!div id="morphsearch" class="morphsearch">
             <form class="morphsearch-form">
                 <input class="morphsearch-input" type="search" placeholder="Search..." />
                 <button class="morphsearch-submit" type="submit">Search</button>

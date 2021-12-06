@@ -7318,8 +7318,11 @@ body:not(.rtl) .layout-options .img-sidebar-right {
 #usa-map {
 
   color: #ffffff;
-  height: 600px;
+  height: 350px;
   width: 110%;
+}
+.esconder {
+  display: none !important;
 }
 #flight-map {
   height: 460px;
