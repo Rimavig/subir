@@ -33,7 +33,16 @@ angular.module('newApp')
                 var value=$(this).find('td:eq(0)').text();
                 console.log(value);
                 $('.page-spinner-loader').removeClass('hide');
-                $('#cont1').load('./dashboard/equipos_total.php', {var1:value},function() {    
+                $('#cont3').load('./dashboard/equipos_total.php', {var1:value},function() {    
+                    $('.page-spinner-loader').addClass('hide');
+                });
+                
+            } );
+            $('#tanques tbody').on( 'click', 'tr', function () {
+                var value=$(this).find('td:eq(0)').text();
+                console.log(value);
+                $('.page-spinner-loader').removeClass('hide');
+                $('#cont4').load('./dashboard/tanques.php', {var1:value},function() {    
                     $('.page-spinner-loader').addClass('hide');
                 });
                 
@@ -160,6 +169,19 @@ angular.module('newApp')
                 }]
 
             });
+            $(document).on('click', '.cambiar', function (e) {
+               e.preventDefault();
+               var estado=$(this).attr("id");
+               var estado1=$(this).parents().find("#valmax"+estado).val();
+               var estado2=$(this).parents().find("#valmin"+estado).val();
+               var id=$(this).parents().find("#valid"+estado).val();
+               var combustible=$(this).parents().find("#valtipo"+estado).val();
+               console.log(id);
+               $('#cont4').load('./dashboard/tanques.php', {var2:estado1,var3:estado2,id:id,comb:combustible},function() {    
+                $('.page-spinner-loader').addClass('hide');
+                });
+            });
+
             if ($('.widget-weather').length) {
                 widgetWeather();
             }

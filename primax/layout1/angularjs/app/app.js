@@ -32,6 +32,10 @@ var MakeApp = angular
             templateUrl: 'dashboard/estado_equipos.php',
             controller: 'dashboardCtrl'
         })
+        .when('/telemetria', {
+            templateUrl: 'dashboard/telemetria.php',
+            controller: 'dashboardCtrl'
+        })
         .when('/frontend', {
             templateUrl: 'frontend/frontend.html',
             controller: 'frontendCtrl'
@@ -279,7 +283,7 @@ MakeApp.directive('ngSpinnerLoader', ['$rootScope',
                     },500);
                     $("html, body").animate({
                         scrollTop: 0
-                    }, 5000);   
+                    }, 300);   
                 });
             }
         };

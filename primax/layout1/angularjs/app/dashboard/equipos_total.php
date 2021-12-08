@@ -13,6 +13,7 @@ $preostato="";
 $tipo = $_SESSION["tipo"];
 if (isset($_POST["var1"])) {
     $var1 = $_POST['var1'];
+    $_SESSION["var1"]=$var1;
     $re = $client->login("Equipos_all", $tipo.",".$var1);
     $resultado = "".$re;
     $historial= explode(';',$resultado);
@@ -367,9 +368,8 @@ $transport->close();
 
 <script>
   setInterval(function() {
-    $('#esconder1').load('./dashboard/equipos.php',function() {    
+    $('#cont3').load('./dashboard/equipos_total.php',function() {    
         $('.page-spinner-loader').addClass('hide');
-        $('#esconder1').removeClass('esconder');
     });
-  },60000);
+  },120000);
 </script>

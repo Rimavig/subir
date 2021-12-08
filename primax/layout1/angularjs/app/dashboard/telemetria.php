@@ -18,11 +18,11 @@ $historial= explode(';',$resultado);
         <div class="col-lg-12 portlets">
             <div class="panel">
                 <div class="panel-header panel-controls">
-                    <h3><i class="fa fa-table"></i> Estado de <strong>Equipos</strong></h3>
+                    <h3><i class="fa fa-table"></i> Estado de <strong>Tanques</strong></h3>
                 </div>
                 <div class="panel-content  pagination2 ">
                     <div class="filter-left ">
-                        <table class="table filter-footer table-dynamic table-tools " data-table-name="Estaciones de Servicio" id="estaciones">
+                        <table class="table filter-footer table-dynamic table-tools " data-table-name="Estaciones de Servicio" id="tanques">
                             <thead>
                                 <tr>
                                     <th>id</th>
@@ -58,7 +58,7 @@ $historial= explode(';',$resultado);
             </div>
         </div>
     </div>
-    <div class="row c cont3" id="cont3">
+    <div class="row c cont4" id="cont4">
     </div>
 </div>
 <div class="footer">

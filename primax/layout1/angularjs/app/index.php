@@ -124,7 +124,7 @@ if ($_SESSION["lockscreen"] == "SI") {
                     <ul class="nav nav-sidebar">
                         <li ng-class="{ active  : isActive('/')}"><a href="#/"><i class="icon-home"></i><span>Principal</span></a></li>
                         <li ng-class="{ active  : isActive('/estado_equipos')}"><a href="#estado_equipos"><i class="icon-home"></i><span>Estado Equipos</span></a></li>
-                        <li ng-class="{ active  : isActive('/forms-sliders')}"><a href="#forms-sliders"><i class="icon-home"></i><span>Telemetría</span></a></li>
+                        <li ng-class="{ active  : isActive('/telemetria')}"><a href="#telemetria"><i class="icon-home"></i><span>Telemetría</span></a></li>
                         <li class="nav-parent">
                             <a href=""><i class="fa fa-table"></i><span>Historial</span><span class="fa arrow"></span></a>
                             <ul class="children collapse">

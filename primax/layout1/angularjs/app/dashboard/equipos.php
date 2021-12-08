@@ -191,5 +191,5 @@ $transport->close();
         $('.page-spinner-loader').addClass('hide');
         $('#esconder1').removeClass('esconder');
     });
-  },60000);
+  },120000);
 </script>
