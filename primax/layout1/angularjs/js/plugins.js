@@ -394,7 +394,6 @@ angular.module('newApp').factory('pluginsService', [function () {
         }
 
     }
-    console.log("dasd");
 
     // Handles custom checkboxes & radios using jQuery iCheck plugin
     function handleiCheck() {

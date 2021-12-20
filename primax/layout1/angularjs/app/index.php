@@ -25,6 +25,7 @@ if ($_SESSION["lockscreen"] == "SI") {
     //salimos de este script
     exit();
     }
+
 ?>
 <!doctype html>
 <html class="no-js">
@@ -802,7 +803,7 @@ if ($_SESSION["lockscreen"] == "SI") {
         <script src="../../../assets/global/plugins/simple-weather/jquery.simpleWeather.js"></script> 
         <script src="../../../assets/global/plugins/bootstrap-tags-input/bootstrap-tagsinput.js"></script>
         <script src="../../../assets/global/plugins/rateit/jquery.rateit.min.js"></script>
-        <script src="../../../assets/global/plugins/charts-highstock/js/highcharts-more.js"></script>
+        <script type="text/javascript" src="../../../assets/global/plugins/charts-highstock/js/highcharts-more.js"></script>
         <script src="../../../assets/global/plugins/charts-highstock/js/modules/exporting.js"></script>
         <script src="../../../assets/global/plugins/autosize/autosize.min.js"></script>
         <script src="../../../assets/global/js/widgets/widget_weather.js"></script>

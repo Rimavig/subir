@@ -60,6 +60,39 @@ $historial= explode(';',$resultado);
     </div>
     <div class="row c cont4" id="cont4">
     </div>
+    <div class="esconder" id="esconder">
+        <div class="col-lg-12 portlets ">
+            <div class="panel">
+                <div class="panel-header  panel-controls">
+                <h3><i class="icon-globe-alt"></i>Consumo de <strong>ECO</strong></h3>
+                </div>
+                <div class="panel-content">
+                    <div id="eco1" style="height:320px"></div>
+                    <div id="eco2" style="height:320px"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 portlets ">
+            <div class="panel">
+                <div class="panel-header  panel-controls">
+                <h3><i class="icon-globe-alt"></i>Consumo de <strong>SUPER</strong></h3>
+                </div>
+                <div class="panel-content">
+                    <div id="super" style="height:320px"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 portlets " >
+            <div class="panel">
+                <div class="panel-header  panel-controls">
+                <h3><i class="icon-globe-alt"></i>Consumo de <strong>DIESEL</strong></h3>
+                </div>
+                <div class="panel-content">
+                    <div id="diesel" style="height:320px"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="footer">
     <div class="copyright">

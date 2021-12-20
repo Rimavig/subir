@@ -17,7 +17,7 @@ $historial =explode(';',$resultado);
                 </div>
                 <div class="panel-content  pagination2 ">
                     <div class="filter-left ">
-                        <table class="table filter-footer table-dynamic table-tools " data-table-name="Historial de tanque">
+                        <table class="table filter-footer table-dynamic table-tools " data-table-name="Historial de tanque" id="tanques">
                             
                             <thead>
                                 <tr>
@@ -60,6 +60,16 @@ $historial =explode(';',$resultado);
                             </tfoot>
                         </table>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12 portlets">
+            <div class="panel">
+                <div class="panel-header  panel-controls">
+                <h3><i class="icon-globe-alt"></i>Consumo de <strong>Sucursal</strong></h3>
+                </div>
+                <div class="panel-content">
+                    <div id="realtime-chart" style="height:320px"></div>
                 </div>
             </div>
         </div>

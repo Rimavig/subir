@@ -1,8 +1,8 @@
 <!--MENU PRINCIPAL-->
 <?php
 
-$GLOBALS['THRIFT_ROOT'] = '/var/www/html/thrift-0.11.0/thrift-0.11.0/lib/php/lib';
-//$GLOBALS['THRIFT_ROOT'] = 'C:\\Users\\rwiva\\Downloads\\thrift-0.11.0\\thrift-0.11.0\\lib\\php\\lib\\';
+//$GLOBALS['THRIFT_ROOT'] = '/var/www/html/thrift-0.11.0/thrift-0.11.0/lib/php/lib';
+$GLOBALS['THRIFT_ROOT'] = 'C:\\Users\\rwiva\\Downloads\\thrift-0.11.0\\thrift-0.11.0\\lib\\php\\lib\\';
 
 require_once $GLOBALS['THRIFT_ROOT'].'/Types.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/Servidor.php';
@@ -27,7 +27,7 @@ $host = 'localhost';
 $port = 7911;
 $socket = new Thrift\Transport\TSocket($host,$port);
 $transport = new TBufferedTransport($socket);
-$socket->setRecvTimeout("5000");
+$socket->setRecvTimeout("50000");
 $protocol = new TBinaryProtocol($transport);
 $client = new ServidorClient($protocol);
 $transport->open();
