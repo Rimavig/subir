@@ -24,21 +24,21 @@ DROP TABLE IF EXISTS `categorias`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `categorias` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(150) COLLATE utf8mb4_0900_as_cs NOT NULL,
+  `nombre` varchar(150) COLLATE utf8_general_ci NOT NULL,
   `id_tienda` int NOT NULL,
   `image_width` int NOT NULL,
   `image_height` int NOT NULL,
-  `rute` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_as_cs DEFAULT NULL,
+  `rute` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
   `fecha_creacion` timestamp NOT NULL,
   `fecha_actualizacion` timestamp NULL DEFAULT NULL,
-  `estado` char(1) COLLATE utf8mb4_0900_as_cs DEFAULT 'P',
+  `estado` char(1) COLLATE utf8_general_ci DEFAULT 'P',
   `id_ofertas_categoria` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `categorias_FK` (`id_tienda`),
   KEY `categorias_FK_1` (`id_ofertas_categoria`),
   CONSTRAINT `categorias_FK` FOREIGN KEY (`id_tienda`) REFERENCES `tiendas` (`id`),
   CONSTRAINT `categorias_FK_1` FOREIGN KEY (`id_ofertas_categoria`) REFERENCES `ofertas_categoria` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_as_cs;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
