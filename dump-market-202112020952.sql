@@ -28,7 +28,7 @@ CREATE TABLE `categorias` (
   `id_tienda` int NOT NULL,
   `image_width` int NOT NULL,
   `image_height` int NOT NULL,
-  `rute` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
+  `rute` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
   `fecha_creacion` timestamp NOT NULL,
   `fecha_actualizacion` timestamp NULL DEFAULT NULL,
   `estado` char(1) COLLATE utf8_general_ci DEFAULT 'P',
@@ -38,7 +38,7 @@ CREATE TABLE `categorias` (
   KEY `categorias_FK_1` (`id_ofertas_categoria`),
   CONSTRAINT `categorias_FK` FOREIGN KEY (`id_tienda`) REFERENCES `tiendas` (`id`),
   CONSTRAINT `categorias_FK_1` FOREIGN KEY (`id_ofertas_categoria`) REFERENCES `ofertas_categoria` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -60,16 +60,16 @@ DROP TABLE IF EXISTS `cupones_categoria`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cupones_categoria` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nombre` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `id_categoria` int DEFAULT NULL,
   `id_ofertas_categoria` int DEFAULT '1',
-  `estado` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'A',
+  `estado` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT 'A',
   PRIMARY KEY (`id`),
   KEY `cupones_FK_5_copy` (`id_categoria`),
   KEY `cupones_FK` (`id_ofertas_categoria`) USING BTREE,
   CONSTRAINT `cupones_FK_5_copy` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `cupones_FK_copy` FOREIGN KEY (`id_ofertas_categoria`) REFERENCES `ofertas_categoria` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -91,16 +91,16 @@ DROP TABLE IF EXISTS `cupones_producto`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cupones_producto` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nombre` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `id_producto` int DEFAULT NULL,
   `id_ofertas_producto` int DEFAULT '1',
-  `estado` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'A',
+  `estado` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT 'A',
   PRIMARY KEY (`id`),
   KEY `cupones_FK_1_copy` (`id_ofertas_producto`),
   KEY `cupones_FK_3_copy` (`id_producto`),
   CONSTRAINT `cupones_FK_1_copy` FOREIGN KEY (`id_ofertas_producto`) REFERENCES `ofertas_productos` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `cupones_FK_3_copy` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -122,16 +122,16 @@ DROP TABLE IF EXISTS `cupones_tienda`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cupones_tienda` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nombre` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `id_tienda` int DEFAULT NULL,
   `id_ofertas_tienda` int DEFAULT '1',
-  `estado` varchar(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'A',
+  `estado` varchar(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT 'A',
   PRIMARY KEY (`id`),
   KEY `cupones_FK_2_copy` (`id_ofertas_tienda`),
   KEY `cupones_FK_4_copy` (`id_tienda`),
   CONSTRAINT `cupones_FK_2_copy` FOREIGN KEY (`id_ofertas_tienda`) REFERENCES `ofertas_tienda` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   CONSTRAINT `cupones_FK_4_copy` FOREIGN KEY (`id_tienda`) REFERENCES `tiendas` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -162,7 +162,7 @@ CREATE TABLE `factura` (
   PRIMARY KEY (`id`),
   KEY `factura_FK` (`id_usuario`),
   CONSTRAINT `factura_FK` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -191,7 +191,7 @@ CREATE TABLE `favoritos` (
   KEY `favoritos_FK_1` (`id_producto`),
   CONSTRAINT `favoritos_FK` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `favoritos_FK_1` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -296,7 +296,7 @@ CREATE TABLE `metodo_pago` (
   `id` int NOT NULL AUTO_INCREMENT,
   `descripcion` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -319,9 +319,9 @@ DROP TABLE IF EXISTS `ofertas_categoria`;
 CREATE TABLE `ofertas_categoria` (
   `id` int NOT NULL AUTO_INCREMENT,
   `descuento` int NOT NULL,
-  `tipo` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_cs_0900_ai_ci DEFAULT 'Simple',
+  `tipo` varchar(100) CHARACTER SET utf8 COLLATE utf8_cs_0900_ai_ci DEFAULT 'Simple',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_cs_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_cs_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -343,11 +343,11 @@ DROP TABLE IF EXISTS `ofertas_productos`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ofertas_productos` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `precio_oferta` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_cs_0900_ai_ci NOT NULL,
+  `precio_oferta` varchar(100) CHARACTER SET utf8 COLLATE utf8_cs_0900_ai_ci NOT NULL,
   `descuento` int DEFAULT NULL,
-  `tipo` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_cs_0900_ai_ci DEFAULT 'Simple',
+  `tipo` varchar(100) CHARACTER SET utf8 COLLATE utf8_cs_0900_ai_ci DEFAULT 'Simple',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_cs_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_cs_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -370,9 +370,9 @@ DROP TABLE IF EXISTS `ofertas_tienda`;
 CREATE TABLE `ofertas_tienda` (
   `id` int NOT NULL AUTO_INCREMENT,
   `descuento` int DEFAULT NULL,
-  `tipo` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_cs_0900_ai_ci DEFAULT 'Simple',
+  `tipo` varchar(100) CHARACTER SET utf8 COLLATE utf8_cs_0900_ai_ci DEFAULT 'Simple',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_cs_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_cs_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -399,7 +399,7 @@ CREATE TABLE `productos` (
   `cantidad` int NOT NULL,
   `peso` varchar(100) NOT NULL,
   `precio_oficial` float NOT NULL,
-  `rute` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rute` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `image_width` int NOT NULL,
   `image_height` int NOT NULL,
   `id_categoria` int NOT NULL,
@@ -412,7 +412,7 @@ CREATE TABLE `productos` (
   KEY `productos_FK_1` (`id_oferta`),
   CONSTRAINT `productos_FK` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id`),
   CONSTRAINT `productos_FK_1` FOREIGN KEY (`id_oferta`) REFERENCES `ofertas_productos` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -443,7 +443,7 @@ CREATE TABLE `productos_vendidos` (
   KEY `productos_vendidos_FK` (`id_vendidos`),
   CONSTRAINT `productos_vendidos_FK` FOREIGN KEY (`id_vendidos`) REFERENCES `vendidos` (`id`),
   CONSTRAINT `productos_vendidos_FK_2` FOREIGN KEY (`id_producto`) REFERENCES `productos` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_cs_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8 COLLATE=utf8_cs_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -471,7 +471,7 @@ CREATE TABLE `tarifario` (
   `tiempo` int NOT NULL,
   `precio` float NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -493,11 +493,11 @@ DROP TABLE IF EXISTS `tiendas`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tiendas` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nombre` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `descripcion` varchar(255) NOT NULL,
   `image_width` int NOT NULL,
   `image_height` int NOT NULL,
-  `rute` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rute` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `latitud` float DEFAULT NULL,
   `longitud` float DEFAULT NULL,
   `fecha_creacion` timestamp NULL DEFAULT NULL,
@@ -515,7 +515,7 @@ CREATE TABLE `tiendas` (
   KEY `tiendas_FK_1` (`id_tarifario`),
   CONSTRAINT `tiendas_FK` FOREIGN KEY (`id_ofertas_tienda`) REFERENCES `ofertas_tienda` (`id`),
   CONSTRAINT `tiendas_FK_1` FOREIGN KEY (`id_tarifario`) REFERENCES `tarifario` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -538,14 +538,14 @@ DROP TABLE IF EXISTS `ubicaciones`;
 CREATE TABLE `ubicaciones` (
   `id` int NOT NULL AUTO_INCREMENT,
   `id_usuario` int NOT NULL,
-  `nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nombre` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `latitud` varchar(100) NOT NULL,
   `longitud` varchar(100) NOT NULL,
   `direccion` varchar(100) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `ubicaciones_FK` (`id_usuario`),
   CONSTRAINT `ubicaciones_FK` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -567,21 +567,21 @@ DROP TABLE IF EXISTS `usuarios`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `usuarios` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `nombres` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `usuario` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `nombres` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `usuario` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(150) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `celular` varchar(11) DEFAULT NULL,
   `cedula` varchar(11) DEFAULT NULL,
-  `foto` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `foto` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `fecha_creacion` timestamp NOT NULL,
   `fecha_actualizacion` timestamp NULL DEFAULT NULL,
-  `estado` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'P',
+  `estado` char(1) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT 'P',
   `cantidad_compras` int DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `usuarios_UN` (`usuario`),
   UNIQUE KEY `email_UN` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -608,13 +608,13 @@ CREATE TABLE `vendidos` (
   `precio_total` float NOT NULL,
   `fecha_compra` timestamp NOT NULL,
   `id_factura` int DEFAULT '0',
-  `estado` varchar(1) COLLATE utf8mb4_cs_0900_ai_ci DEFAULT 'P',
+  `estado` varchar(1) COLLATE utf8_cs_0900_ai_ci DEFAULT 'P',
   `id_tienda` int NOT NULL DEFAULT '1',
   `id_pago` int NOT NULL,
-  `cupon` varchar(100) COLLATE utf8mb4_cs_0900_ai_ci DEFAULT NULL,
-  `latitud` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `longitud` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
-  `direccion` varchar(100) COLLATE utf8mb4_cs_0900_ai_ci DEFAULT NULL,
+  `cupon` varchar(100) COLLATE utf8_cs_0900_ai_ci DEFAULT NULL,
+  `latitud` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `longitud` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `direccion` varchar(100) COLLATE utf8_cs_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `vendidos_FK_1` (`id_usuario`),
   KEY `vendidos_FK` (`id_factura`),
@@ -624,7 +624,7 @@ CREATE TABLE `vendidos` (
   CONSTRAINT `vendidos_FK_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`),
   CONSTRAINT `vendidos_FK_2` FOREIGN KEY (`id_tienda`) REFERENCES `tiendas` (`id`),
   CONSTRAINT `vendidos_FK_4` FOREIGN KEY (`id_pago`) REFERENCES `metodo_pago` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_cs_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8 COLLATE=utf8_cs_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
