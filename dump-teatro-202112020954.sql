@@ -55,15 +55,15 @@ DROP TABLE IF EXISTS `tsa_asiento`;
 CREATE TABLE `tsa_asiento` (
   `id_asiento` int NOT NULL,
   `numero` int NOT NULL,
-  `fila` char(1) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
-  `lateral` char(1) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL DEFAULT 'N' COMMENT '''I-D-N''',
+  `fila` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `lateral` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'N' COMMENT '''I-D-N''',
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usuario_creacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   UNIQUE KEY `tsa_categoria_UN` (`id_asiento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -85,14 +85,14 @@ DROP TABLE IF EXISTS `tsa_banco`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_banco` (
   `id_banco` int NOT NULL,
-  `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
+  `nombre` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usuario_creacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   UNIQUE KEY `tsa_categoria_UN` (`id_banco`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,7 +127,7 @@ CREATE TABLE `tsa_banco_tarjeta` (
   KEY `tsa_banco_tarjeta_FK_1` (`id_tarjeta`),
   CONSTRAINT `tsa_banco_tarjeta_FK` FOREIGN KEY (`id_banco`) REFERENCES `tsa_banco` (`id_banco`),
   CONSTRAINT `tsa_banco_tarjeta_FK_1` FOREIGN KEY (`id_tarjeta`) REFERENCES `tsa_tarjeta` (`id_tarjeta`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -157,7 +157,7 @@ CREATE TABLE `tsa_categoria` (
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   UNIQUE KEY `tsa_categoria_UN` (`id_categoria`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -179,15 +179,15 @@ DROP TABLE IF EXISTS `tsa_clasificacion`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_clasificacion` (
   `id_clasificacion` int NOT NULL,
-  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
-  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
+  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usuario_creacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   UNIQUE KEY `tsa_categoria_UN` (`id_clasificacion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -209,8 +209,8 @@ DROP TABLE IF EXISTS `tsa_codigo_promocional`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_codigo_promocional` (
   `id_codigo_promocional` int NOT NULL,
-  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
-  `codigo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
+  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `codigo` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `descuento` float DEFAULT NULL,
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -218,7 +218,7 @@ CREATE TABLE `tsa_codigo_promocional` (
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   UNIQUE KEY `tsa_categoria_UN` (`id_codigo_promocional`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -243,7 +243,7 @@ CREATE TABLE `tsa_distribucion` (
   `id_evento` int NOT NULL,
   `id_platea` int NOT NULL,
   `id_asiento` int NOT NULL,
-  `tipo` char(1) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT 'D' COMMENT '''D-V-B''',
+  `tipo` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'D' COMMENT '''D-V-B''',
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usuario_creacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
@@ -256,7 +256,7 @@ CREATE TABLE `tsa_distribucion` (
   CONSTRAINT `tsa_distribucion_FK` FOREIGN KEY (`id_evento`) REFERENCES `tsa_evento` (`id_evento`),
   CONSTRAINT `tsa_distribucion_FK_1` FOREIGN KEY (`id_platea`) REFERENCES `tsa_platea` (`id_platea`),
   CONSTRAINT `tsa_distribucion_FK_2` FOREIGN KEY (`id_asiento`) REFERENCES `tsa_asiento` (`id_asiento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -277,7 +277,7 @@ DROP TABLE IF EXISTS `tsa_evento`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_evento` (
   `id_evento` int NOT NULL,
-  `nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
+  `nombre` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `duracion` float NOT NULL,
   `fecha_inicial` datetime NOT NULL,
   `fecha_final` datetime NOT NULL,
@@ -291,16 +291,16 @@ CREATE TABLE `tsa_evento` (
   `id_tipo_precio` int NOT NULL,
   `id_funcion` int NOT NULL,
   `id_precio` int NOT NULL,
-  `evento_destacado` char(1) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
-  `evento_orden` char(1) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
+  `evento_destacado` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `evento_orden` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `aforo` int DEFAULT NULL,
   `sinopsis` blob,
   `productora` blob,
   `elenco` blob,
   `ruta_imagen` varchar(255) DEFAULT NULL,
-  `ruta_video` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
+  `ruta_video` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `tipo_evento` varchar(10) DEFAULT NULL,
-  `ruta_formulario` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
+  `ruta_formulario` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usuario_creacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
@@ -327,7 +327,7 @@ CREATE TABLE `tsa_evento` (
   CONSTRAINT `tsa_evento_FK_7` FOREIGN KEY (`id_precio`) REFERENCES `tsa_precio` (`id_precio`),
   CONSTRAINT `tsa_evento_FK_8` FOREIGN KEY (`id_funcion`) REFERENCES `tsa_funcion` (`id_funcion`),
   CONSTRAINT `tsa_evento_FK_9` FOREIGN KEY (`id_sala_mapa`) REFERENCES `tsa_sala_mapa` (`id_sala_mapa`) ON DELETE RESTRICT ON UPDATE RESTRICT
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -350,15 +350,15 @@ CREATE TABLE `tsa_funcion` (
   `id_funcion` int NOT NULL,
   `fecha` datetime NOT NULL,
   `hora` time NOT NULL,
-  `preventa` char(1) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
-  `estreno` char(1) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
+  `preventa` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `estreno` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usuario_creacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   UNIQUE KEY `tsa_categoria_UN` (`id_funcion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -379,16 +379,16 @@ DROP TABLE IF EXISTS `tsa_mapa`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_mapa` (
   `id_mapa` int NOT NULL,
-  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
-  `distribucion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
-  `ruta_imagen` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
+  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `distribucion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ruta_imagen` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usuario_creacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   UNIQUE KEY `tsa_categoria_UN` (`id_mapa`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -417,7 +417,7 @@ CREATE TABLE `tsa_perfil` (
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   PRIMARY KEY (`id_perfil`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -451,7 +451,7 @@ CREATE TABLE `tsa_perfil_rol` (
   KEY `tsa_perfil_rol_FK_1` (`id_rol`),
   CONSTRAINT `tsa_perfil_rol_FK` FOREIGN KEY (`id_perfil`) REFERENCES `tsa_perfil` (`id_perfil`),
   CONSTRAINT `tsa_perfil_rol_FK_1` FOREIGN KEY (`id_rol`) REFERENCES `tsa_rol` (`id_rol`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -472,7 +472,7 @@ DROP TABLE IF EXISTS `tsa_platea`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_platea` (
   `id_platea` int NOT NULL,
-  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
+  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `costo` float NOT NULL,
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -480,7 +480,7 @@ CREATE TABLE `tsa_platea` (
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   UNIQUE KEY `tsa_categoria_UN` (`id_platea`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -501,10 +501,10 @@ DROP TABLE IF EXISTS `tsa_precio`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_precio` (
   `id_precio` int NOT NULL,
-  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
+  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `precio` float DEFAULT NULL,
-  `preestreno` char(1) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
-  `estreno` char(1) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
+  `preestreno` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `estreno` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `aforo_inicial` int DEFAULT NULL,
   `venta_platea` int DEFAULT NULL,
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
@@ -513,7 +513,7 @@ CREATE TABLE `tsa_precio` (
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   UNIQUE KEY `tsa_categoria_UN` (`id_precio`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -534,15 +534,15 @@ DROP TABLE IF EXISTS `tsa_procedencia`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_procedencia` (
   `id_procedencia` int NOT NULL,
-  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
-  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
+  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usuario_creacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   UNIQUE KEY `tsa_categoria_UN` (`id_procedencia`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -563,15 +563,15 @@ DROP TABLE IF EXISTS `tsa_productora`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_productora` (
   `id_productora` int NOT NULL,
-  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
-  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
+  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usuario_creacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   UNIQUE KEY `tsa_categoria_UN` (`id_productora`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -592,12 +592,12 @@ DROP TABLE IF EXISTS `tsa_promocion`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_promocion` (
   `id_promocion` int NOT NULL,
-  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
-  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
+  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `amigo_teatro` char(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `id_evento` int NOT NULL,
   `id_platea` int NOT NULL,
-  `tipo_acceso` char(1) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL COMMENT '''catalogo''',
+  `tipo_acceso` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '''catalogo''',
   `id_tipo_promocion` int NOT NULL,
   `fecha_inicio` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `fecha_final` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -613,7 +613,7 @@ CREATE TABLE `tsa_promocion` (
   CONSTRAINT `tsa_promocion_FK` FOREIGN KEY (`id_platea`) REFERENCES `tsa_platea` (`id_platea`),
   CONSTRAINT `tsa_promocion_FK_1` FOREIGN KEY (`id_evento`) REFERENCES `tsa_evento` (`id_evento`),
   CONSTRAINT `tsa_promocion_FK_2` FOREIGN KEY (`id_tipo_promocion`) REFERENCES `tsa_tipo_promocion` (`id_tipo_promocion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -634,15 +634,15 @@ DROP TABLE IF EXISTS `tsa_rol`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_rol` (
   `id_rol` int NOT NULL,
-  `descripcion` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
-  `modulo` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
+  `descripcion` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `modulo` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usuario_creacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   PRIMARY KEY (`id_rol`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -664,17 +664,17 @@ DROP TABLE IF EXISTS `tsa_sala`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_sala` (
   `id_sala` int NOT NULL,
-  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
-  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
+  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `capacidad` int NOT NULL,
-  `ruta_imagen` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
+  `ruta_imagen` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usuario_creacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   UNIQUE KEY `tsa_categoria_UN` (`id_sala`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -707,7 +707,7 @@ CREATE TABLE `tsa_sala_mapa` (
   KEY `tsa_sala_mapa_FK_1` (`id_mapa`),
   CONSTRAINT `tsa_sala_mapa_FK` FOREIGN KEY (`id_sala`) REFERENCES `tsa_sala` (`id_sala`),
   CONSTRAINT `tsa_sala_mapa_FK_1` FOREIGN KEY (`id_mapa`) REFERENCES `tsa_mapa` (`id_mapa`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -728,15 +728,15 @@ DROP TABLE IF EXISTS `tsa_tarjeta`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_tarjeta` (
   `id_tarjeta` int NOT NULL,
-  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
-  `tipo` char(1) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
+  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tipo` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usuario_creacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   UNIQUE KEY `tsa_categoria_UN` (`id_tarjeta`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -758,15 +758,15 @@ DROP TABLE IF EXISTS `tsa_tipo_espectaculo`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_tipo_espectaculo` (
   `id_tipo_espectaculo` int NOT NULL,
-  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
-  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
+  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usuario_creacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   UNIQUE KEY `tsa_categoria_UN` (`id_tipo_espectaculo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -787,15 +787,15 @@ DROP TABLE IF EXISTS `tsa_tipo_evento`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_tipo_evento` (
   `id_tipo_evento` int NOT NULL,
-  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
-  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
+  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usuario_creacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   UNIQUE KEY `tsa_categoria_UN` (`id_tipo_evento`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -816,15 +816,15 @@ DROP TABLE IF EXISTS `tsa_tipo_precio`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_tipo_precio` (
   `id_tipo_precio` int NOT NULL,
-  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
-  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8_general_ci DEFAULT NULL,
+  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `descripcion` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `estado` varchar(1) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'A',
   `fecha_creacion` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `usuario_creacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
   `fecha_modificacion` datetime DEFAULT NULL,
   `usuario_modificacion` varchar(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci DEFAULT NULL,
   UNIQUE KEY `tsa_categoria_UN` (`id_tipo_precio`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -845,7 +845,7 @@ DROP TABLE IF EXISTS `tsa_tipo_promocion`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `tsa_tipo_promocion` (
   `id_tipo_promocion` int NOT NULL,
-  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8_general_ci NOT NULL,
+  `nombre` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `factor_compra` int NOT NULL,
   `factor_pago` float NOT NULL,
   `id_banco_tarjeta` int NOT NULL,
@@ -860,7 +860,7 @@ CREATE TABLE `tsa_tipo_promocion` (
   KEY `tsa_tipo_promocion_FK_1` (`id_codigo_promocional`),
   CONSTRAINT `tsa_tipo_promocion_FK` FOREIGN KEY (`id_banco_tarjeta`) REFERENCES `tsa_banco_tarjeta` (`id_banco_tarjeta`),
   CONSTRAINT `tsa_tipo_promocion_FK_1` FOREIGN KEY (`id_codigo_promocional`) REFERENCES `tsa_codigo_promocional` (`id_codigo_promocional`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
