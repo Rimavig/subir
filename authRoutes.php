@@ -71,6 +71,11 @@ $app->group('/v1', function (RouteCollectorProxy $group) {
 
     $group->post('/login', 'App\Controllers\MainController:login')->add($mw_corp);
     $group->post('/validacion', 'App\Controllers\MainController:validacion')->add($mw_corp);
+    $group->post('/validacion1', 'App\Controllers\MainController:validacion1')->add($mw_corp);
+    $group->post('/retirar', 'App\Controllers\MainController:retirar')->add($mw_corp);
+    $group->post('/areas', 'App\Controllers\MainController:areas')->add($mw_corp);
+    $group->post('/salida', 'App\Controllers\MainController:salida')->add($mw_corp);
+    $group->post('/marcar_salida', 'App\Controllers\MainController:marcar_salida')->add($mw_corp);
 
     header('Access-Control-Allow-Origin: *');
     header( 'Access-Control-Allow-Headers: Authorization, Content-Type' );
