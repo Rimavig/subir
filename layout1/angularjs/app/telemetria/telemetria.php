@@ -70,6 +70,15 @@ if (!isset($_SESSION['var1'])) {
                 </div>
                 <div class="panel-content">
                     <div id="eco1" style="height:320px"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 portlets ">
+            <div class="panel">
+                <div class="panel-header  panel-controls">
+                <h3><i class="icon-globe-alt"></i>Consumo de <strong>ECO</strong></h3>
+                </div>
+                <div class="panel-content">
                     <div id="eco2" style="height:320px"></div>
                 </div>
             </div>
