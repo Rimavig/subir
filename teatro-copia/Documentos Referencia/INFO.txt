@@ -1,0 +1,16 @@
+Configurador
+https://teatrosa.herokuapp.com/
+usuario: mauri_cio_s@hotmail.com
+clave: Mauricio30
+
+ 
+Facturador
+http://186.101.11.50/tsafac/public/
+usuario: administracion@teatrosanchezaguilar.org
+clave: 
+
+35.192.70.196
+root
+Hotm@il003
+mariaDb
+

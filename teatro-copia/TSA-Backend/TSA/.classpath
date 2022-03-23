@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="D:/AMS/Personal/Sources/TSA/TSA-Backend/Librerias/ComunicacionSerial-2.1.jar"/>
+	<classpathentry kind="lib" path="D:/AMS/Personal/Sources/TSA/TSA-Backend/Librerias/itextpdf-5.4.1-sources.jar"/>
+	<classpathentry kind="lib" path="D:/AMS/Personal/Sources/TSA/TSA-Backend/Librerias/javax.mail.jar"/>
+	<classpathentry kind="lib" path="D:/AMS/Personal/Sources/TSA/TSA-Backend/Librerias/jcalendar-1.4.jar"/>
+	<classpathentry kind="lib" path="D:/AMS/Personal/Sources/TSA/TSA-Backend/Librerias/jsch-0.1.54.jar"/>
+	<classpathentry kind="lib" path="D:/AMS/Personal/Sources/TSA/TSA-Backend/Librerias/jssc.jar"/>
+	<classpathentry kind="lib" path="D:/AMS/Personal/Sources/TSA/TSA-Backend/Librerias/libthrift-0.11.0.jar"/>
+	<classpathentry kind="lib" path="D:/AMS/Personal/Sources/TSA/TSA-Backend/Librerias/mysql-connector-java-8.0.24.jar"/>
+	<classpathentry kind="lib" path="D:/AMS/Personal/Sources/TSA/TSA-Backend/Librerias/RSCalendar v2.0.jar"/>
+	<classpathentry kind="lib" path="D:/AMS/Personal/Sources/TSA/TSA-Backend/Librerias/RSScaleLabel.jar"/>
+	<classpathentry kind="lib" path="D:/AMS/Personal/Sources/TSA/TSA-Backend/Librerias/slf4j-api-1.7.12.jar"/>
+	<classpathentry kind="lib" path="D:/AMS/Personal/Sources/TSA/TSA-Backend/Librerias/slf4j-simple-1.7.12.jar"/>
+	<classpathentry kind="lib" path="D:/AMS/Personal/Sources/TSA/TSA-Backend/Librerias/spymemcached-2.12.3.jar"/>
+	<classpathentry kind="lib" path="D:/AMS/Personal/Sources/TSA/TSA-Backend/Librerias/sun.misc.BASE64Decoder.jar"/>
+	<classpathentry kind="lib" path="D:/AMS/Personal/Sources/TSA/TSA-Backend/Librerias/zxing-2.1.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
