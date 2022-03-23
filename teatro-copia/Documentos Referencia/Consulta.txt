@@ -1,4 +1,0 @@
-Tabla Precio:
-	Campo: Venta_Platea
-
-Distribucion tablas
