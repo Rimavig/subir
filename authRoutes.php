@@ -78,6 +78,9 @@ $app->group('/v1', function (RouteCollectorProxy $group) {
     $group->get('/getEventos', 'App\Controllers\MainController:getEventos')->add($mw_corp);
     $group->get('/getAllEventos', 'App\Controllers\MainController:getAllEventos')->add($mw_corp);
     $group->get('/getToken', 'App\Controllers\MainController:getToken')->add($mw_corp);
+    $group->get('/getPromociones', 'App\Controllers\MainController:getPromociones')->add($mw_corp);
+
+    $group->post('/getPromocion', 'App\Controllers\MainController:getPromocion')->add($mw_corp);
     $group->post('/getEventos_fecha', 'App\Controllers\MainController:getEventos_fecha')->add($mw_corp);
     $group->post('/getEventos_categoria', 'App\Controllers\MainController:getEventos_categoria')->add($mw_corp);
     $group->post('/getEventos_id', 'App\Controllers\MainController:getEventos_id')->add($mw_corp);
@@ -94,9 +97,10 @@ $app->group('/v1', function (RouteCollectorProxy $group) {
     $group->post('/updateAmigo', 'App\Controllers\MainController:updateAmigo')->add($mw_corp);
     $group->post('/insertEsperaP', 'App\Controllers\MainController:insertEsperaP')->add($mw_corp);
     $group->post('/updateEsperaP', 'App\Controllers\MainController:updateEsperaP')->add($mw_corp);
+    $group->post('/deleteEsperaP', 'App\Controllers\MainController:deleteEsperaP')->add($mw_corp);
     $group->post('/insertEsperaS', 'App\Controllers\MainController:insertEsperaS')->add($mw_corp);
     $group->post('/updateEsperaS', 'App\Controllers\MainController:updateEsperaS')->add($mw_corp);
-
+    $group->post('/deleteEsperaS', 'App\Controllers\MainController:deleteEsperaS')->add($mw_corp);
     $group->post('/getFacturacion', 'App\Controllers\MainController:getFacturacion')->add($mw_corp);
     $group->post('/deleteFacturacion', 'App\Controllers\MainController:deleteFacturacion')->add($mw_corp);
     $group->post('/insertFacturacion', 'App\Controllers\MainController:insertFacturacion')->add($mw_corp);

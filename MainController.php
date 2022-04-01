@@ -192,7 +192,7 @@ class MainController extends BaseController
           if ($item){
               if ($item->contrasena == $password) {
                 $out = array('id'=> $item->id_usuario_cliente, 'nombres'=> $item->nombres,'apellidos'=> $item->apellidos, 'usuario'=> $item->usuario, 'cedula'=> $item->cedula, 'correo'=> $item->correo, 'sexo'=> $item->sexo, 'celular'=> $item->celular,
-                'fecha_nacimiento'=> $item->fecha_nacimiento, 'direccion'=> $item->direccion, 'estado'=> $item->estado);
+                'fecha_nacimiento'=> $item->fecha_nacimiento, 'direccion'=> $item->direccion, 'estado'=> $item->estado, 'amigo_teatro'=> $item->amigo_teatro );
                 $response->getBody()->write(json_encode($out));
                 return $response;
               }else{
@@ -549,6 +549,24 @@ class MainController extends BaseController
             $statement->bindValue(':fecha_nacimiento', $fecha_nacimiento, \PDO::PARAM_STR);
             $statement->bindValue(':direccion', $direccion, \PDO::PARAM_STR);
             $result = $statement->execute();
+            $sql = "SELECT * FROM tsa_usuario_cliente WHERE id_usuario_cliente=:id_usuario";
+
+            $statement = $db->prepare($sql);
+            $statement->bindValue(':id_usuario', $id_usuario, \PDO::PARAM_STR);
+            $result = $statement->execute();
+            $item = $statement->fetch();
+             if ($item){
+                   $out = array('id'=> $item->id_usuario_cliente, 'nombres'=> $item->nombres,'apellidos'=> $item->apellidos, 'usuario'=> $item->usuario, 'cedula'=> $item->cedula, 'correo'=> $item->correo, 'sexo'=> $item->sexo, 'celular'=> $item->celular,
+                   'fecha_nacimiento'=> $item->fecha_nacimiento, 'direccion'=> $item->direccion, 'estado'=> $item->estado, 'amigo_teatro'=> $item->amigo_teatro );
+                   $response->getBody()->write(json_encode($out));
+                   return $response;
+             }else{
+               $out["codigo"] = "202";
+               $out["mensaje"] = $error_202_mensaje;
+               $out["causa"] =  $error_202_causa;
+               $response->getBody()->write(json_encode($out));
+               return $response->withStatus(400);
+             }
         } catch (\PDOException $th) {
             $result = false;
             $errocode = $th->getCode();
@@ -566,8 +584,6 @@ class MainController extends BaseController
                 return $response->withStatus(500);
             }
         }
-        $out['status'] =$status_usuario;
-        $response->getBody()->write(json_encode($out));
         return $response;
     }
 
@@ -801,6 +817,7 @@ class MainController extends BaseController
         }
 
         $out['status'] =$status_asiento;
+          $out['tiempo'] =600;
         $response->getBody()->write(json_encode($out));
         return $response;
     }
@@ -877,6 +894,68 @@ class MainController extends BaseController
         }
 
         $out['status'] =$status_asiento;
+          $out['tiempo'] =600;
+        $response->getBody()->write(json_encode($out));
+        return $response;
+    }
+
+    public function deleteEsperaP($request, $response, $args){
+        include("error.php");
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $out["codigo"] = "100";
+            $out["mensaje"] = $error_100_mensaje;
+            $out["causa"] =  $error_100_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            $out["codigo"] = "101";
+            $out["mensaje"] = $error_101_mensaje;
+            $out["causa"] = $error_101_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body["id_usuario"]) && isset($body['id_asiento']))){
+            $out["codigo"] = "201";
+            $out["mensaje"] = $error_201_mensaje;
+            $out["causa"] =  $error_201_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(400);
+        }
+        try {
+            $usuario = trim($body['id_usuario']);
+            $asientosT = trim($body['id_asiento']);
+            $asientos =explode(',',$asientosT);
+            foreach($asientos as $llave => $valores) {
+              $sql = "DELETE FROM tsa_bloqueo_asiento WHERE id_usuario_cliente=:id_usuario and id_distribucion=:asiento";
+              $statement = $db->prepare($sql);
+              $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
+              $statement->bindValue(':asiento', $valores, \PDO::PARAM_STR);
+              $result = $statement->execute();
+            }
+        } catch (\PDOException $th) {
+            $result = false;
+            $out["codigo"] = "102";
+            $out["mensaje"] = $error_102_mensaje;
+            $out["causa"] =  $error_102_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+
+        $out['status'] =$status_Dasiento;
         $response->getBody()->write(json_encode($out));
         return $response;
     }
@@ -910,7 +989,7 @@ class MainController extends BaseController
         // FIN VALIDACION
         $json = $request->getBody();
         $body = json_decode($json, true);
-        if (!(isset($body["id_usuario"]) && isset($body['id_funcion']) && isset($body['id_platea']) && isset($body['cantidad']))){
+        if (!(isset($body["id_usuario"]) && isset($body['id_funcion']) && isset($body['asientos']))){
             $out["codigo"] = "201";
             $out["mensaje"] = $error_201_mensaje;
             $out["causa"] =  $error_201_causa;
@@ -920,32 +999,8 @@ class MainController extends BaseController
         try {
             $usuario = trim($body['id_usuario']);
             $id_funcion = trim($body['id_funcion']);
-            $id_platea = trim($body['id_platea']);
-            $id_platea_funcion = trim($body['id_platea']);
-            $cantidad = trim($body['cantidad']);
-            $sql = "SELECT tp.aforo ,tpf.* FROM tsa_platea tp INNER JOIN tsa_platea_funcion tpf ON tp.id_platea = tpf.id_platea and id_funcion=:funcion and tpf.id_platea =:platea";
-            $statement = $db->prepare($sql);
-            $statement->bindValue(':platea', $id_platea, \PDO::PARAM_STR);
-            $statement->bindValue(':funcion', $id_funcion, \PDO::PARAM_STR);
-            $result = $statement->execute();
-
-            while($item = $statement->fetch()){
-                $band=false;
-                $id_platea_funcion = $item->id_platea_funcion;
-                $aforo=$item->aforo;
-                $cantidad_vendida=$item->vendido;
-                $cantidad_bloqueado=$item->cantidad_bloqueado;
-                $cantidad_cortesia=$item->cantidad_cortesia;
-                $cantidad_espera=$item->cantidad_espera;
-                $total=$aforo-$cantidad_vendida-$cantidad_bloqueado-$cantidad_cortesia-$cantidad_espera;
-                if (!$total>=$cantidad) {
-                  $out["codigo"] = "210";
-                  $out["mensaje"] = $error_210_mensaje;
-                  $out["causa"] =  $error_210_causa;
-                  $response->getBody()->write(json_encode($out));
-                  return $response->withStatus(500);
-                }
-            }
+            $asientosT = trim($body['asientos']);
+            $asientos =explode(',',$asientosT);
             $sql = "SELECT * FROM tsa_funcion WHERE id_funcion=:funcion";
             $statement = $db->prepare($sql);
             $statement->bindValue(':funcion', $id_funcion, \PDO::PARAM_STR);
@@ -958,21 +1013,57 @@ class MainController extends BaseController
                 $cantidad_cortesia=$item->cantidad_cortesia;
                 $cantidad_espera=$item->cantidad_espera;
                 $total=$aforo-$cantidad_vendida-$cantidad_bloqueado-$cantidad_cortesia-$cantidad_espera;
-                if (!$total>=$cantidad) {
-                  $out["codigo"] = "211";
-                  $out["mensaje"] = $error_211_mensaje;
-                  $out["causa"] =  $error_211_causa;
-                  $response->getBody()->write(json_encode($out));
-                  return $response->withStatus(500);
-                }
+                foreach($asientos as $llave => $valores) {
+                  $items =explode(':',$valores);
+                  $id_platea=$items[0];
+                  $cantidad=$items[1];
+                  if (!$total>=$cantidad) {
+                    $out["codigo"] = "211";
+                    $out["mensaje"] = $error_211_mensaje;
+                    $out["causa"] =  $error_211_causa;
+                    $response->getBody()->write(json_encode($out));
+                    return $response->withStatus(500);
+                  }
+              }
             }
-            $sql = "INSERT INTO teatro.tsa_bloqueo_cantidad (id_usuario_cliente,id_platea_funcion,cantidad) VALUES (:id_usuario,:id_platea_funcion, :cantidad)";
-            $statement = $db->prepare($sql);
-            $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
-            $statement->bindValue(':id_platea_funcion', $id_platea_funcion, \PDO::PARAM_STR);
-            $statement->bindValue(':cantidad',   $cantidad, \PDO::PARAM_STR);
 
-            $result = $statement->execute();
+            foreach($asientos as $llave => $valores) {
+              $items =explode(':',$valores);
+              $id_platea=$items[0];
+              $cantidad=$items[1];
+              $sql = "SELECT tp.aforo ,tpf.* FROM tsa_platea tp INNER JOIN tsa_platea_funcion tpf ON tp.id_platea = tpf.id_platea and id_funcion=:funcion and tpf.id_platea =:platea";
+              $statement = $db->prepare($sql);
+              $statement->bindValue(':platea', $id_platea, \PDO::PARAM_STR);
+              $statement->bindValue(':funcion', $id_funcion, \PDO::PARAM_STR);
+              $result = $statement->execute();
+              $id_platea_funcion="";
+              while($item = $statement->fetch()){
+                  $band=false;
+                  $id_platea_funcion = $item->id_platea_funcion;
+                  $aforo=$item->aforo;
+                  $cantidad_vendida=$item->vendido;
+                  $cantidad_bloqueado=$item->cantidad_bloqueado;
+                  $cantidad_cortesia=$item->cantidad_cortesia;
+                  $cantidad_espera=$item->cantidad_espera;
+                  $total=$aforo-$cantidad_vendida-$cantidad_bloqueado-$cantidad_cortesia-$cantidad_espera;
+                  if (!$total>=$cantidad) {
+                    $out["codigo"] = "210";
+                    $out["mensaje"] = $error_210_mensaje;
+                    $out["causa"] =  $error_210_causa;
+                    $response->getBody()->write(json_encode($out));
+                    return $response->withStatus(500);
+                  }
+              }
+
+              $sql = "INSERT INTO teatro.tsa_bloqueo_cantidad (id_usuario_cliente,id_platea_funcion,cantidad) VALUES (:id_usuario,:id_platea_funcion, :cantidad)";
+              $statement = $db->prepare($sql);
+              $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
+              $statement->bindValue(':id_platea_funcion', $id_platea_funcion, \PDO::PARAM_STR);
+              $statement->bindValue(':cantidad',   $cantidad, \PDO::PARAM_STR);
+
+              $result = $statement->execute();
+            }
+
         } catch (\PDOException $th) {
             $result = false;
             $out["codigo"] = "102";
@@ -983,6 +1074,7 @@ class MainController extends BaseController
         }
 
         $out['status'] =$status_asiento;
+        $out['tiempo'] =600;
         $response->getBody()->write(json_encode($out));
         return $response;
     }
@@ -1016,7 +1108,7 @@ class MainController extends BaseController
         // FIN VALIDACION
         $json = $request->getBody();
         $body = json_decode($json, true);
-        if (!(isset($body["id_usuario"]) && isset($body['id_funcion']) && isset($body['id_platea']) && isset($body['cantidad']))){
+        if (!(isset($body["id_usuario"]) && isset($body['id_funcion']) && isset($body['asientos']))){
             $out["codigo"] = "201";
             $out["mensaje"] = $error_201_mensaje;
             $out["causa"] =  $error_201_causa;
@@ -1026,31 +1118,116 @@ class MainController extends BaseController
         try {
             $usuario = trim($body['id_usuario']);
             $id_funcion = trim($body['id_funcion']);
-            $id_platea = trim($body['id_platea']);
-            $id_platea_funcion = trim($body['id_platea']);
-            $cantidad = trim($body['cantidad']);
-            $sql = "SELECT tp.aforo ,tpf.* FROM tsa_platea tp  INNER JOIN tsa_platea_funcion tpf ON tp.id_platea = tpf.id_platea INNER JOIN tsa_bloqueo_cantidad bc ON bc.id_platea_funcion = tpf.id_platea_funcion and id_funcion=:funcion and tpf.id_platea =:platea";
-            $statement = $db->prepare($sql);
-            $statement->bindValue(':platea', $id_platea, \PDO::PARAM_STR);
-            $statement->bindValue(':funcion', $id_funcion, \PDO::PARAM_STR);
-            $result = $statement->execute();
-            $item = $statement->fetch();
-            if (!$item){
-              $out["codigo"] = "212";
-              $out["mensaje"] = $error_212_mensaje;
-              $out["causa"] =  $error_212_causa;
-              $response->getBody()->write(json_encode($out));
-              return $response;
-            }else{
-              $id_platea_funcion=  $item->id_platea_funcion;
+            $asientosT = trim($body['asientos']);
+            $asientos =explode(',',$asientosT);
+            foreach($asientos as $llave => $valores) {
+              $items =explode(':',$valores);
+              $id_platea=$items[0];
+              $cantidad=$items[1];
+              $sql = "SELECT tp.aforo ,tpf.* FROM tsa_platea tp  INNER JOIN tsa_platea_funcion tpf ON tp.id_platea = tpf.id_platea INNER JOIN tsa_bloqueo_cantidad bc ON bc.id_platea_funcion = tpf.id_platea_funcion and id_funcion=:funcion and tpf.id_platea =:platea";
+              $statement = $db->prepare($sql);
+              $statement->bindValue(':platea', $id_platea, \PDO::PARAM_STR);
+              $statement->bindValue(':funcion', $id_funcion, \PDO::PARAM_STR);
+              $result = $statement->execute();
+              $item = $statement->fetch();
+              if (!$item){
+                $out["codigo"] = "212";
+                $out["mensaje"] = $error_212_mensaje;
+                $out["causa"] =  $error_212_causa;
+                $response->getBody()->write(json_encode($out));
+                return $response;
+              }else{
+                $id_platea_funcion=  $item->id_platea_funcion;
+              }
+              $sql = "UPDATE teatro.tsa_bloqueo_cantidad set fecha_creacion =now() WHERE id_usuario_cliente=:id_usuario and id_platea_funcion=:id_platea_funcion and cantidad=:cantidad";
+              $statement = $db->prepare($sql);
+              $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
+              $statement->bindValue(':id_platea_funcion', $id_platea_funcion, \PDO::PARAM_STR);
+              $statement->bindValue(':cantidad',   $cantidad, \PDO::PARAM_STR);
+              $result = $statement->execute();
             }
-            $sql = "UPDATE teatro.tsa_bloqueo_cantidad set fecha_creacion =now() WHERE id_usuario_cliente=:id_usuario and id_platea_funcion=:id_platea_funcion and cantidad=:cantidad";
-            $statement = $db->prepare($sql);
-            $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
-            $statement->bindValue(':id_platea_funcion', $id_platea_funcion, \PDO::PARAM_STR);
-            $statement->bindValue(':cantidad',   $cantidad, \PDO::PARAM_STR);
+        } catch (\PDOException $th) {
+            $result = false;
+            $out["codigo"] = "102";
+            $out["mensaje"] = $error_102_mensaje;
+            $out["causa"] =  $error_102_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
 
+        $out['status'] =$status_asiento;
+        $out['tiempo'] =600;
+        $response->getBody()->write(json_encode($out));
+        return $response;
+    }
+
+    public function deleteEsperaS($request, $response, $args){
+        include("error.php");
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
             $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $out["codigo"] = "100";
+            $out["mensaje"] = $error_100_mensaje;
+            $out["causa"] =  $error_100_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            $out["codigo"] = "101";
+            $out["mensaje"] = $error_101_mensaje;
+            $out["causa"] = $error_101_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body["id_usuario"]) && isset($body['id_funcion']) && isset($body['asientos']) )){
+            $out["codigo"] = "201";
+            $out["mensaje"] = $error_201_mensaje;
+            $out["causa"] =  $error_201_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(400);
+        }
+        try {
+            $usuario = trim($body['id_usuario']);
+            $id_funcion = trim($body['id_funcion']);
+            $asientosT = trim($body['asientos']);
+            $asientos =explode(',',$asientosT);
+            foreach($asientos as $llave => $valores) {
+              $items =explode(':',$valores);
+              $id_platea=$items[0];
+              $cantidad=$items[1];
+              $sql = "SELECT tp.aforo ,tpf.* FROM tsa_platea tp  INNER JOIN tsa_platea_funcion tpf ON tp.id_platea = tpf.id_platea INNER JOIN tsa_bloqueo_cantidad bc ON bc.id_platea_funcion = tpf.id_platea_funcion and id_funcion=:funcion and tpf.id_platea =:platea";
+              $statement = $db->prepare($sql);
+              $statement->bindValue(':platea', $id_platea, \PDO::PARAM_STR);
+              $statement->bindValue(':funcion', $id_funcion, \PDO::PARAM_STR);
+              $result = $statement->execute();
+              $item = $statement->fetch();
+              if (!$item){
+                $out["codigo"] = "212";
+                $out["mensaje"] = $error_212_mensaje;
+                $out["causa"] =  $error_212_causa;
+                $response->getBody()->write(json_encode($out));
+                return $response;
+              }else{
+                $id_platea_funcion=  $item->id_platea_funcion;
+              }
+              $sql = "DELETE FROM teatro.tsa_bloqueo_cantidad WHERE id_usuario_cliente=:id_usuario and id_platea_funcion=:id_platea_funcion and cantidad=:cantidad";
+              $statement = $db->prepare($sql);
+              $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
+              $statement->bindValue(':id_platea_funcion', $id_platea_funcion, \PDO::PARAM_STR);
+              $statement->bindValue(':cantidad',   $cantidad, \PDO::PARAM_STR);
+              $result = $statement->execute();
+            }
         } catch (\PDOException $th) {
             $result = false;
             $out["codigo"] = "102";
@@ -2111,6 +2288,176 @@ class MainController extends BaseController
         $out['UNIQTOHAS'] =$uniq_token_hash;
         $out['AUTHTOKEN'] =$auth_token;
         $response->getBody()->write(json_encode($out));
+        return $response;
+    }
+
+    public function getPromociones($request, $response, $args){
+        include("error.php");
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $out["codigo"] = "100";
+            $out["mensaje"] = $error_100_mensaje;
+            $out["causa"] =  $error_100_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            $out["codigo"] = "101";
+            $out["mensaje"] = $error_101_mensaje;
+            $out["causa"] = $error_101_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(401);
+        }
+        try {
+            $eventos= [];
+            $promocion=[];
+            $ruta= "http://104.198.222.134/imagenes/evento/";
+            $sql = "SELECT te.nombre ,te.id_evento FROM tsa_evento te INNER JOIN tsa_factor_compra tfc ON te.id_evento = tfc.id_evento ";
+            $statement = $db->prepare($sql);
+            $result = $statement->execute();
+            while($item = $statement->fetch()){
+              if (!in_array($item->id_evento, $eventos)) {
+                  $promocion[]= array('id'=> $item->id_evento, 'nombre'=> $item->nombre, 'imagen'=> $ruta.$item->id_evento."H.png");
+                  $eventos[]= $item->id_evento;
+              }
+            }
+            $sql = "SELECT te.nombre ,te.id_evento FROM tsa_evento te INNER JOIN tsa_cruzados tfc ON te.id_evento = tfc.id_evento ";
+            $statement = $db->prepare($sql);
+            $result = $statement->execute();
+            while($item = $statement->fetch()){
+              if (!in_array($item->id_evento, $eventos)) {
+                  $promocion[]= array('id'=> $item->id_evento, 'nombre'=> $item->nombre, 'imagen'=> $ruta.$item->id_evento."H.png");
+                  $eventos[]= $item->id_evento;
+              }
+            }
+            $sql = "SELECT te.nombre ,te.id_evento FROM tsa_evento te INNER JOIN tsa_factor_pago tfc ON te.id_evento = tfc.id_evento ";
+            $statement = $db->prepare($sql);
+            $result = $statement->execute();
+            while($item = $statement->fetch()){
+              if (!in_array($item->id_evento, $eventos)) {
+                  $promocion[]= array('id'=> $item->id_evento, 'nombre'=> $item->nombre, 'imagen'=> $ruta.$item->id_evento."H.png");
+                  $eventos[]= $item->id_evento;
+              }
+            }
+            $sql = "SELECT te.nombre ,te.id_evento FROM tsa_evento te INNER JOIN tsa_banco_tarjeta tfc ON te.id_evento = tfc.id_evento ";
+            $statement = $db->prepare($sql);
+            $result = $statement->execute();
+            while($item = $statement->fetch()){
+              if (!in_array($item->id_evento, $eventos)) {
+                  $promocion[]
+
+
+                  = array('id'=> $item->id_evento, 'nombre'=> $item->nombre, 'imagen'=> $ruta.$item->id_evento."H.png");
+                  $eventos[]= $item->id_evento;
+              }
+            }
+            $response->getBody()->write(json_encode($promocion));
+        } catch (\PDOException $th) {
+            $result = false;
+            $out["codigo"] = "102";
+            $out["mensaje"] = $error_102_mensaje;
+            $out["causa"] = $error_102_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+
+
+        return $response;
+    }
+
+    public function getPromocion($request, $response, $args){
+        include("error.php");
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $out["codigo"] = "100";
+            $out["mensaje"] = $error_100_mensaje;
+            $out["causa"] =  $error_100_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            $out["codigo"] = "101";
+            $out["mensaje"] = $error_101_mensaje;
+            $out["causa"] = $error_101_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body["id_evento"]))){
+          $out["codigo"] = "201";
+          $out["mensaje"] = $error_201_mensaje;
+          $out["causa"] = $error_201_causa;
+          $response->getBody()->write(json_encode($out));
+          return $response->withStatus(400);
+        }
+        //Realizo consulta de puertas a DB
+        $id_evento= trim($body["id_evento"]);
+        try {
+            $promocion=[];
+            $ruta= "http://104.198.222.134/imagenes/evento/";
+            $sql = "SELECT * FROM tsa_promocion tp INNER JOIN tsa_factor_compra tfc ON tp.id_promocion =tfc.id_promocion and tfc.estado ='A' and fecha_inicio <= NOW() and fecha_final >=NOW() and tfc.id_evento=:id_evento ";
+            $statement = $db->prepare($sql);
+            $statement->bindValue(':id_evento', $id_evento, \PDO::PARAM_STR);
+            $result = $statement->execute();
+            while($item = $statement->fetch()){
+                $promocion[]= array('id_promocion'=> $item->id_factor_compra, 'nombre'=> $item->nombre, 'compra'=> $item->compra, 'pago'=> $item->pago, 'descripcion'=> $item->descripcion, 'amigo_teatro'=> $item->amigo_teatro,
+                'id_platea'=> $item->id_platea,'tipo'=>'FC' );
+            }
+            $sql = "SELECT * FROM tsa_promocion tp INNER JOIN tsa_cruzados tfc ON tp.id_promocion =tfc.id_promocion and tfc.estado ='A' and fecha_inicio <= NOW() and fecha_final >=NOW() and tfc.id_evento=:id_evento ";
+            $statement = $db->prepare($sql);
+            $statement->bindValue(':id_evento', $id_evento, \PDO::PARAM_STR);
+            $result = $statement->execute();
+            while($item = $statement->fetch()){
+              $promocion[]= array('id_promocion'=> $item->id_cruzados, 'nombre'=> $item->nombre, 'cantidad'=> $item->cantidad, 'id_evento2'=> $item->id_evento2, 'cantidad2'=> $item->cantidad2, 'descripcion'=> $item->descripcion, 'amigo_teatro'=> $item->amigo_teatro,
+              'id_platea'=> $item->id_platea,'tipo'=>'CD');
+            }
+            $sql = "SELECT * FROM tsa_promocion tp INNER JOIN tsa_factor_pago tfc ON tp.id_promocion =tfc.id_promocion and tfc.estado ='A' and fecha_inicio <= NOW() and fecha_final >=NOW() and tfc.id_evento=:id_evento ";
+            $statement = $db->prepare($sql);
+            $statement->bindValue(':id_evento', $id_evento, \PDO::PARAM_STR);
+            $result = $statement->execute();
+            while($item = $statement->fetch()){
+              $promocion[]= array('id_promocion'=> $item->id_factor_pago, 'nombre'=> $item->nombre, 'desde'=> $item->desde, 'hasta'=> $item->hasta, 'descuento'=> $item->descuento, 'descripcion'=> $item->descripcion, 'amigo_teatro'=> $item->amigo_teatro,
+              'id_platea'=> $item->id_platea,'tipo'=>'FP');
+            }
+            $sql = "SELECT * FROM tsa_promocion tp INNER JOIN tsa_banco_tarjeta tfc ON tp.id_promocion =tfc.id_promocion and tfc.estado ='A' and fecha_inicio <= NOW() and fecha_final >=NOW() and tfc.id_evento=:id_evento ";
+            $statement = $db->prepare($sql);
+            $statement->bindValue(':id_evento', $id_evento, \PDO::PARAM_STR);
+            $result = $statement->execute();
+            while($item = $statement->fetch()){
+              $promocion[]= array('id_promocion'=> $item->id_banco_tarjeta, 'nombre'=> $item->nombre, 'id_tarjeta'=> $item->id_tarjeta, 'id_banco'=> $item->id_banco, 'descuento'=> $item->descuento, 'descripcion'=> $item->descripcion, 'amigo_teatro'=> $item->amigo_teatro,
+              'id_platea'=> $item->id_platea,'tipo'=>'BT');
+            }
+            $response->getBody()->write(json_encode($promocion));
+        } catch (\PDOException $th) {
+            $result = false;
+            $out["codigo"] = "102";
+            $out["mensaje"] = $error_102_mensaje;
+            $out["causa"] = $error_102_causa;
+            $response->getBody()->write(json_encode($th));
+            return $response->withStatus(500);
+        }
+
+
         return $response;
     }
 }
