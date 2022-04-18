@@ -2138,13 +2138,64 @@ class MainController extends BaseController
             $response->getBody()->write(json_encode($out));
             return $response->withStatus(401);
         }
-
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body["id_usuario"]))){
+            $out["codigo"] = "201";
+            $out["mensaje"] = $error_201_mensaje;
+            $out["causa"] =  $error_201_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(400);
+        }
+        $id_usuario = trim($body['id_usuario']);
         $sql = "SELECT * FROM tsa_fundacion";
         //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
         $statement = $db->prepare($sql);
         $ruta= "http://104.198.222.134/imagenes/logo/";;
         try {
             $result = $statement->execute();
+            $band=true;
+            $precio=[];
+            while($item = $statement->fetch()){
+              $band=false;
+              $precio[]=$item->precio1;
+              $precio[]=$item->precio2;
+              $precio[]=$item->precio3;
+              $precio[]=$item->precio4;
+              $precio[]=$item->precio5;
+              $precio[]=$item->precio6;
+              $out= array('id'=> $item->id_fundacion, 'titulo'=> $item->nombre, 'descripcion1'=> $item->descripcion1, 'descripcion2'=> $item->descripcion2, 'imagen'=>$ruta_logo.$item->imagen, 'precio'=>$precio ,  'terminos_condiciones'=>'https://qr-ticket.app/privacy.html');
+            }
+            $sql = "SELECT ts.nombres, ts.apellidos,ts.codigo_identificador, ts.puntos_acumulados, ts.fecha_caducidad FROM tsa_usuario_cliente ts WHERE ts.id_usuario_cliente=:id_usuario";
+            $statement = $db->prepare($sql);
+            $statement->bindValue(':id_usuario', $id_usuario, \PDO::PARAM_STR);
+            $result = $statement->execute();
+            $usuario = null ;
+            while($item = $statement->fetch()){
+                $usuario= array( 'codigo_identificador'=> $item->codigo_identificador, 'puntos_acumulados'=> $item->puntos_acumulados, 'fecha_caducidad'=> $item->fecha_caducidad);
+
+            }
+            $out["amigos_teatro"]=$usuario;
+            $sql = "SELECT tf.* FROM tsa_facturacion_favorita tff INNER JOIN tsa_facturacion tf ON tf.id_facturacion =tff.id_facturacion AND  tff.id_usuario_cliente=:id_usuario";
+            $statement = $db->prepare($sql);
+            $statement->bindValue(':id_usuario', $id_usuario, \PDO::PARAM_STR);
+            $result = $statement->execute();
+            $facturacion = null ;
+            while($item = $statement->fetch()){
+                $band=false;
+                $facturacion=  array('id_facturacion'=> $item->id_facturacion, 'nombres'=> $item->nombres, 'apellidos'=> $item->apellidos, 'cedula'=> $item->cedula, 'razon_social'=> $item->razon_social, 'ruc'=> $item->ruc, 'tipo'=> $item->tipo);
+
+            }
+            $out["facturacion"]=$facturacion;
+            $sql = "SELECT * FROM tsa_tarjeta_favorita tff WHERE  tff.id_usuario_cliente=:id_usuario";
+            $statement = $db->prepare($sql);
+            $statement->bindValue(':id_usuario', $id_usuario, \PDO::PARAM_STR);
+            $result = $statement->execute();
+            $tarjeta = null ;
+            while($item = $statement->fetch()){
+                $tarjeta=  array('id_tarjeta_favorita'=> $item->id_tarjeta_favorita, 'bin'=> $item->bin, 'status'=> $item->status, 'token'=> $item->token, 'holder_name'=> $item->holder_name, 'expiry_year'=> $item->expiry_year, 'expiry_month'=> $item->expiry_month, 'transaction_reference'=> $item->transaction_reference, 'type'=> $item->type, 'number'=> $item->number);
+            }
+            $out["tarjeta"]=$tarjeta;
         } catch (\PDOException $th) {
             $result = false;
             $out["codigo"] = "102";
@@ -2153,13 +2204,6 @@ class MainController extends BaseController
             $out["error"] = $th->getMessage();
             $response->getBody()->write(json_encode($out));
             return $response->withStatus(500);
-        }
-
-        $band=true;
-        while($item = $statement->fetch()){
-          $band=false;
-          $out= array('id'=> $item->id_fundacion, 'titulo'=> $item->nombre, 'descripcion1'=> $item->descripcion1, 'descripcion2'=> $item->descripcion2, 'imagen'=>$ruta_logo.$item->imagen, 'precio1'=> $item->precio1, 'precio2'=> $item->precio2,
-          'precio3'=> $item->precio3, 'precio4'=> $item->precio4, 'precio5'=> $item->precio5, 'precio6'=>$item->precio6,  'terminos_condiciones'=>'https://qr-ticket.app/privacy.html');
         }
        if ($band) {
          $out["codigo"] = "208";
@@ -2723,10 +2767,9 @@ class MainController extends BaseController
         $id_usuario= trim($body["id_usuario"]);
 
         try {
-            $sql = "SELECT te.*, tt.precio ,ts.nombre as sala, tf.fecha, tt.id_ticket, tta.asiento,tt.estado as estado_ticket FROM tsa_ticket tt
+            $sql = "SELECT te.*, tt.precio ,tt.sala, tf.fecha, tt.id_ticket, tta.asiento,tt.estado as estado_ticket FROM tsa_ticket tt
             INNER JOIN  tsa_usuario_cliente tuc ON tuc.id_usuario_cliente=tt.id_usuario_cliente
             INNER JOIN  tsa_funcion tf ON tf.id_funcion =tt.id_funcion
-            INNER JOIN  tsa_sala ts ON ts.id_sala =tt.id_sala
             INNER JOIN  tsa_ticket_asiento tta ON tta.id_ticket =tt.id_ticket
             INNER JOIN  tsa_evento te ON te.id_evento =tf.id_evento and tuc.id_usuario_cliente =:id_usuario  ORDER BY tf.fecha ASC ";
             $statement = $db->prepare($sql);
@@ -3081,12 +3124,12 @@ class MainController extends BaseController
               $promocion[]= array('id_promocion'=> $item->id_factor_pago, 'nombre'=> $item->nombre, 'desde'=> $item->desde, 'hasta'=> $item->hasta, 'descuento'=> $item->descuento, 'descripcion'=> $item->descripcion, 'amigo_teatro'=> $item->amigo_teatro,
               'id_platea'=> $item->id_platea,'tipo'=>'FP');
             }
-            $sql = "SELECT * FROM tsa_promocion tp INNER JOIN tsa_banco_tarjeta tfc ON tp.id_promocion =tfc.id_promocion and tfc.estado ='A' and fecha_inicio <= NOW() and fecha_final >=NOW() and (tfc.id_evento=:id_evento  OR tfc.id_evento=1) ";
+            $sql = "SELECT tp.*, tt.nombre as nombreT, tt.tipo as tipoT, tfc.id_banco_tarjeta, tfc.nombre , tfc.descuento FROM tsa_promocion tp INNER JOIN tsa_banco_tarjeta tfc ON tp.id_promocion =tfc.id_promocion INNER JOIN tsa_tarjeta tt ON tt.id_tarjeta = tfc.id_tarjeta  and tfc.estado ='A' and fecha_inicio <= NOW() and fecha_final >=NOW() and (tfc.id_evento=:id_evento  OR tfc.id_evento=1)";
             $statement = $db->prepare($sql);
             $statement->bindValue(':id_evento', $id_evento, \PDO::PARAM_STR);
             $result = $statement->execute();
             while($item = $statement->fetch()){
-              $promocion[]= array('id_promocion'=> $item->id_banco_tarjeta, 'nombre'=> $item->nombre, 'id_tarjeta'=> $item->id_tarjeta, 'id_banco'=> $item->id_banco, 'descuento'=> $item->descuento, 'descripcion'=> $item->descripcion, 'amigo_teatro'=> $item->amigo_teatro,
+              $promocion[]= array('id_promocion'=> $item->id_banco_tarjeta, 'nombre'=> $item->nombre, 'tarjeta'=> $item->nombreT, 'tipo_tarjeta'=> $item->tipoT, 'descuento'=> $item->descuento, 'descripcion'=> $item->descripcion, 'amigo_teatro'=> $item->amigo_teatro,
               'id_platea'=> $item->id_platea,'tipo'=>'BT');
             }
             $response->getBody()->write(json_encode($promocion));
@@ -3452,7 +3495,6 @@ class MainController extends BaseController
             curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
             $result = curl_exec($curl);
             curl_close($curl);
-            $response->getBody()->write($result);
             $resultado =json_decode($result, true);
             if (isset($resultado['transaction'])) {
               if ($resultado["transaction"]["status"]=="success") {
@@ -3490,7 +3532,8 @@ class MainController extends BaseController
             $response->getBody()->write(json_encode($out));
             return $response->withStatus(500);
         }
-        if ($ban) {
+        try {
+            if ($ban) {
           try {
               $id_compra=0;
               $sql = "INSERT INTO teatro.tsa_compra (id_facturacion,id_usuario_cliente,dolares_canjeados,donacion,sub_total,descuento,iva,total,usuario_creacion,id_transacion,authorization_code,status_transacion)
@@ -3924,8 +3967,52 @@ class MainController extends BaseController
               $result = $statement->execute();
             }
           }
-        }
+          $ticketT=null;
+          $lista4=[];
+          foreach($lista3 as $llave => $valores) {
+            if (!in_array($valores, $lista4)) {
+              $sql = "SELECT te.*, tt.precio ,tt.sala, tf.fecha, tt.id_ticket, tta.asiento,tt.estado as estado_ticket FROM tsa_ticket tt
+              INNER JOIN  tsa_usuario_cliente tuc ON tuc.id_usuario_cliente=tt.id_usuario_cliente
+              INNER JOIN  tsa_funcion tf ON tf.id_funcion =tt.id_funcion
+              INNER JOIN  tsa_ticket_asiento tta ON tta.id_ticket =tt.id_ticket
+              INNER JOIN  tsa_evento te ON te.id_evento =tf.id_evento and tt.id_ticket=:id_ticket and tuc.id_usuario_cliente =:id_usuario  ORDER BY tf.fecha ASC ";
+              $statement = $db->prepare($sql);
+              $statement->bindValue(':id_usuario', $user_id, \PDO::PARAM_STR);
+              $statement->bindValue(':id_ticket', $valores, \PDO::PARAM_STR);
+              $result = $statement->execute();
+              $tickets= [];
+              $ticket= [];
 
+              $asientos= [];
+              $ruta= "http://104.198.222.134/imagenes/evento/";
+              while($item = $statement->fetch()){
+                if (!in_array($item->id_ticket, $tickets)) {
+                    $ticket[$item->id_ticket]= array('id_ticket'=> $item->id_ticket, 'nombre'=> $item->nombre, 'duracion'=> $item->duracion, 'imagen'=> $ruta_evento.$item->id_evento."V.png",
+                     'tipo'=> $item->tipo,'sala'=> $item->sala,'precio'=> $item->precio,'fecha'=> $item->fecha,'estado'=> $item->estado_ticket,'qr'=>"codigo_graficar");
+                    $tickets[]= $item->id_ticket;
+                }
+                $asientos[$item->id_ticket][]=$item->asiento;
+              }
+              foreach ($tickets as $clave) {
+                  $ticket[$clave]['asientos']=  $asientos[$clave];
+                  $ticketT[]=$ticket[$clave];
+              }
+              $lista4[]=$valores;
+            }
+
+          }
+          $out =$ticketT;
+          $response->getBody()->write(json_encode($out));
+        }
+        } catch (\PDOException $th) {
+            $result = false;
+            $out["codigo"] = "102";
+            $out["mensaje"] = $error_102_mensaje;
+            $out["causa"] = $error_102_causa;
+            $out["error"] = $th->getMessage();
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
         return $response;
     }
 
