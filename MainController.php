@@ -764,22 +764,54 @@ class MainController extends BaseController
               $statement->bindValue(':id_espera',  $historial1[0], \PDO::PARAM_STR);
               $result = $statement->execute();
               while($item = $statement->fetch()){
-                $sql = "INSERT INTO registro_salida (id,padre,celular,id_hijo,observacion,tipo,fecha) VALUES (null, :nombre, :celular,:hijo,:observacion,:tipo, now())";
-                $statement1 = $db->prepare($sql);
-                $statement1->bindValue(':nombre',  $nombre, \PDO::PARAM_STR);
-                $statement1->bindValue(':celular',  $celular, \PDO::PARAM_STR);
-                $statement1->bindValue(':tipo',  $item->tipo, \PDO::PARAM_STR);
-                $statement1->bindValue(':hijo',  $item->id_hijo, \PDO::PARAM_STR);
-                $statement1->bindValue(':observacion',  $observacion, \PDO::PARAM_STR);
-                $result = $statement1->execute();
-                $sql = "UPDATE hijo SET estado='R' WHERE id=:hijo ";
-                $statement1 = $db->prepare($sql);
-                $statement1->bindValue(':hijo',  $item->id_hijo, \PDO::PARAM_STR);
-                $result = $statement1->execute();
-                $sql = "DELETE FROM sala_espera WHERE id=:id_espera ";
-                $statement1 = $db->prepare($sql);
-                $statement1->bindValue(':id_espera',  $historial1[0], \PDO::PARAM_STR);
-                $result = $statement1->execute();
+                if ($item->tipo=="Representante") {
+                  $sql = "INSERT INTO registro_salida (id,padre,celular,id_hijo,observacion,tipo,fecha) VALUES (null, :nombre, :celular,:hijo,:observacion,:tipo, now())";
+                  $statement1 = $db->prepare($sql);
+                  $statement1->bindValue(':nombre',  $nombre, \PDO::PARAM_STR);
+                  $statement1->bindValue(':celular',  $celular, \PDO::PARAM_STR);
+                  $statement1->bindValue(':tipo',  $item->tipo, \PDO::PARAM_STR);
+                  $statement1->bindValue(':hijo',  $item->id_hijo, \PDO::PARAM_STR);
+                  $statement1->bindValue(':observacion',  $observacion, \PDO::PARAM_STR);
+                  $result = $statement1->execute();
+                  $sql = "UPDATE hijo SET estado='R' WHERE id=:hijo ";
+                  $statement1 = $db->prepare($sql);
+                  $statement1->bindValue(':hijo',  $item->id_hijo, \PDO::PARAM_STR);
+                  $result = $statement1->execute();
+                  $sql = "DELETE FROM sala_espera WHERE id=:id_espera ";
+                  $statement1 = $db->prepare($sql);
+                  $statement1->bindValue(':id_espera',  $historial1[0], \PDO::PARAM_STR);
+                  $result = $statement1->execute();
+                }else{
+                  $sql = "SELECT i.personaA FROM  invitacion i INNER JOIN invitacion_hijo ih ON ih.id_invitacion=i.id_invitacion INNER JOIN hijo h on h.id =ih.id_hijo INNER JOIN aula a ON a.id=h.id_aula and i.personaR=:personaR and i.celular=:celular and ih.id_hijo=:id_hijo and i.fecha =CURDATE()";
+                  $statement1 = $db->prepare($sql);
+                  $statement1->bindValue(':personaR',  $nombre, \PDO::PARAM_STR);
+                  $statement1->bindValue(':celular',  $celular, \PDO::PARAM_STR);
+                  $statement1->bindValue(':id_hijo', $item->id_hijo, \PDO::PARAM_STR);
+                  $result = $statement1->execute();
+                  $band1=true;
+                  $persona_autoriza="";
+                  while($item1 = $statement1->fetch()){
+                      $persona_autoriza=$item1->personaA;
+                  }
+                  $sql = "INSERT INTO registro_salida (id,padre,celular,id_hijo,observacion,tipo,fecha,persona_autoriza) VALUES (null, :nombre, :celular,:hijo,:observacion,:tipo, now(),:persona_autoriza)";
+                  $statement1 = $db->prepare($sql);
+                  $statement1->bindValue(':nombre',  $nombre, \PDO::PARAM_STR);
+                  $statement1->bindValue(':celular',  $celular, \PDO::PARAM_STR);
+                  $statement1->bindValue(':tipo',  $item->tipo, \PDO::PARAM_STR);
+                  $statement1->bindValue(':hijo',  $item->id_hijo, \PDO::PARAM_STR);
+                  $statement1->bindValue(':observacion',  $observacion, \PDO::PARAM_STR);
+                  $statement1->bindValue(':persona_autoriza',  $persona_autoriza, \PDO::PARAM_STR);
+                  $result = $statement1->execute();
+                  $sql = "UPDATE hijo SET estado='R' WHERE id=:hijo ";
+                  $statement1 = $db->prepare($sql);
+                  $statement1->bindValue(':hijo',  $item->id_hijo, \PDO::PARAM_STR);
+                  $result = $statement1->execute();
+                  $sql = "DELETE FROM sala_espera WHERE id=:id_espera ";
+                  $statement1 = $db->prepare($sql);
+                  $statement1->bindValue(':id_espera',  $historial1[0], \PDO::PARAM_STR);
+                  $result = $statement1->execute();
+                }
+
               }
 
 
@@ -787,7 +819,7 @@ class MainController extends BaseController
           }
         } catch (\PDOException $th) {
             $result = false;
-            $errocode = $th->getCode();
+            $errocode = $th->getMessage();
             $response = $response->withHeader('Content-Type', 'application/json');
             $out["status"] = "ErrorServerCode: $errocode";
             $response->getBody()->write(json_encode($out));
