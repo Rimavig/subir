@@ -684,12 +684,15 @@ class MainController extends BaseController
               $band=false;
               $band1=true;
               if (!in_array($item->padre, $padres)) {
-                $sql1 = "SELECT se.nombre as padre, h.nombre as hijo, a.id as id_aula, se.* FROM  sala_espera se INNER JOIN hijo h ON h.id=se.id_hijo INNER JOIN aula a ON a.id=h.id_aula and id_aula=:aula and DATE(fecha)=CURDATE() and celular=:celular and h.estado='P'";
+                $sql1 = "SELECT se.nombre as padre, h.nombre as hijo, a.id as id_aula, se.* FROM  sala_espera se INNER JOIN hijo h ON h.id=se.id_hijo INNER JOIN aula a ON a.id=h.id_aula and id_aula=:aula and DATE(fecha)=CURDATE() and celular=:celular and se.nombre=:padre and se.tipo=:tipo and h.estado='P'";
                 $statement1 = $db->prepare($sql1);
                 $statement1->bindValue(':aula',  $area, \PDO::PARAM_STR);
                 $statement1->bindValue(':celular',  trim($item->celular), \PDO::PARAM_STR);
+                $statement1->bindValue(':celular',  trim($item->celular), \PDO::PARAM_STR);
+                $statement1->bindValue(':padre',  trim($item->padre), \PDO::PARAM_STR);
+                $statement1->bindValue(':tipo',  trim($item->tipo), \PDO::PARAM_STR);
                 $result1 = $statement1->execute();
-
+                $hijos=[];
                 while($item1 = $statement1->fetch()){
                   $band1=false;
                     $hijos[]=array('id_retiro'=>$item1->id,'hijo'=>$item1->hijo,'id_hijo'=>$item1->id_hijo,'tipo'=>$item1->tipo);
@@ -700,7 +703,7 @@ class MainController extends BaseController
                   $registro[]=array('padre'=>$item->padre,'celular'=>$item->celular,'id_aula'=>$item->id_aula,'hijos'=>"",'observacion'=>"none",'fecha'=>$item->fecha);
                 }
 
-                $padres[]=$item->celular;
+                $padres[]=$item->padre;
               }
             }
           }
