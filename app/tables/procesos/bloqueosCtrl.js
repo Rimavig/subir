@@ -225,7 +225,10 @@ angular.module('newApp')
                 $(this).parents().find('#verSala1').hide();
                 var id=$(this).parents().find('.evento')[0].value;
                 var funcion=$(this).parents().find('.funciones')[0].value;
-                $('#reserva  option[value="C"]').removeClass('esconder');
+                
+                $('#reserva  option[value="C"]').remove();
+                $('.reserva').append('<option value="C">Cortesía</option>');
+                $('#reserva  option:first').prop('selected', true);
                 if ( this.value=="none"){
 
                 }else if ( this.value=="fila"){
@@ -243,7 +246,7 @@ angular.module('newApp')
                 }else if ( this.value=="laterales"){
                     $(this).parents().find('#fila').hide();
                     $('#laterales  option:first').prop('selected', true);
-                    $('#reserva  option[value="C"]').addClass('esconder');
+                    $('#reserva  option[value="C"]').remove();
                     $(this).parents().find('#laterales').show();
                     $(this).parents().find('#individual').hide();
                     $(this).parents().find('#filaF1').hide();   
