@@ -169,9 +169,8 @@ class MainController extends BaseController
             $result = $statement->execute();
         } catch (\PDOException $th) {
             $result = false;
-            $errocode = $th->getCode();
-            $response = $response->withHeader('Content-Type', 'application/json');
-            $out["status"] = "ErrorServerCode: $errocode";
+            $out["mensaje"] = "Error con base de datos";
+            $out["causa"] = "Error de conexión";
             $response->getBody()->write(json_encode($out));
             return $response->withStatus(500);
         }
@@ -329,9 +328,13 @@ class MainController extends BaseController
             $result = $statement->execute();
         } catch (\PDOException $th) {
             $result = false;
+            $out["mensaje"] = "Ingrese Credeciales";
+            $out["causa"] = "Error de Credeciales";
             return $response->withStatus(500);
         }
         if ($result && count($statement->fetchAll())==0){
+            $out["mensaje"] = "Ingrese Credeciales";
+            $out["causa"] = "Error de Credeciales";
             return $response->withStatus(401);
         }
         // FIN VALIDACION
@@ -372,6 +375,7 @@ class MainController extends BaseController
                     $out["mensaje"] = "Error con base de datos QR";
                     $out["causa"] = "Error de conexión";
                     $response->getBody()->write(json_encode($out));
+                    return $response->withStatus(500);
                   }else{
                     $usuario="";
                     $sql = "SELECT * FROM  info_residentes p WHERE p.id='".$celular."' and p.status ='A'";
@@ -416,9 +420,8 @@ class MainController extends BaseController
 
                             } catch (\PDOException $th) {
                                 $result = false;
-                                $errocode = $th->getCode();
-                                $response = $response->withHeader('Content-Type', 'application/json');
-                                $out["status"] = "ErrorServerCode: $errocode";
+                                $out["mensaje"] = "Error con base de datos";
+                                $out["causa"] = "Error de conexión";
                                 $response->getBody()->write(json_encode($out));
                                 return $response->withStatus(500);
                             }
@@ -466,6 +469,7 @@ class MainController extends BaseController
                   $result = false;
                   $out["mensaje"] = "Error con base de datos";
                   $out["causa"] = "Error de conexión";
+                  $out["error"] = $th->getMessage();
                   $response->getBody()->write(json_encode($out));
                   return $response->withStatus(500);
               }
@@ -545,9 +549,8 @@ class MainController extends BaseController
           }
         } catch (\PDOException $th) {
             $result = false;
-            $errocode = $th->getCode();
-            $response = $response->withHeader('Content-Type', 'application/json');
-            $out["status"] = "ErrorServerCode: $errocode";
+            $out["mensaje"] = "Error con base de datos";
+            $out["causa"] = "Error de conexión";
             $response->getBody()->write(json_encode($out));
             return $response->withStatus(500);
         }
@@ -719,9 +722,8 @@ class MainController extends BaseController
 
         } catch (\PDOException $th) {
             $result = false;
-            $errocode = $th->getCode();
-            $response = $response->withHeader('Content-Type', 'application/json');
-            $out["status"] = "ErrorServerCode: $errocode";
+            $out["mensaje"] = "Error con base de datos";
+            $out["causa"] = "Error de conexión";
             $response->getBody()->write(json_encode($out));
             return $response->withStatus(500);
         }
@@ -824,9 +826,8 @@ class MainController extends BaseController
           }
         } catch (\PDOException $th) {
             $result = false;
-            $errocode = $th->getMessage();
-            $response = $response->withHeader('Content-Type', 'application/json');
-            $out["status"] = "ErrorServerCode: $errocode";
+            $out["mensaje"] = "Error con base de datos";
+            $out["causa"] = "Error de conexión";
             $response->getBody()->write(json_encode($out));
             return $response->withStatus(500);
         }
