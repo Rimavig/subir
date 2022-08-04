@@ -239,8 +239,13 @@ class MainController extends BaseController
               //$conn = new PDO('mysql:host=35.225.228.138;dbname=qr_app', 'qradmin', 'Qr@adm1n2020-');
 
               $conn = mysqli_connect($servername, $username, $password, $database);
+              mysqli_set_charset($conn, "utf8");
+
               if (!$conn) {
-                die("Connection failed: " . mysqli_connect_error());
+                $out["mensaje"] = "Error con base de datos QR";
+                $out["causa"] = "Error de conexión";
+                $response->getBody()->write(json_encode($out));
+                return $response->withStatus(500);
               }else{
                 $usuario="";
                 $sql = "SELECT * FROM  info_residentes p WHERE p.id='".$celular."' and p.status ='A'";
@@ -350,135 +355,151 @@ class MainController extends BaseController
         $area = trim($body['id_area']);
         $response = $response->withHeader('Content-Type', 'application/json');
         $decode = base64_decode($codigo);
+        $out=[];
         date_default_timezone_set("America/Guayaquil");
-        if (strlen($decode)==19) {
-          $celular = substr($decode, 0,10);
-          $tipo = substr($decode, 10,1);
-          $fecha = substr($decode, 11,8);
-          $fecha2 = date("dHis");
-          $val1 =intval( $fecha2);
-          $val2 =intval( $fecha);
-          $total =$val1-$val2;
-          $out["mensaje"]="";
-          if ($tipo=='0') {
-              $residente="Representante";
-              if ($total<60) {
-                  $servername = "35.225.228.138";
-                  $database = "qr_app";
-                  $username = "qradmin";
-                  $password = "Qr@adm1n2020-";
-                  // Create connection
-                  //$conn = new PDO('mysql:host=35.225.228.138;dbname=qr_app', 'qradmin', 'Qr@adm1n2020-');
+        try{
+          if (strlen($decode)==19) {
+            $celular = substr($decode, 0,10);
+            $tipo = substr($decode, 10,1);
+            $fecha = substr($decode, 11,8);
+            $fecha2 = date("dHis");
+            $val1 =intval( $fecha2);
+            $val2 =intval( $fecha);
+            $total =$val1-$val2;
 
-                  $conn = mysqli_connect($servername, $username, $password, $database);
-                  if (!$conn) {
-                    $out["mensaje"] = "Error con base de datos QR";
-                    $out["causa"] = "Error de conexión";
-                    $response->getBody()->write(json_encode($out));
-                    return $response->withStatus(500);
-                  }else{
-                    $usuario="";
-                    $sql = "SELECT * FROM  info_residentes p WHERE p.id='".$celular."' and p.status ='A'";
-                    $statement = $conn->prepare($sql);
-                    //$statement->bindValue(':celular', $celular, \PDO::PARAM_STR);
-                    try {
-                        $result = $statement->execute();
-                    } catch (\PDOException $th) {
-                        $result = false;
-                        $out["mensaje"] = "Error con base de datos";
-                        $out["causa"] = "Error de conexión";
-                        $response->getBody()->write(json_encode($out));
-                        return $response->withStatus(500);
-                    }
-                      $band=false;
-                      if ($result) {
-                        $result = $statement->get_result();
-                        while($item = $result->fetch_assoc()){
-                          $usuario=$item['nombres']." ".$item['apellidos'] ;
-                          $band=true;
-                        }
-                        if ($band) {
-                            try {
-                                $sql = "SELECT p.nombre as padre, h.nombre as hijo, a.nombre as aula, p.* FROM  padres p INNER JOIN hijo h ON h.id=p.id_hijo INNER JOIN aula a ON a.id=h.id_aula WHERE p.celular =:celular and a.id=:aula and h.estado ='A'";
-                                $statement = $db->prepare($sql);
-                                $statement->bindValue(':celular', trim($celular), \PDO::PARAM_STR);
-                                $statement->bindValue(':aula',  $area, \PDO::PARAM_STR);
-                                $result = $statement->execute();
-                                $band1=true;
 
-                                while($item = $statement->fetch()){
-                                    $band1=false;
-                                    $estudiante[]=array('id_hijo'=>$item->id_hijo,'nombre'=>$item->hijo,'area'=>$item->aula);;
+            if ($tipo=='0') {
+                $residente="Representante";
+                if ($total<60000) {
+                    $servername = "35.225.228.138";
+                    $database = "qr_app";
+                    $username = "qradmin";
+                    $password = "Qr@adm1n2020-";
+                    // Create connection
+                    //$conn = new PDO('mysql:host=35.225.228.138;dbname=qr_app', 'qradmin', 'Qr@adm1n2020-');
 
-                                }
-                                if ($band1) {
-                                  $estudiante=array();
-                                    $out["mensaje"] = array('mensaje'=>"Código valido",'status'=>"A",'tipo'=>$residente,'celular'=>$celular,'Residente'=> $usuario, 'Estudiante'=>$estudiante);
-                                }else{
-                                   $out["mensaje"]  = array('mensaje'=>"Código valido",'status'=>"A",'tipo'=>$residente,'celular'=>$celular,'Residente'=> $usuario, 'Estudiante'=>$estudiante);
-                                }
-
-                            } catch (\PDOException $th) {
-                                $result = false;
-                                $out["mensaje"] = "Error con base de datos";
-                                $out["causa"] = "Error de conexión";
-                                $response->getBody()->write(json_encode($out));
-                                return $response->withStatus(500);
-                            }
-
-                        }else{
-                            $out["mensaje"] = array('mensaje'=>"No Se encuentra registrado",'status'=>"E",'tipo'=>$residente,'celular'=>$celular,'Residente'=> $usuario, 'Estudiante'=>"");
-                        }
-                      }else{
-                            $out["mensaje"] = array('mensaje'=>"No Se encuentra registrado",'status'=>"E",'tipo'=>$residente,'celular'=>$celular,'Residente'=> $usuario, 'Estudiante'=>"");
+                    $conn = mysqli_connect($servername, $username, $password, $database);
+                    mysqli_set_charset($conn, "utf8");
+                    if (!$conn) {
+                      $out["mensaje"] = "Error con base de datos QR";
+                      $out["causa"] = "Error de conexión";
+                      $response->getBody()->write(json_encode($out));
+                      return $response->withStatus(500);
+                    }else{
+                      $usuario="";
+                      $sql = "SELECT * FROM  info_residentes p WHERE p.id='".$celular."' and p.status ='A' and p.id_ciudadela='14'";
+                      $statement = $conn->prepare($sql);
+                      //$statement->bindValue(':celular', $celular, \PDO::PARAM_STR);
+                      try {
+                          $result = $statement->execute();
+                      } catch (\PDOException $th) {
+                          $result = false;
+                          $out["mensaje"] = "Error con base de datos";
+                          $out["causa"] = "Error de conexión";
+                          $response->getBody()->write(json_encode($out));
+                          return $response->withStatus(500);
                       }
 
-                    mysqli_close($conn);
-                  }
+                        $band=false;
+                        if ($result) {
+
+                          $result = $statement->get_result();
+                          $usuario="";
+                          while($item = $result->fetch_assoc()){
+                            $usuario=$item['nombres']." ".$item['apellidos'] ;
+                            $band=true;
+                          }
+                          if ($band) {
+                              try {
+                                  $sql = "SELECT h.nombre as hijo, a.nombre as aula, p.* FROM  padres p INNER JOIN hijo h ON h.id=p.id_hijo INNER JOIN aula a ON a.id=h.id_aula and p.celular =:celular1 and a.id=:aula1 and h.estado ='A'";
+                                  $statement = $db->prepare($sql);
+                                  $statement->bindValue(':celular1', $celular, \PDO::PARAM_STR);
+                                  $statement->bindValue(':aula1',  $area, \PDO::PARAM_INT);
+                                  $statement->execute();
+                                  $band1=true;
+                                  $estudiante=[];
+                                  while($item = $statement->fetch()){
+                                      $band1=false;
+                                      $estudiante[]=array('id_hijo'=>$item->id_hijo,'nombre'=>$item->hijo,'area'=>$item->aula);
+
+                                  }
+
+                                  if ($band1) {
+                                       $out["mensaje"] = array('mensaje'=>"Código valido",'status'=>"A",'tipo'=>"A",'Residente'=> $usuario, 'Estudiante'=>"");
+                                  }else{
+                                     $out["mensaje"]= array('mensaje'=>"Código valido",'status'=>"A",'tipo'=>$residente,'celular'=>$celular,'Residente'=> $usuario, 'Estudiante'=>$estudiante);
+                                  }
+
+
+                              } catch (\PDOException $th) {
+                                  $result = false;
+                                  $out["mensaje"] = "Error con base de datos";
+                                  $out["causa"] = "Error de conexión";
+                                  $response->getBody()->write(json_encode($out));
+                                  return $response->withStatus(500);
+                              }
+
+                          }else{
+                              $out["mensaje"] = array('mensaje'=>"No Se encuentra registrado",'status'=>"E",'tipo'=>$residente,'celular'=>$celular,'Residente'=> $usuario, 'Estudiante'=>"");
+                          }
+                        }else{
+                              $out["mensaje"] = array('mensaje'=>"No Se encuentra registrado",'status'=>"E",'tipo'=>$residente,'celular'=>$celular,'Residente'=> $usuario, 'Estudiante'=>"");
+                        }
+
+                      mysqli_close($conn);
+                    }
+
+                }else{
+                    $out["mensaje"] = array('mensaje'=>"Código Caducado",'status'=>"E",'tipo'=>$residente,'celular'=>$celular,'Residente'=> "", 'Estudiante'=>"");
+                }
 
               }else{
-                  $out["mensaje"] = array('mensaje'=>"Código Caducado",'status'=>"E",'tipo'=>$residente,'celular'=>$celular,'Residente'=> "", 'Estudiante'=>"");
-              }
-            }else{
-              $residente="Visitante";
-              try {
-                  $sql = "SELECT i.personaR as padre, h.nombre as hijo,h.id as id_hijo, a.nombre as aula, i.* FROM  invitacion i INNER JOIN invitacion_hijo ih ON ih.id_invitacion=i.id_invitacion INNER JOIN hijo h on h.id =ih.id_hijo INNER JOIN aula a ON a.id=h.id_aula and h.id_aula=:aula and i.fecha =CURDATE() and h.estado ='A'";
-                  $statement = $db->prepare($sql);
-                  $statement->bindValue(':aula',  $area, \PDO::PARAM_STR);
-                  $result = $statement->execute();
-                  $band1=true;
+                $residente="Visitante";
+                try {
+                    $sql = "SELECT i.personaR as padre, h.nombre as hijo,h.id as id_hijo, a.nombre as aula, i.* FROM  invitacion i INNER JOIN invitacion_hijo ih ON ih.id_invitacion=i.id_invitacion INNER JOIN hijo h on h.id =ih.id_hijo INNER JOIN aula a ON a.id=h.id_aula and h.id_aula=:aula and i.fecha =CURDATE() and h.estado ='A'";
+                    $statement = $db->prepare($sql);
+                    $statement->bindValue(':aula',  $area, \PDO::PARAM_STR);
+                    $result = $statement->execute();
+                    $band1=true;
 
-                  while($item = $statement->fetch()){
-                      $fecha2 = date( "dHis",strtotime($item->fecha_invitacion));
-                      $val1 =intval( $fecha2);
-                      $total =$val1-$val2;
-                      if ($total==0) {
-                          $band1=false;
-                          $estudiante[]=array('id_hijo'=>$item->id_hijo,'nombre'=>$item->hijo,'area'=>$item->aula);;
-                          $celular=$item->celular;
-                          $usuario=$item->personaR;
-                      }
-                  }
-                  if ($band1) {
-                    $out["mensaje"] = array('mensaje'=>"No tiene hijos para retirar",'status'=>"E",'tipo'=>"",'celular'=>"",'Residente'=> "", 'Estudiante'=>"");
-                  }else{
-                     $out["mensaje"]  = array('mensaje'=>"Código valido",'status'=>"A",'tipo'=>$residente,'celular'=>$celular,'Residente'=> $usuario, 'Estudiante'=>$estudiante);
-                  }
+                    while($item = $statement->fetch()){
+                        $fecha2 = date( "dHis",strtotime($item->fecha_invitacion));
+                        $val1 =intval( $fecha2);
+                        $total =$val1-$val2;
+                        if ($total==0) {
+                            $band1=false;
+                            $estudiante[]=array('id_hijo'=>$item->id_hijo,'nombre'=>$item->hijo,'area'=>$item->aula);;
+                            $celular=$item->celular;
+                            $usuario=$item->personaR;
+                        }
+                    }
+                    if ($band1) {
+                      $out["mensaje"] = array('mensaje'=>"No tiene hijos para retirar",'status'=>"E",'tipo'=>"",'celular'=>"",'Residente'=> "", 'Estudiante'=>"");
+                    }else{
+                       $out["mensaje"]  = array('mensaje'=>"Código valido",'status'=>"A",'tipo'=>$residente,'celular'=>$celular,'Residente'=> $usuario, 'Estudiante'=>$estudiante);
+                    }
 
-              } catch (\PDOException $th) {
-                  $result = false;
-                  $out["mensaje"] = "Error con base de datos";
-                  $out["causa"] = "Error de conexión";
-                  $out["error"] = $th->getMessage();
-                  $response->getBody()->write(json_encode($out));
-                  return $response->withStatus(500);
+                } catch (\PDOException $th) {
+                    $result = false;
+                    $out["mensaje"] = "Error con base de datos";
+                    $out["causa"] = "Error de conexión";
+                    $out["error"] = $th->getMessage();
+                    $response->getBody()->write(json_encode($out));
+                    return $response->withStatus(500);
+                }
               }
-            }
-        }else{
-            $out["mensaje"] = array('mensaje'=>"Código inválido",'status'=>"E",'tipo'=>"",'celular'=>"",'Residente'=> "", 'Estudiante'=>"");
+          }else{
+              $out["mensaje"] = array('mensaje'=>"Código inválido",'status'=>"E",'tipo'=>"",'celular'=>"",'Residente'=> "", 'Estudiante'=>"");
+          }
+          $response->getBody()->write(json_encode($out));
+        } catch (\PDOException $th) {
+            $result = false;
+            $out["mensaje"] = "Error con base de datos";
+            $out["causa"] = "Error de conexión";
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
         }
 
-        $response->getBody()->write(json_encode($out));
         return $response;
     }
 
