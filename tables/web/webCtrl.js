@@ -1250,19 +1250,6 @@ angular.module('newApp')
             $('#Mteatro').load('./tables/web/crear_teatro.php', {tipo:"amigos"}, function() {    
                 $('.page-spinner-loader').addClass('hide');
                 $('#Mteatro').modal('show'); // abrir
-                CKEDITOR.replace( 'cke-editor', {
-                    toolbar :
-                        [
-                            { name: 'editing', items : [ 'Find','Replace','-','SelectAll','-','Scayt' ] },
-                            { name: 'basicstyles', items : [ 'Bold','Italic','Strike','-','RemoveFormat' ] },
-                            { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent' ] },
-                            { name: 'links', items : [ 'Link','Unlink' ] }
-                        ]
-                    
-                  });
-                $(document).on('focusin.modal', function (e) {
-                 
-                })
             });
             $('.infoG').load('./tables/web/infoG.php',{tipo:"amigos"}, function() {  
             });
@@ -1277,19 +1264,7 @@ angular.module('newApp')
             $('#Mteatro').load('./tables/web/editar_teatro.php', {var1:id.innerHTML,tipo:"amigos"}, function() {    
                 $('.page-spinner-loader').addClass('hide');
                 $('#Mteatro').modal('show'); // abrir
-                CKEDITOR.replace( 'cke-editor', {
-                    toolbar :
-                        [
-                            { name: 'editing', items : [ 'Find','Replace','-','SelectAll','-','Scayt' ] },
-                            { name: 'basicstyles', items : [ 'Bold','Italic','Strike','-','RemoveFormat' ] },
-                            { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent' ] },
-                            { name: 'links', items : [ 'Link','Unlink' ] }
-                        ]
-                    
-                  });
-                $(document).on('focusin.modal', function (e) {
-                 
-                })
+
             });
             $('.infoG').load('./tables/web/infoG.php',{var1:id.innerHTML,tipo:"amigos"}, function() {  
             });
@@ -1837,7 +1812,7 @@ angular.module('newApp')
             var nombreT=$(this).parents().find('#nombreT')[0].value;
             var tipo2=$(this).parents().find('#tipo2')[0].value;
             var nombre=$(this).parents().find('#Inombre')[0].value;
-            if(tipo2=="instalaciones"){
+            if(tipo2=="instalaciones" | tipo2=="amigos"){
                 var descripcion=$(this).parents().find('#cke-editor')[0].value;
             }else{
                 var objEditor2 = CKEDITOR.instances["cke-editor"];
