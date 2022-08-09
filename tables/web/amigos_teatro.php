@@ -24,7 +24,7 @@ foreach($informacion as $llave => $valores) {
 }
 $re = $client->getAllInformacionTabla('amigos');
 $resultado= "".$re;
-$beneficios =explode(';;',$resultado);
+$beneficios =explode(';;;',$resultado);
 $re = $client->getAllInformacionTabla('amigos_preguntas');
 $resultado= "".$re;
 $instalaciones =explode(';;;',$resultado);
