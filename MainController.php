@@ -2945,12 +2945,15 @@ class MainController extends BaseController
             $statement = $db->prepare($sql);
             $result = $statement->execute();
             while($item = $statement->fetch()){
-              $categoria="";
-              if ($item->id_categoria!=1) {
-                  $categoria=$item->categoria;
-              }
-              $band3=false;
-              $cartelera[]= array('id'=> $item->id_evento, 'nombre'=> $item->nombre, 'duracion'=> $item->duracion, 'imagen'=> $ruta_evento.$item->id_evento."C.png", 'tipo'=> $item->tipo, 'categoria'=> $categoria);
+                if (!in_array($item->id_evento, $eventos)) {
+                    $categoria="";
+                    if ($item->id_categoria!=1) {
+                        $categoria=$item->categoria;
+                    }
+                    $band3=false;
+                    $cartelera[]= array('id'=> $item->id_evento, 'nombre'=> $item->nombre, 'duracion'=> $item->duracion, 'imagen'=> $ruta_evento.$item->id_evento."C.png", 'tipo'=> $item->tipo, 'categoria'=> $categoria, 'sinopsis'=> $item->sinopsis);
+                    $eventos[]= $item->id_evento;
+                }
             }
             if ($band3) {
                 $cartelera=array();
@@ -3485,7 +3488,7 @@ class MainController extends BaseController
                 $ticket[$clave]['asientos']= $asientos[$clave] ;
                 $ticketT[]=$ticket[$clave];
             }
-          
+
             $asitn1=[];
             $sql= "SELECT te.nombre ,te.duracion ,te.id_evento ,te.tipo ,trg.cantidad,trg.estado ,trg.id_registro_gratuito, ts.nombre as sala, tf.fecha FROM tsa_evento te INNER JOIN tsa_funcion tf ON te.id_evento =tf.id_evento INNER JOIN tsa_sala_mapa tsm ON tsm.id_sala_mapa =te.id_sala_mapa
             INNER JOIN tsa_sala ts ON ts.id_sala =tsm.id_sala INNER JOIN tsa_registro_gratuito trg ON trg.id_funcion =tf.id_funcion and trg.id_usuario_cliente =:id_usuario;";
