@@ -3482,11 +3482,12 @@ class MainController extends BaseController
             }
 
             foreach ($tickets as $clave) {
-                $ticket[$clave]['asientos']=  $asientos[$clave];
+                $ticket[$clave]['asientos']= $asientos[$clave] ;
                 $ticketT[]=$ticket[$clave];
             }
+          
             $asitn1=[];
-            $sql= "SELECT te.nombre ,te.duracion ,te.id_evento ,te.tipo ,trg.estado ,trg.id_registro_gratuito, ts.nombre as sala, tf.fecha FROM tsa_evento te INNER JOIN tsa_funcion tf ON te.id_evento =tf.id_evento INNER JOIN tsa_sala_mapa tsm ON tsm.id_sala_mapa =te.id_sala_mapa
+            $sql= "SELECT te.nombre ,te.duracion ,te.id_evento ,te.tipo ,trg.cantidad,trg.estado ,trg.id_registro_gratuito, ts.nombre as sala, tf.fecha FROM tsa_evento te INNER JOIN tsa_funcion tf ON te.id_evento =tf.id_evento INNER JOIN tsa_sala_mapa tsm ON tsm.id_sala_mapa =te.id_sala_mapa
             INNER JOIN tsa_sala ts ON ts.id_sala =tsm.id_sala INNER JOIN tsa_registro_gratuito trg ON trg.id_funcion =tf.id_funcion and trg.id_usuario_cliente =:id_usuario;";
             $statement = $db->prepare($sql);
             $statement->bindValue(':id_usuario', $id_usuario, \PDO::PARAM_STR);
@@ -3500,7 +3501,7 @@ class MainController extends BaseController
                 $auth_token = base64_encode($miCadena);
                 $auth_token1 = base64_encode($auth_token);
                 $ticketT[]= array('id_ticket'=> $item->id_registro_gratuito, 'nombre'=> $item->nombre, 'duracion'=> $item->duracion, 'imagen'=> $ruta_evento.$item->id_evento."H.png",
-               'tipo'=> $item->tipo,'sala'=> $item->sala,'precio'=>"",'fecha'=> $item->fecha,'estado'=> $item->estado,'qr'=>$auth_token1,'asientos'=>$asitn1 );
+               'tipo'=> $item->tipo,'sala'=> $item->sala,'precio'=>"",'fecha'=> $item->fecha,'estado'=> $item->estado,'qr'=>$auth_token1,'asientos'=>$item->cantidad );
 
             }
             usort($ticketT, function ($a, $b) {
