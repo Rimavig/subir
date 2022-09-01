@@ -4402,6 +4402,7 @@ class MainController extends BaseController
 
     public function insertRegistro_gratuito($request, $response, $args){
         include("error.php");
+        include ("conect.php");
         $response = $response->withHeader('Content-Type', 'application/json');
         $corpName = $request->getAttribute('corpName');
         $db = $this->container->get('db');
@@ -4490,7 +4491,10 @@ class MainController extends BaseController
               $ticket= array('id_ticket'=> $id_ticket, 'nombre'=> $item->nombre, 'duracion'=> $item->duracion, 'imagen'=> $ruta_evento.$item->id_evento."H.png",
              'tipo'=> $item->tipo,'sala'=> $item->sala,'precio'=>"",'fecha'=> $item->fecha,'estado'=> $item->estado,'qr'=>$auth_token1,'asientos'=>$cantidad);
 
+             $client->sendMail1("9", $correo, $id_ticket,($nombres).' '.($apellidos),$auth_token1);
+
           }
+
         } catch (\PDOException $th) {
             $result = false;
             $out["codigo"] = "102";
@@ -7766,6 +7770,13 @@ class MainController extends BaseController
             while($item = $statement->fetch()){
               $categorias['nombre_banner']=  $item->nombre;
               $categorias['imagen_banner']=  $ruta.$item->imagen;
+            }
+            $sql = "SELECT * FROM tsa_informacion WHERE estado='A' and tipo='amigos'";
+            //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
+            $statement = $db->prepare($sql);
+            $result = $statement->execute();
+            while($item = $statement->fetch()){
+                $categorias['informacion']=  $item->descripcion;
             }
             $sql = "SELECT * FROM tsa_informacion_tabla WHERE estado='A' and tipo='amigos' ORDER BY  CAST(  orden AS DECIMAL) ASC";
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
