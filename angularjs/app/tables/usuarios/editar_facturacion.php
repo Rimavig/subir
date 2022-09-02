@@ -14,7 +14,7 @@ if (isset($_POST["var1"])) {
     $resultado = "".$re;
     $historial= explode(';;',$resultado);
 }
-
+$idUsuario="";
 foreach($historial as $llave => $valores) {
     $nombre="";
     $apellido=""; 
@@ -46,12 +46,14 @@ foreach($historial as $llave => $valores) {
             $var5="hide";
         }else{
             $razon=$datos[4];
-            $ruc=$datos[3];
+            $ruc=$datos[9];
+            
             $var2="hide";
             $var3="hide";
             $var4="hide";
             $var5="";
         }
+        $idUsuario=$datos[10];
         $direccion=$datos[6];
         $correo=$datos[7];
         $estado=$datos[8];
@@ -64,7 +66,8 @@ foreach($historial as $llave => $valores) {
         </div>
         <div class="modal-body">
                 <div class="row">
-                    <input type="text" name="id" id="id" class="esconder"  value="<?php echo $var1; ?>" disabled>   
+                    <input type="text" name="id" id="id" class="esconder"  value="<?php echo $var1; ?>" disabled> 
+                    <input type="text" name="idUsuario" id="idUsuario" class="esconder"  value="<?php echo $idUsuario; ?>" disabled>     
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="field-1" class="control-label">Tipo</label>

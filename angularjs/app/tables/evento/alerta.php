@@ -50,8 +50,8 @@ if ($band) {
         $band2=true;
     } else if ($_POST["tipo"]==="Egratuito") {
         $id=$_POST["id_evento"];
-        $preventa=$_POST["preventa"];
-        $re = $client->updateEvento_informacion($nombre,$duracion,$fechaI,$fechaf,$productora,$salamapa,$tipoE,$espectaculo,$categoria,$clasificacion,$procedencia,$aforo,"G","A",$id, "N", $_SESSION["usuario"]);
+        $cantidad=$_POST["cantidad"];
+        $re = $client->updateEvento_informacion($nombre,$duracion,$fechaI,$fechaf,$productora,$salamapa,$tipoE,$espectaculo,$categoria,$clasificacion,$procedencia,$aforo,"G","A",$id, $cantidad, $_SESSION["usuario"]);
         $resultado = "".$re;
         $band2=true;   
     } else if ($_POST["tipo"]==="Einformativo") {

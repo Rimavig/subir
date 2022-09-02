@@ -96,6 +96,13 @@ foreach($usuarios as $llave => $valores1) {
                                
                             </div>
                         </tab>
+                        <tab>
+                            <tab-heading>
+                                Funciones (Ocultas)
+                            </tab-heading>
+                            <div class="funciones" id="funciones">
+                            </div>
+                        </tab>
                     </tabset>
                 </div> 
             </div>

@@ -40,6 +40,8 @@ foreach($usuarios as $llave => $valores1) {
                         <th>Nombre Cliente</th>
                         <th>Identificación Cliente</th>
                         <th>Correo Cliente</th>
+                        <th>Tipo Promo</th>
+                        <th>Nombre Promo</th>
                         <th>Precio($)</th>
                         <th>Descuento($)</th>
                         <th>Puntos Canjeados($)</th>

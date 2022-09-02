@@ -51,16 +51,16 @@ foreach($usuarios as $llave => $valores) {
     if (isset($usuario[1])) {
         $idCaja="OFF";
         $band2=false;
-        if ($usuario[5]==="900" && $movil) {
+        if ($usuario[5]==="100" && $movil) {
             $band2=true;
             $idCaja="1";
-        } else if ($usuario[5]==="901" && $b1) {
+        } else if ($usuario[5]==="101" && $b1) {
             $band2=true;
             $idCaja="2";
-        } else if ($usuario[5]==="902" && $b2) {
+        } else if ($usuario[5]==="102" && $b2) {
             $band2=true;
             $idCaja="3";
-        } else if ($usuario[5]==="903" && $recepcion) {
+        } else if ($usuario[5]==="103" && $recepcion) {
             $band2=true;
             $idCaja="4";
         } 

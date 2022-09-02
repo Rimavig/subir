@@ -22,10 +22,16 @@ foreach($usuarios1 as $llave => $valores1) {
     if($valores1==="5"){
         $estado='<a class="estadoR btn btn-sm btn-warning" style="margin: 5px 0px;" href="javascript:;"><i class="icon-lock"></i></a>';
     }
+    if($valores1==="5"){
+        $ver='<a class="verR btn btn-sm btn-blue" style="margin: 5px 0px;" href="javascript:;"><i class="glyphicon glyphicon-qrcode"></i></a>';
+    }
+    if($valores1==="5"){
+        $correo='<a class="correoR btn btn-sm btn-success" style="margin: 5px 0px;" href="javascript:;"><i class="icon-envelope"></i></a>';
+    }
 }
 $datat=NULL;
 $data=[];
-$text=$editar." ".$eliminar." ".$estado;   
+$text=$editar." ".$eliminar." ".$estado." ".$ver." ".$correo;   
 foreach($funciones as $llave => $valores) {
     $funcion =explode(',,,',$valores);
     $estado="";
@@ -33,7 +39,7 @@ foreach($funciones as $llave => $valores) {
     $fact="";
     $localidad="";
     if (isset($funcion[2])) {
-        if ($funcion[10]==="A" ) {
+        if ($funcion[11]==="A" ) {
             $estado="checked";
             $estadoT="ON";
         } 
@@ -54,7 +60,7 @@ foreach($funciones as $llave => $valores) {
                     <span id="estado" class="esconder"> '.$estadoT.' </span>
                 </label>
             </div>';
-        $data[]=array($funcion[0],$funcion[1],$funcion[2],$funcion[3],$funcion[4],$funcion[5],$funcion[6],$localidad,$funcion[8],$funcion[9],$est1,$text);
+        $data[]=array($funcion[0],$funcion[1],$funcion[2],$funcion[3],$funcion[4],$funcion[5],$funcion[6],$localidad,$funcion[8],$funcion[9],$funcion[10],$est1,$text);
     } 
 } 
 $dataT['data']=$data;   

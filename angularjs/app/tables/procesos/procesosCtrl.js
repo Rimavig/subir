@@ -721,6 +721,10 @@ angular.module('newApp')
 
       $scope.$on('$destroy', function () {
         $('#table-editable').DataTable().clear().destroy();
+        var tables = $.fn.dataTable.fnTables(true);
+        $(tables).each(function () {
+            $(this).dataTable().fnDestroy();
+        });
         $(document).off('click','.crearBeneficio');
         $(document).off('click','.editarBeneficio');
         $(document).off('click','.crear_beneficio');

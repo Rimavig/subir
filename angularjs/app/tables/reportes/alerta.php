@@ -5,12 +5,68 @@ include ("../../directorio.php");
 $band=true;
 $band2=false;
 $resultado="";
-
+if (isset($_POST["tipo"])) {
+    $tipo=$_POST["tipo"];
+    if ( $tipo=="correoR"){
+        $id = $_POST['id'];
+        $re = $client->getGeneral("correoR",$id);
+        $resultado = "".$re;
+    }
+}
 if (isset($_POST["estado"])) {
     $id=$_POST["id"];
     $estado=$_POST["estado"];
 }
 $status="false";
+if($resultado=="true"){
+    if(isset($_POST["tipo"])){
+        $tipo=$_POST["tipo"];
+        if ( $tipo=="correoR"){
+            ?>
+            <script type="text/javascript"> 
+            var n = noty({
+                text        : '<div class="alert alert-success "><p><strong>Se envió correctamente</p></div>',
+                layout      : 'topCenter', //or left, right, bottom-right...
+                theme       : 'made',
+                type        : 'error',
+                maxVisible  : 5,
+                animation   : {
+                    open  : 'animated bounceIn',
+                    close : 'animated bounceOut'
+                },
+                timeout: 3000,
+                });
+                var table = $('#table-editable2').DataTable();
+                table.ajax.reload();
+                $(".correoR").prop("disabled",false);
+            </script>
+            <?php
+        }
+    }
+}else{
+    if (isset($_POST["tipo"])){
+        $tipo=$_POST["tipo"];
+        if ( $tipo=="correoR"){
+            ?>
+            <script type="text/javascript"> 
+                var n = noty({
+                    text        : '<div class="alert alert-warning "><p><strong>Error no se pudo editar</p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
+                });
+                $(".correoR").prop("disabled",false);
+            </script>
+            <?php
+        }
+    }
+}
 if ($band) {
 //MANTENIMIENTO
     if ($_POST["tipo"]==="estado") {

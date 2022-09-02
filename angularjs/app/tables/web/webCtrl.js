@@ -1686,7 +1686,7 @@ angular.module('newApp')
             var nombreT=$(this).parents().find('#nombreT')[0].value;
             var tipo2=$(this).parents().find('#tipo2')[0].value;
             var nombre=$(this).parents().find('#Inombre')[0].value;
-            if(tipo2=="instalaciones"){
+            if(tipo2=="instalaciones" | tipo2=="amigos"){
                 var descripcion=$(this).parents().find('#cke-editor')[0].value;
             }else{
                 var objEditor2 = CKEDITOR.instances["cke-editor"];
@@ -3944,7 +3944,10 @@ angular.module('newApp')
         if (CKEDITOR.instances["cke-editor"]) {
             CKEDITOR.instances["cke-editor"].destroy();
        }
-
+       var tables = $.fn.dataTable.fnTables(true);
+       $(tables).each(function () {
+           $(this).dataTable().fnDestroy();
+       });
         $(document).off('click','.guardarQuienes');
         $(document).off('click','.guardarMisionT');
         $(document).off('click','.guardarVisionT');

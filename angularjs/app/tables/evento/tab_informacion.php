@@ -8,6 +8,7 @@ $editar="";
 $esconder="hide";
 $informacion="hide";
 $preventaG="hide";
+$cantidadG="hide";
 $categoria= explode(';;',"".$client->getAllCategoria());
 $clasificacion=explode(';;',"".$client->getAllClasificacion());
 $espectaculo= explode(';;',"".$client->getAllTipoEspectaculo());
@@ -34,6 +35,7 @@ if ($_POST["tipo"]==="venta") {
     }
 }else if ($_POST["tipo"]==="gratuito") {
     $tipo2="Egratuito";
+    $cantidadG="";
     $nombreT="el evento gratuito";
     $re = $client->getPerfilRol($_SESSION["id"],"20");
     $resultado = "".$re;
@@ -75,6 +77,7 @@ foreach($historial as $llave => $valores) {
         $aforo=$datos[13];
         $vendidos=$datos[14];
         $preventa=$datos[18];
+        $cantidad=$datos[19];
         $estadoPV="";
         $estadoPVT="OFF";
     
@@ -330,6 +333,12 @@ foreach($historial as $llave => $valores) {
             <div class="form-group">
                 <label for="field-3" class="control-label">Aforo</label>
                 <input class="form-control input-sm" type="number" id="Eaforo"  value="<?php echo $aforo; ?>"  <?php echo $disabled; ?> name="duracionE" placeholder="" required>
+            </div>
+        </div>
+        <div class="col-md-2 <?php echo $cantidadG; ?>" >
+            <div class="form-group">
+                <label for="field-3" class="control-label">Cantidad Maxima</label>
+                <input class="form-control input-sm" type="number" id="cantidad"  value="<?php echo $cantidad; ?>"  name="duracionE" placeholder="" required>
             </div>
         </div>
         <div class="col-md-3 <?php echo $preventaG; ?>">

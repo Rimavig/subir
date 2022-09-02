@@ -34,7 +34,7 @@ if ($_POST["tipo"]==="venta") {
     $tipo2="Einformativo";
     $nombreT="el evento informativo";
     $esconder="";
-    $re = $client->getPerfilRol($_SESSION["id"],"21");
+    $re = $client->getPerfilRol($_SESSION["id"],"19");
     $resultado = "".$re;
     $usuarios= explode(',',$resultado);
     foreach($usuarios as $llave => $valores1) {

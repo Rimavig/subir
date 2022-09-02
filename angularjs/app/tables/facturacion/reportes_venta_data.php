@@ -8,12 +8,41 @@ $resultado= "".$re;
 $usuarios =explode(';;',$resultado);
 $datat=NULL;
 $data=[];
-$text=' <a class="editarVC btn btn-sm btn-dark" style="margin: 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';      
+$text=' <a class="editarVC btn btn-sm btn-dark" style="margin: 0px;  "  href="javascript:;"><i class="icon-note"></i></a> 
+<a class="correoR btn btn-sm btn-success" style="margin: 5px 0px;" href="javascript:;"><i class="icon-envelope"></i></a>';      
 
 foreach($usuarios as $llave => $valores) {
     $usuario =explode(',,,',$valores);
+    $estado="";
+    $estadoT="OFF";
+    $estado1="";
+    $estadoT1="OFF";
     if (isset($usuario[2])) {
-        $data[]=array($usuario[0],' <a class=" btn-sm " style="margin: 0px;" href="http://www.tsa.arhena.com.ec/archivos/factura/'.$usuario[9].'.pdf" target="_blank">'.$usuario[9].'</a>',$usuario[17],$usuario[16],$usuario[14],$usuario[3],$usuario[4],$usuario[5],$usuario[6],$usuario[8],$usuario[15],$text);
+        if ($usuario[15]==="A" ) {
+            $estado="checked";
+            $estadoT="ON";
+        }
+        if ($usuario[13]==="A" ) {
+            $estado1="checked";
+            $estadoT1="ON";
+        }
+        $est1='<div class="form-group">
+                <label class="switch switch-green">
+                    <input type="checkbox" class="switch-input" id="box" '.$estado.' disabled>
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                    <span id="estado" class="esconder"> '.$estadoT.' </span>
+                </label>
+            </div>';
+        $est2='<div class="form-group">
+            <label class="switch switch-green">
+                <input type="checkbox" class="switch-input" id="box" '.$estado1.' disabled>
+                <span class="switch-label" data-on="On" data-off="Off"></span>
+                <span class="switch-handle"></span>
+                <span id="estado" class="esconder"> '.$estadoT1.' </span>
+            </label>
+        </div>';
+        $data[]=array($usuario[0],' <a class=" btn-sm " style="margin: 0px;" href="http://www.tsa.arhena.com.ec/archivos/factura/'.$usuario[9].'.pdf" target="_blank">'.$usuario[9].'</a>',$usuario[17],$usuario[16],$usuario[14],$usuario[3],$usuario[4],$usuario[5],$usuario[6],$usuario[8],$usuario[12],$est2,$est1,$text);
     } 
 } 
 $dataT['data']=$data;   

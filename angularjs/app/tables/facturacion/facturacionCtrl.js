@@ -787,6 +787,28 @@ angular.module('newApp')
             });
             $(this).prop("disabled",false);
         });
+        $(document).on('click', '.editarFCP', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            var id=$(this).parents().find('#idFacturacion')[0].value;
+            var idCompra=$(this).parents().find('#idCompra')[0].value;
+            $('.page-spinner-loader').removeClass('hide');
+            if (id=="1"){
+                $('#Cusuarios').load('./tables/facturacion/editar_facturacion.php', {var1:id,idCompra:idCompra, tipo:"evento"},function() {    
+                    $('.page-spinner-loader').addClass('hide');
+                    $('#Cusuarios').modal('show'); // abrir
+                });
+            }else{
+                $('#Cusuarios').load('./tables/usuarios/editar_facturacion.php', {var1:id,idCompra:idCompra, tipo:"evento"},function() {    
+                    $('.page-spinner-loader').addClass('hide');
+                    $('#Cusuarios').modal('show'); // abrir
+                });
+            }
+            
+            
+            $(this).prop("disabled",false);
+        });
         $(document).on('click', '.crearF', function (e) {
             e.preventDefault();
             e.stopImmediatePropagation();
@@ -973,7 +995,45 @@ angular.module('newApp')
                 }
             }
             if(band){
-                $('#alerta').load('./tables/usuarios/alerta.php', {tipo:"editarF",id:id, nombres:nombres,apellidos:apellidos,cedula:cedula,razon:razon,direccion:direccion,correo:correo, ruc:ruc,pasaporte:pasaporte,tipoF:tipo,usuario:idUsuario},function() {    
+                var idCompra=$(this).parents().find('#idCompra')[0].value;
+                $('#alerta').load('./tables/facturacion/alerta.php', {tipo:"editarF",id:id, nombres:nombres,apellidos:apellidos,cedula:cedula,razon:razon,direccion:direccion,correo:correo, ruc:ruc,pasaporte:pasaporte,tipoF:tipo,usuario:idUsuario,idCompra:idCompra},function() {    
+                    $('.page-spinner-loader').addClass('hide');
+                });
+            }else{
+                $('.page-spinner-loader').addClass('hide');
+                $(this).prop("disabled",false);
+            }   
+           
+        //    $(this).prop("disabled",false);
+        });
+        $(document).on('click', '.editar_facturacion2', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            $('.page-spinner-loader').removeClass('hide');
+            var correo=$(this).parents().find('#correoF')[0].value;
+            var idCompra=$(this).parents().find('#idCompra')[0].value;
+            var band=true;
+            var emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+            //Se muestra un texto a modo de ejemplo, luego va a ser un icono
+            if (!emailRegex.test(correo)) {
+                var n = noty({
+                    text        : '<div class="alert alert-warning "><p><strong>Ingrese correo correcto</p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
+                });
+                band=false;
+            }
+            
+            if(band){
+                $('#alerta').load('./tables/facturacion/alerta.php', {tipo:"editarF2",idCompra:idCompra,correo:correo},function() {    
                     $('.page-spinner-loader').addClass('hide');
                 });
             }else{
@@ -1324,6 +1384,8 @@ angular.module('newApp')
             $('.infoCompraMV').addClass('hide');   
             $('.taquillaMV').addClass('hide');
             $('.taquillaG').removeClass('hide');
+            var table = $('#table-ventas').DataTable();
+            table.ajax.reload();
         });
         $(document).on('click', '.atrasRCompra', function (e) {
             e.preventDefault();
@@ -1876,9 +1938,54 @@ angular.module('newApp')
             }else{
                 $('#alerta').load('./tables/facturacion/alerta.php', {tipo:"facturar", id:id},function() {    
                     $('.page-spinner-loader').addClass('hide');
-                    // estado.checked = false;
-                    //oTable.fnUpdate('<label class="switch switch-green"> <input type="checkbox" class="switch-input" id="box" disabled> <span class="switch-label" data-on="On" data-off="Off"></span> <span class="switch-handle"></span> <span id="estado" class="esconder">Off</span> </label>', nRow, 6, false);
-                    //  oTable.fnDraw();
+                });
+            }
+            
+            
+        });
+        $(document).on('click', '.deleteCompra', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            var id=$(this).parents().find('#idCompra')[0].value;
+            if (confirm("Estás seguro de Eliminar compra?") == false) {
+                $(this).prop("disabled",false);
+                return;
+            }else{
+                $('#alerta').load('./tables/facturacion/alerta.php', {tipo:"deleteCompra", id:id},function() {    
+                    $('.page-spinner-loader').addClass('hide');
+                });
+            }
+            
+            
+        });
+        $(document).on('click', '.devolucion', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            var id=$(this).parents().find('#idCompra')[0].value;
+            if (confirm("Estás seguro de realizar devolución Paymentez?") == false) {
+                $(this).prop("disabled",false);
+                return;
+            }else{
+                $('#alerta').load('./tables/facturacion/alerta.php', {tipo:"devolucion", id:id},function() {    
+                    $('.page-spinner-loader').addClass('hide');
+                });
+            }
+            
+            
+        });
+        $(document).on('click', '.anularFacura', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            var id=$(this).parents().find('#idCompra')[0].value;
+            if (confirm("Estás seguro de anular y eliminar la compra?") == false) {
+                $(this).prop("disabled",false);
+                return;
+            }else{
+                $('#alerta').load('./tables/facturacion/alerta.php', {tipo:"anularFacura", id:id},function() {    
+                    $('.page-spinner-loader').addClass('hide');
                 });
             }
             
@@ -1900,15 +2007,36 @@ angular.module('newApp')
             
             
         });
+        $(document).on('click', '.correoR', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            var id=$(this).parents('tr').find('.hide_column')[0].innerHTML;
+            $('.page-spinner-loader').removeClass('hide');
+            $('#alerta').load('./tables/facturacion/alerta.php', {tipo:"correoR", id:id},function() {    
+                $('.page-spinner-loader').addClass('hide');
+            });
+            
+    
+        });
     });
 
       $scope.$on('$destroy', function () {
         $('#table-reservas').DataTable().clear().destroy();
+        $('#table-ventas').DataTable().clear().destroy();
         $('#table-reservasP').DataTable().clear().destroy();
         $('#table-cajas').DataTable().clear().destroy();
         $('#table-pagos').DataTable().clear().destroy();
         $('#table-editable').DataTable().clear().destroy();
         $('#table-editable1').DataTable().clear().destroy();
+        var tables = $.fn.dataTable.fnTables(true);
+        $(tables).each(function () {
+            $(this).dataTable().fnDestroy();
+        });
+        $(document).off('click','.editar_facturacion2');
+        $(document).off('click','.editarFCP');
+        $(document).off('click','.deleteCompra');
+        $(document).off('click','.devolucion');
         $(document).off('click','.editar');
         $(document).off('change','#eventoG');
         $(document).off('change','.funciones');
@@ -1955,6 +2083,7 @@ angular.module('newApp')
         $(document).off('click','.salirRCompra');
         $(document).off('click','.editarMT');
         $(document).off('click','.editarMV');
+        $(document).off('click','.editarVC');
         $(document).off('click','.verPromo');
         $(document).off('click','.facturar');
         $(document).off('click','.notaCredito');

@@ -317,6 +317,7 @@ angular.module('newApp')
                 var espectaculo=$(this).parents().find('#Eespectaculo')[0].value;
                 var procedencia=$(this).parents().find('#Eprocedencia')[0].value;
                 var salamapa=$(this).parents().find('#Edistribucion')[0].value;
+                var cantidad=$(this).parents().find('#cantidad')[0].value;
                 var aforo=$(this).parents().find('#Eaforo')[0].value;
                 var preventa=$(this).parents().find('#boxP')[0];
                 if(preventa.checked){
@@ -389,6 +390,21 @@ angular.module('newApp')
                     });
                     band=false;
                 }
+                if(cantidad < 1){
+                    var n = noty({
+                        text        : '<div class="alert alert-warning "><p><strong>Ingrese una Cantidad</p></div>',
+                        layout      : 'topCenter', //or left, right, bottom-right...
+                        theme       : 'made',
+                        type        : 'error',
+                        maxVisible  : 5,
+                        animation   : {
+                            open  : 'animated bounceIn',
+                            close : 'animated bounceOut'
+                        },
+                        timeout: 3000,
+                    });
+                    band=false;
+                }
                 if(aforo <= 0){
                     var n = noty({
                         text        : '<div class="alert alert-warning "><p><strong>Ingrese un aforo</p></div>',
@@ -420,7 +436,7 @@ angular.module('newApp')
                     band=false;
                 }
                 if(band){
-                    $('#alerta').load('./tables/evento/alerta.php', {tipo:tipo,tipo2:"editar",id_evento:id_evento, preventa:preventa1, nombreT:nombreT,nombre:nombre, duracion:duracion,fechaI:fechaI,fechaf:fechaf,tipoE:tipoE,productora:productora,categoria:categoria,clasificacion:clasificacion,espectaculo:espectaculo,procedencia:procedencia,salamapa:salamapa,aforo:aforo},function() {    
+                    $('#alerta').load('./tables/evento/alerta.php', {tipo:tipo,tipo2:"editar",id_evento:id_evento, preventa:preventa1, nombreT:nombreT,nombre:nombre, duracion:duracion,fechaI:fechaI,fechaf:fechaf,tipoE:tipoE,productora:productora,categoria:categoria,clasificacion:clasificacion,espectaculo:espectaculo,procedencia:procedencia,salamapa:salamapa,aforo:aforo, cantidad:cantidad},function() {    
                         $('.page-spinner-loader').addClass('hide');
                         });
                 }else{
@@ -1179,6 +1195,10 @@ angular.module('newApp')
       $scope.$on('$destroy', function () {
         $('#table-editable').DataTable().clear().destroy();
         $('#table-editable3').DataTable().clear().destroy();
+        var tables = $.fn.dataTable.fnTables(true);
+        $(tables).each(function () {
+            $(this).dataTable().fnDestroy();
+        });
         $(document).off('click','.crear');
         $(document).off('change','#sala');
         $(document).off('click','.mapa');

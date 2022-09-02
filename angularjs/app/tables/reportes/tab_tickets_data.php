@@ -45,9 +45,9 @@ foreach($funciones as $llave => $valores) {
             $localidad="Taquilla";
         } 
         if ($funcion[2]==="CORTESIA" ) {
-            $fact="";
+            $fact="CORTESIA";
         } else{
-            $fact=' <a class="btn btn-sm btn-blue" style="margin: 0px;" href="http://www.tsa.arhena.com.ec/archivos/factura/'.$funcion[2].'.pdf" target="_blank"><i class="fa fa-check-square"></i></a>';
+            $fact=' <a class=" btn-sm " style="margin: 0px;" href="http://www.tsa.arhena.com.ec/archivos/factura/'.$funcion[2].'.pdf" target="_blank">'.$funcion[2].'</a>';
         }
         $est1='<div class="form-group">
                 <label class="switch switch-green">
@@ -57,7 +57,7 @@ foreach($funciones as $llave => $valores) {
                     <span id="estado" class="esconder"> '.$estadoT.' </span>
                 </label>
             </div>';
-        $data[]=array($funcion[0],$funcion[1],$funcion[2],$localidad,$funcion[3],$funcion[4],$funcion[5],$funcion[6],$funcion[7],$funcion[8],$est1,$text.$fact);
+        $data[]=array($funcion[0],$funcion[1],$fact,$localidad,$funcion[3],$funcion[4],$funcion[5],$funcion[11],$funcion[12],$funcion[6],$funcion[7],$funcion[8],$est1,$text);
     } 
 } 
 $dataT['data']=$data;   

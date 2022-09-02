@@ -163,6 +163,7 @@ angular.module('newApp')
             e.stopImmediatePropagation();
             $(this).prop("disabled",true); 
             var estado=$(this).parents('tr').find('.hide_column')[0];
+           
             $('.page-spinner-loader').removeClass('hide');
             $('#ticketsR').load('./tables/reportes/tab_tickets.php', {var1:estado.innerHTML},function() {    
                 $('.page-spinner-loader').addClass('hide');
@@ -248,7 +249,7 @@ angular.module('newApp')
                     ],
                     "aoColumnDefs": [
                         {
-                            "targets": [ 0,1 ],
+                            "targets": [ 0 ],
                              "className": "hide_column"
                         }
                     ]});
@@ -310,6 +311,7 @@ angular.module('newApp')
             e.stopImmediatePropagation();
             $(this).prop("disabled",true); 
             var estado=$(this).parents('tr').find('.hide_column')[1];
+            console.log($(this).parents('tr').find('.hide_column'))
             $('.page-spinner-loader').removeClass('hide');
             $('.infoCompraMV').load('./tables/facturacion/info_compra.php', {var1:estado.innerHTML},function() {    
                 $('.page-spinner-loader').addClass('hide');
@@ -437,14 +439,39 @@ angular.module('newApp')
             $(this).prop("disabled",false);
     
         });
+        $(document).on('click', '.verR', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            var image = document.getElementById('imagen1');
+            var id=$(this).parents('tr').find('.hide_column')[0].innerHTML;
+            image.src = "http://104.198.222.134/plantilla/qr/qrcodeG"+id+".png";
+            $('#verMapa').modal('show'); // abrir
         });
+        $(document).on('click', '.correoR', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            var id=$(this).parents('tr').find('.hide_column')[0].innerHTML;
+            $('.page-spinner-loader').removeClass('hide');
+            $('#alerta').load('./tables/reportes/alerta.php', {tipo:"correoR", id:id},function() {    
+                $('.page-spinner-loader').addClass('hide');
+            });
+            
+    
+        });
+    });
 
-      $scope.$on('$destroy', function () {
+    $scope.$on('$destroy', function () {
         $('#table-editable').DataTable().clear().destroy();
         $('#table-editable3').DataTable().clear().destroy();
         $('#table-editable2').DataTable().clear().destroy();
         $('#table-editable4').DataTable().clear().destroy();
         $('#table-editable').DataTable().clear().destroy();
+        var tables = $.fn.dataTable.fnTables(true);
+        $(tables).each(function () {
+            $(this).dataTable().fnDestroy();
+        });
+        $(document).off('click','.correoR');
         $(document).off('click','.editar');
         $(document).off('click','.editarG');
         $(document).off('click','.editarA');

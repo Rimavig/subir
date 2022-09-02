@@ -1,6 +1,7 @@
 <?php
 include ("../../conect.php");
 include ("../../autenticacion.php");
+
 if (isset($_POST["var1"])) {
     $var1 = $_POST['var1'];
 }
@@ -41,6 +42,7 @@ foreach($usuarios as $llave => $valores1) {
                         <th>Celular</th>
                         <th>Fecha Nacimiento</th>
                         <th>Localidad</th>
+                        <th>Cantidad</th>
                         <th>Fecha Registro</th>
                         <th>Fecha Ingreso</th>
                         <th>Estado</th>
@@ -53,6 +55,23 @@ foreach($usuarios as $llave => $valores1) {
                 <button type="reset" class="btn btn-embossed btn-default cancelarTicket" >Atras</button>
                 <button type="reset" class="salirRCompra btn btn-embossed btn-danger">Salir</button>
             </div> 
+        </div>
+    </div>
+</div>
+<div class="modal fade verMapa" id="verMapa" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-mantenimiento">
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <button data-dismiss="modal" aria-hidden="true">
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <div class="fileinput-new thumbnail">
+                                <img id="imagen1" style="width: 500px;" data-src="" src="../../../assets/global/images/mapa/<?php echo $imagen; ?>" class="img-responsive" alt="gallery 3">
+                            </div>
+                        </div>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -1977,6 +1977,10 @@ angular.module('newApp')
 
       $scope.$on('$destroy', function () {
         $('#table-editable').DataTable().clear().destroy();
+        var tables = $.fn.dataTable.fnTables(true);
+        $(tables).each(function () {
+            $(this).dataTable().fnDestroy();
+        });
         $(document).off('click','.editar');
         $(document).off('click','.delete_general');
         $(document).off('click','.estado_general');

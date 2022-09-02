@@ -20,7 +20,7 @@ if (isset($_POST["var1"])) {
     $datos =explode(',,,',$historial[0]);
     $datos1 =explode(';;',$historial[1]);
     $datos2 =explode(';;',$historial[2]);
-    
+    $idFacturacion="";
     $datos3 =explode(';;',$historial[3]);
     if (isset($datos[6])) {
         $tipo=$datos[0];
@@ -35,6 +35,7 @@ if (isset($_POST["var1"])) {
         $dolares_canjeados=$datos[9];
         $descuento=$datos[10];
         $total=$datos[11];
+        $idFacturacion=$datos[12];
     }
 
 }
@@ -46,6 +47,7 @@ if (isset($_POST["var1"])) {
             <h3> Detalle de <strong>Compra</strong> </h3>
         </div>
         <input type="text" name="idCompra" id="idCompra" class="esconder"  value="<?php echo $var1; ?>" disabled>
+        <input type="text" name="idFacturacion" id="idFacturacion" class="esconder"  value="<?php echo $idFacturacion; ?>" disabled>
         <div class="panel-content pagination2 table-responsive " >
             <div class="row">
                 <div class="col-md-3">
@@ -155,6 +157,12 @@ if (isset($_POST["var1"])) {
                         <input type="text"  id="totalG"  value="<?php echo  $total; ?>" class="form-control" placeholder="0.0" minlength="5" disabled>
                     </div>
                 </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <a class="editarFCP btn btn-sm btn-dark <?php echo  $var4; ?>" style="margin: 5px;  "  href="javascript:;"><i class="icon-note"></i></a>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>
@@ -295,8 +303,11 @@ if (isset($_POST["var1"])) {
 </div>    
 <div class="modal-footer text-center">
     <button type="reset" class="atrasRCompra btn btn-embossed btn-default <?php echo  $var3; ?>" >Atras</button>
-    <button type="reset" class="facturar btn btn-embossed btn-warning <?php echo  $var4; ?>" >Editar Factura</button>
-    <button type="reset" class="notaCredito btn btn-embossed btn-warning <?php echo  $var4; ?>" >Crear Nota Crédito</button>
+    <button type="reset" class="facturar btn btn-embossed btn-warning <?php echo  $var4; ?>" >Actualizar Factura</button>
+    <button type="reset" class="deleteCompra btn btn-embossed btn-danger <?php echo  $var4; ?>" >Eliminar Compra</button>
+    <button type="reset" class="devolucion btn btn-embossed btn-blue <?php echo  $var4; ?>" >Devolución Paymentez</button>
+    <button type="reset" class="anularFacura btn btn-embossed btn-blue <?php echo  $var4; ?>" >Anular Compra</button>
+    <button type="reset" class="notaCredito btn btn-embossed btn-success <?php echo  $var4; ?>" >Crear Nota Crédito</button>
     <button type="reset" class="salirRCompra btn btn-embossed btn-danger">Salir</button>
 </div>
 <div class="modal fade  Cpromocion" data-keyboard="false" data-backdrop="static" id="Cpromocion" aria-hidden="true">

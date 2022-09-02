@@ -78,14 +78,54 @@ if (isset($_POST["tipo"])) {
         $resultado = "".$re;
     }else if ( $tipo=="facturar"){
         $id=$_POST["id"];
-        $re = $client->Facturacion($id, $_SESSION["usuario"]);
+        $re = $client->Facturacion($id,"", $_SESSION["usuario"]);
         $resultado = "".$re;
     }else if ( $tipo=="notaCredito"){
         $id=$_POST["id"];
-        $re = $client->Facturacion($id, "NC");
+        $re = $client->Facturacion($id, "NC", $_SESSION["usuario"]);
+        $resultado = "".$re;
+    }else if ( $tipo=="deleteCompra"){
+        $id=$_POST["id"];
+        $re = $client->updateGeneral("deleteCompra",$id,"B","",$_SESSION["usuario"]);
+        $resultado = "".$re;
+    }else if ( $tipo=="devolucion"){
+        $id=$_POST["id"];
+        $re = $client->updateGeneral("devolucion",$id,"B","",$_SESSION["usuario"]);
+        $resultado = "".$re;
+    }else if ( $tipo=="anularFacura"){
+        $id=$_POST["id"];
+        $re = $client->updateGeneral("anularFacura",$id,"B","",$_SESSION["usuario"]);
+        $resultado = "".$re;
+    }else if ($_POST["tipo"]==="editarF") {
+        $nombre=$_POST["nombres"];
+        $apellido=$_POST["apellidos"];
+        $razon=$_POST["razon"];
+        $tipoF=$_POST["tipoF"];
+        $usuario=$_POST["usuario"];
+        if($tipoF==="cedula"){
+            $cedula=$_POST["cedula"];
+        }else if($tipoF==="ruc"){
+            $cedula=$_POST["ruc"];
+        }else{
+            $cedula=$_POST["pasaporte"];
+        }
+        $direccion=$_POST["direccion"];
+        $correo=$_POST["correo"];
+        $id=$_POST["id"];
+
+        $re = $client->updateFacturacion($nombre,$apellido,$tipoF,$cedula,$razon,$direccion, $correo,"A",$usuario,$id, $_SESSION["usuario"]);
+        $resultado = "".$re;
+    }else if ($_POST["tipo"]==="editarF2") {
+        
+        $correo=$_POST["correo"];
+        $id=$_POST["idCompra"];
+        $re = $client->updateGeneral("factura_correo",$_POST["idCompra"],$_POST["correo"],"",$_SESSION["usuario"]);
+        $resultado = "".$re;
+    } else if ( $tipo=="correoR"){
+        $id = $_POST['id'];
+        $re = $client->getGeneral("correoRF",$id);
         $resultado = "".$re;
     }
-    
 }
 if($tipo=="insertCompra"){
     if (strpos($resultado, ';;') !== false) {
@@ -172,6 +212,8 @@ if($tipo=="insertCompra"){
         if ( $tipo=="abrirCaja"){
             ?>
             <script type="text/javascript"> 
+            var table = $('#table-cajas').DataTable();
+            table.ajax.reload();
             var n = noty({
                 text        : '<div class="alert alert-success "><p><strong>Se abrio la caja correctamente</p></div>',
                 layout      : 'topCenter', //or left, right, bottom-right...
@@ -184,8 +226,7 @@ if($tipo=="insertCompra"){
                 },
                 timeout: 3000,
                 });
-                var table = $('#table-cajas').DataTable();
-                table.ajax.reload();
+                
             </script>
             <?php
         }else if ( $tipo=="editar"){
@@ -224,6 +265,8 @@ if($tipo=="insertCompra"){
         }else if ( $tipo=="estado"){
             ?>
             <script type="text/javascript"> 
+            var table = $('#table-cajas').DataTable();
+            table.ajax.reload();
             var n = noty({
                 text        : '<div class="alert alert-success "><p><strong>Se editó la caja correctamente</p></div>',
                 layout      : 'topCenter', //or left, right, bottom-right...
@@ -236,25 +279,12 @@ if($tipo=="insertCompra"){
                 },
                 timeout: 8000,
                 });
-                var table = $('#table-cajas').DataTable();
-                table.ajax.reload();
             </script>
             <?php
         }else if ( $tipo=="reserva"){
             ?>
             <script type="text/javascript"> 
-            var n = noty({
-                text        : '<div class="alert alert-success "><p><strong>Se agregó con éxito</p></div>',
-                layout      : 'topCenter', //or left, right, bottom-right...
-                theme       : 'made',
-                type        : 'error',
-                maxVisible  : 5,
-                animation   : {
-                    open  : 'animated bounceIn',
-                    close : 'animated bounceOut'
-                },
-                timeout: 3000,
-                });
+                 $('.page-spinner-loader').removeClass('hide');
                 $('#tablaTaquilla').load('./tables/facturacion/caja-venta.php', {var1:<?php echo $id_evento;?>},function() { 
                     $('.tablaCajas').addClass('hide');   
                     $('.page-spinner-loader').addClass('hide');
@@ -271,6 +301,18 @@ if($tipo=="insertCompra"){
                     table.ajax.reload();  
                     var table = $('#table-reservasP').DataTable();
                     table.ajax.reload();  
+                    var n = noty({
+                        text        : '<div class="alert alert-success "><p><strong>Se agregó con éxito</p></div>',
+                        layout      : 'topCenter', //or left, right, bottom-right...
+                        theme       : 'made',
+                        type        : 'error',
+                        maxVisible  : 5,
+                        animation   : {
+                            open  : 'animated bounceIn',
+                            close : 'animated bounceOut'
+                        },
+                        timeout: 3000,
+                    });
                 });
                 CounterInit(600);
                 $('#totalCaja').load('./tables/facturacion/total.php',function() {   
@@ -281,7 +323,14 @@ if($tipo=="insertCompra"){
         }else if ( $tipo=="deleteReserva"){
             ?>
             <script type="text/javascript"> 
-            var n = noty({
+                var table = $('#table-reservas').DataTable();
+                table.ajax.reload();  
+                var tableP = $('#table-reservasP').DataTable();
+                tableP.ajax.reload();    
+                CounterInit(600);
+                $('#totalCaja').load('./tables/facturacion/total.php',function() {    
+                });
+                var n = noty({
                 text        : '<div class="alert alert-success "><p><strong>Se eliminó con éxito</p></div>',
                 layout      : 'topCenter', //or left, right, bottom-right...
                 theme       : 'made',
@@ -292,13 +341,6 @@ if($tipo=="insertCompra"){
                     close : 'animated bounceOut'
                 },
                 timeout: 3000,
-                });
-                var table = $('#table-reservas').DataTable();
-                table.ajax.reload();  
-                var tableP = $('#table-reservasP').DataTable();
-                tableP.ajax.reload();    
-                CounterInit(600);
-                $('#totalCaja').load('./tables/facturacion/total.php',function() {    
                 });
             </script>
             <?php
@@ -343,96 +385,142 @@ if($tipo=="insertCompra"){
         }else if ( $tipo=="agregarPago"){
             ?>
             <script type="text/javascript"> 
-                 var n = noty({
-                text        : '<div class="alert alert-success "><p><strong>Se ingreso pago con éxito</p></div>',
-                layout      : 'topCenter', //or left, right, bottom-right...
-                theme       : 'made',
-                type        : 'error',
-                maxVisible  : 5,
-                animation   : {
-                    open  : 'animated bounceIn',
-                    close : 'animated bounceOut'
-                },
-                timeout: 3000,
-                });
+                $('.page-spinner-loader').removeClass('hide');
                 $('#totalCaja').load('./tables/facturacion/total.php',function() {   
+                    $('.page-spinner-loader').addClass('hide');
+                    var table1 = $('#table-pagos').DataTable();
+                    table1.ajax.reload();    
+                    var n = noty({
+                    text        : '<div class="alert alert-success "><p><strong>Se ingreso pago con éxito</p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
+                    });
+
                 });
-                var table1 = $('#table-pagos').DataTable();
-                table1.ajax.reload();    
+               
             </script>
             <?php
         }else if ( $tipo=="deletePago"){
             ?>
             <script type="text/javascript"> 
-            var n = noty({
-                text        : '<div class="alert alert-success "><p><strong>Se eliminó con éxito</p></div>',
-                layout      : 'topCenter', //or left, right, bottom-right...
-                theme       : 'made',
-                type        : 'error',
-                maxVisible  : 5,
-                animation   : {
-                    open  : 'animated bounceIn',
-                    close : 'animated bounceOut'
-                },
-                timeout: 3000,
+                 $('.page-spinner-loader').removeClass('hide');
+                $('#totalCaja').load('./tables/facturacion/total.php',function() {    
+                    var table1 = $('#table-pagos').DataTable();
+                    $('.page-spinner-loader').addClass('hide');
+                    table1.ajax.reload(); 
+                    var n = noty({
+                    text        : '<div class="alert alert-success "><p><strong>Se eliminó con éxito</p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
+                    }); 
                 });
-                $('#totalCaja').load('./tables/facturacion/total.php',function() {   
-                    
-                });
-                var table1 = $('#table-pagos').DataTable();
-                table1.ajax.reload();    
+   
             </script>
             <?php
         }else if ( $tipo=="puntosAD"){
             ?>
             <script type="text/javascript"> 
-            var n = noty({
-                text        : '<div class="alert alert-success "><p><strong>Se ingreso con éxito</p></div>',
-                layout      : 'topCenter', //or left, right, bottom-right...
-                theme       : 'made',
-                type        : 'error',
-                maxVisible  : 5,
-                animation   : {
-                    open  : 'animated bounceIn',
-                    close : 'animated bounceOut'
-                },
-                timeout: 3000,
-                });
-                $('#totalCaja').load('./tables/facturacion/total.php',function() {   
-                    
-                });
+            
                 var table1 = $('#table-pagos').DataTable();
                 table1.ajax.reload();    
-                $('#Cusuarios').modal('hide'); // abrir
+                $('.page-spinner-loader').removeClass('hide');
+                $('#totalCaja').load('./tables/facturacion/total.php',function() {   
+                    $('.page-spinner-loader').addClass('hide');
+                    $('#Cusuarios').modal('hide'); // abrir
+                    var n = noty({
+                    text        : '<div class="alert alert-success "><p><strong>Se ingreso con éxito</p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
+                    });
+                });
             </script>
             <?php
         }else if ( $tipo=="aplicar_promo"){
             ?>
             <script type="text/javascript"> 
-            var n = noty({
-                text        : '<div class="alert alert-success "><p><strong>Se ingreso promoción con éxito</p></div>',
-                layout      : 'topCenter', //or left, right, bottom-right...
-                theme       : 'made',
-                type        : 'error',
-                maxVisible  : 5,
-                animation   : {
-                    open  : 'animated bounceIn',
-                    close : 'animated bounceOut'
-                },
-                timeout: 3000,
-                });
+            
                 var tableP = $('#table-reservasP').DataTable();
                 tableP.ajax.reload();    
                 CounterInit(600);
-                $('#totalCaja').load('./tables/facturacion/total.php',function() {    
+                $('.page-spinner-loader').removeClass('hide');
+                $('#totalCaja').load('./tables/facturacion/total.php',function() {
+                    $('.page-spinner-loader').addClass('hide');    
+                    $('#Cusuarios').modal('hide'); // abrir
+                    var n = noty({
+                    text        : '<div class="alert alert-success "><p><strong>Se ingreso promoción con éxito</p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
+                    });
                 });
-                $('#Cusuarios').modal('hide'); // abrir
+                
             </script>
             <?php
         }else if ( $tipo=="deleteReservaP"){
             ?>
             <script type="text/javascript"> 
-            var n = noty({
+            
+                var table = $('#table-reservas').DataTable();
+                table.ajax.reload();  
+                var tableP = $('#table-reservasP').DataTable();
+                tableP.ajax.reload();    
+                CounterInit(600);
+                $('.page-spinner-loader').removeClass('hide');
+                $('#totalCaja').load('./tables/facturacion/total.php',function() {    
+                    $('.page-spinner-loader').addClass('hide');
+                    var n = noty({
+                    text        : '<div class="alert alert-success "><p><strong>Se eliminó con éxito</p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
+                    });
+                });
+                
+            </script>
+            <?php
+        }else if ( $tipo=="deleteCompra"){
+            ?>
+            <script type="text/javascript"> 
+                
+                $('.infoCompraMV').addClass('hide');   
+                $('.taquillaMV').addClass('hide');
+                $('.taquillaG').removeClass('hide');
+                var table = $('#table-ventas').DataTable();
+                table.ajax.reload();
+                var n = noty({
                 text        : '<div class="alert alert-success "><p><strong>Se eliminó con éxito</p></div>',
                 layout      : 'topCenter', //or left, right, bottom-right...
                 theme       : 'made',
@@ -444,12 +532,86 @@ if($tipo=="insertCompra"){
                 },
                 timeout: 3000,
                 });
-                var table = $('#table-reservas').DataTable();
-                table.ajax.reload();  
-                var tableP = $('#table-reservasP').DataTable();
-                tableP.ajax.reload();    
-                CounterInit(600);
-                $('#totalCaja').load('./tables/facturacion/total.php',function() {    
+            </script>
+            <?php
+        }else if ( $tipo=="editarF"){
+            $correo=$_POST["correo"];
+            $client->updateGeneral("factura_correo",$_POST["idCompra"],$_POST["correo"],"",$_SESSION["usuario"]);
+            ?>
+            <script type="text/javascript"> 
+                $('.page-spinner-loader').removeClass('hide');
+                var table = $('#table-ventas').DataTable();
+                table.ajax.reload();
+                var idCompra=<?php echo $_POST["idCompra"];?> ;
+                $('.infoCompraMV').load('./tables/facturacion/info_compra.php', {var1:idCompra, var2:"editarVC"},function() {    
+                    $('.page-spinner-loader').addClass('hide');
+                    $('.infoCompraMV').removeClass('hide');   
+                    $('.taquillaMV').addClass('hide');
+                    $('.taquillaG').addClass('hide');
+                    var n = noty({
+                        text        : '<div class="alert alert-success "><p><strong>Se editó con éxito</p></div>',
+                        layout      : 'topCenter', //or left, right, bottom-right...
+                        theme       : 'made',
+                        type        : 'error',
+                        maxVisible  : 5,
+                        animation   : {
+                            open  : 'animated bounceIn',
+                            close : 'animated bounceOut'
+                        },
+                        timeout: 3000,
+                        });
+                        $('#Cusuarios').modal('hide'); 
+                });
+              
+
+                
+            </script>
+            <?php
+        }else if ( $tipo=="editarF2"){
+            ?>
+            <script type="text/javascript"> 
+                 $('.page-spinner-loader').removeClass('hide');
+                var idCompra=<?php echo $_POST["idCompra"];?> ;
+                var table = $('#table-ventas').DataTable();
+                table.ajax.reload();
+                $('.infoCompraMV').load('./tables/facturacion/info_compra.php', {var1:idCompra, var2:"editarVC"},function() {    
+                    $('.page-spinner-loader').addClass('hide');
+                    $('.infoCompraMV').removeClass('hide');   
+                    $('.taquillaMV').addClass('hide');
+                    $('.taquillaG').addClass('hide');
+                    var n = noty({
+                    text        : '<div class="alert alert-success "><p><strong>Se editó con éxito</p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
+                    });
+                    $('#Cusuarios').modal('hide'); 
+                });
+               
+            </script>
+            <?php
+        }else if ( $tipo=="correoR"){
+            ?>
+            <script type="text/javascript"> 
+                var table = $('#table-ventas').DataTable();
+                table.ajax.reload();
+                var n = noty({
+                    text        : '<div class="alert alert-success "><p><strong>Se envió correo correctamente</p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
                 });
             </script>
             <?php
@@ -696,8 +858,108 @@ if($tipo=="insertCompra"){
                 $(".notaCredito").prop("disabled",false);
             </script>
             <?php
+        }else if ( $tipo=="deleteCompra"){
+            ?>
+            <script type="text/javascript"> 
+                var n = noty({
+                    text        : '<div class="alert alert-warning "><p><strong> No se puede Eliminar Compra</p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 10000,
+                });
+                var table = $('#table-ventas').DataTable();
+                table.ajax.reload();  
+                $(".deleteCompra").prop("disabled",false);
+            </script>
+            <?php
+        }else if ( $tipo=="devolucion"){
+            ?>
+            <script type="text/javascript"> 
+                var n = noty({
+                    text        : '<div class="alert alert-warning "><p><strong><?php echo $resultado;?></p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 10000,
+                });
+                var table = $('#table-ventas').DataTable();
+                table.ajax.reload();  
+                $(".devolucion").prop("disabled",false);
+            </script>
+            <?php
+        }else if ( $tipo=="anularFacura"){
+            ?>
+            <script type="text/javascript"> 
+                var n = noty({
+                    text        : '<div class="alert alert-warning "><p><strong><?php echo $resultado;?></p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 10000,
+                });
+                var table = $('#table-ventas').DataTable();
+                table.ajax.reload();  
+                $(".anularFacura").prop("disabled",false);
+            </script>
+            <?php
+        }else if ( $tipo=="editarF" |  $tipo=="editarF2" ){
+            ?>
+            <script type="text/javascript"> 
+                 var n = noty({
+                    text        : '<div class="alert alert-warning  "><p><strong>Error la facturación no se pudo editar</p></div>',
+                    layout      : 'topRight', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
+                 });
+                $(".editar_facturacion").prop("disabled",false);
+                $(".editar_facturacion2").prop("disabled",false);
+                 console.log(<?php echo $resultado;?>);
+            </script>
+            <?php
+        }else if ( $tipo=="correoR"){
+            ?>
+            <script type="text/javascript"> 
+                 var n = noty({
+                    text        : '<div class="alert alert-warning  "><p><strong>Error no se envío  correo</p></div>',
+                    layout      : 'topRight', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
+                 });
+                $(".correoR").prop("disabled",false);
+                 console.log(<?php echo $resultado;?>);
+            </script>
+            <?php
         }
     }
+    
 }
 ?>
 <div class="alsaaerta" id="alertasaa" >

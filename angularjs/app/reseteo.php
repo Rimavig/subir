@@ -51,7 +51,7 @@ include ("conect.php");
                             if(isset($_POST["usuario"]) && isset($_POST["email"])){
                                 $celular = $_POST['usuario'];
                                 $email = $_POST['email'];
-                                $re = $client->generarCodigo($celular,$email);
+                                $re = $client->generarCodigo($celular,$email,"1");
                                 $resultado = "";
                                 $resultado = "".$re;
                             }

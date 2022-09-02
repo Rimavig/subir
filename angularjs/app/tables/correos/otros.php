@@ -65,65 +65,17 @@ if($modulo5){
                             <tab-heading>
                                Destinatarios
                             </tab-heading>
-                            <div class="row">
-                                <div class="col-lg-12 portlets">
-                                    <div class="panel">
-                                        <div class="panel-content pagination2 table-responsive">
-                                            <table class="table filter-footer correos_admin_data <?php echo $exportar; ?> table-dynamic table-correo-admin  " data-table-name="Administración destinatarios correos" id="table-editable" style="table-layout: fixed;">
-                                                <thead>
-                                                    <tr>
-                                                        <th>id</th>
-                                                        <th class="text-center">Tipo Correo</th>
-                                                        <th class="text-center">Correo</th>
-                                                        <th class="text-center">Editar</th>
-                                                    </tr>
-                                                </thead>
-                                                <tfoot>
-                                                    <tr>
-                                                        <th>Id</th>
-                                                        <th>Tipo Correo</th>
-                                                        <th>Correo</th>
-                                                        <th>Estado</th>     
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            
+                            <div class="correoD " id="correoD">
                             </div>
+                            
                         </tab>
                         <tab class="<?php echo $TprocesosAmigosP; ?>"  <?php echo $txt2; ?>>
                             <tab-heading>
                                Error de Correo 
                             </tab-heading>
-                            <div class="row">
-                                <div class="col-lg-12 portlets">
-                                    <div class="panel">
-                                        <div class="panel-content pagination2 table-responsive">
-                                            <table class="table filter-footer correos_error_data <?php echo $exportar; ?> table-dynamic table-correo-error  " data-table-name="Administración de error correos" id="table-editable2" style="table-layout: fixed;">
-                                                <thead>
-                                                    <tr>
-                                                        <th>id</th>
-                                                        <th class="text-center">Tipo Correo</th>
-                                                        <th class="text-center">Correo</th>
-                                                        <th class="text-center">Editar</th>
-                                                    </tr>
-                                                </thead>
-                                                <tfoot>
-                                                    <tr>
-                                                        <th>Id</th>
-                                                        <th>Tipo Correo</th>
-                                                        <th>Correo</th>
-                                                        <th>Estado</th>     
-                                                    </tr>
-                                                </tfoot>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            
+                            <div class="correosE " id="correosE">
                             </div>
+                            
                         </tab>
                     </tabset>
                 </div>
@@ -133,7 +85,7 @@ if($modulo5){
         </div>
     
     </div>
-    <div class="modal fade  Camigos" data-keyboard="false" data-backdrop="static" id="Camigos" aria-hidden="true">
+    <div class="modal fade  Cusuarios" data-keyboard="false" data-backdrop="static" id="Cusuarios" aria-hidden="true">
     </div>                                        
     <div class="alerta" id="alerta" >
     </div>

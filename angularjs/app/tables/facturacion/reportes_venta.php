@@ -41,7 +41,9 @@ foreach($usuarios as $llave => $valores1) {
                                 <th>Dolares canjeados</th>
                                 <th>Descuento</th>
                                 <th>Total</th>
-                                <th>Estado</th>
+                                <th>Estado Pago</th>
+                                <th>Estado Factura</th>
+                                <th>Estado Compra</th>
                                 <th class="text-right">Editar</th>
                             </tr>
                         </thead>
@@ -57,7 +59,9 @@ foreach($usuarios as $llave => $valores1) {
                                 <th>Dolares canjeados</th>
                                 <th>Descuento</th>
                                 <th>Total</th>
-                                <th>Estado</th>
+                                <th>Estado Pago</th>
+                                <th>Estado Factura</th>
+                                <th>Estado Compra</th>
                             </tr>
                         </tfoot>
                     </table>

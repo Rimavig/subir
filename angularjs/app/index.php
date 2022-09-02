@@ -470,7 +470,7 @@ foreach($usuarios as $llave => $valores1) {
                                 <li class="<?php echo $TprocesosAmigosB; ?> " ng-class="{ active  : isActive('/amigos')}"><a href="#amigos"> Amigos del Teatro (APP)</a></li>
                                 <li class="<?php echo $TprocesosContactos; ?> " ng-class="{ active  : isActive('/contactos')}"><a href="#contactos"> Contactos</a></li>
                                 <li class="<?php echo $TprocesosFundacion; ?> " ng-class="{ active  : isActive('/fundacion')}"><a href="#fundacion"> Fundación</a></li>
-                                <li class="<?php echo $TprocesosFundacion; ?> " ng-class="{ active  : isActive('/otras-promo')}"><a href="#otras-promo"> Otras Promoción</a></li>
+                                <li class="<?php echo $TprocesosFundacion; ?> " ng-class="{ active  : isActive('/otras-promo')}"><a href="#otras-promo"> Promoción Fidelidad</a></li>
                             </ul>
                         </li>
                         <?php } ?>
@@ -487,7 +487,7 @@ foreach($usuarios as $llave => $valores1) {
                                 <li ng-class="{ active  : isActive('/correo-cortesia')}"><a href="#correo-cortesia"> Boleto de Cortesía</a></li>
                                 <li ng-class="{ active  : isActive('/correo-eliminar')}"><a href="#correo-eliminar"> Eliminar Cuenta</a></li>
                                 <li ng-class="{ active  : isActive('/correo-gratuito')}"><a href="#correo-gratuito"> Registro Gratuito</a></li>
-                                <!-- li ng-class="{ active  : isActive('/correo-admin')}"><a href="#correo-admin"> Administración Correos</a></li-->
+                                <li ng-class="{ active  : isActive('/correo-admin')}"><a href="#correo-admin"> Administración Correos</a></li>
                             </ul>
                         </li>
                         <?php } ?>
@@ -526,7 +526,7 @@ foreach($usuarios as $llave => $valores1) {
                             <ul class="children collapse">
                                 <li class="<?php echo $TfacturacionCaja; ?> "  ng-class="{ active  : isActive('/caja')}"><a href="#caja"> Caja</a></li>
                                 <li class="<?php echo $TfacturacionReporte; ?> " ng-class="{ active  : isActive('/reportes-caja')}"><a href="#reportes-caja"> Reporte Caja</a></li>
-                                <li class="" ng-class="{ active  : isActive('/reportes-venta')}"><a href="#reportes-venta"> Reporte Ventas</a></li>
+                                <li class="" ng-class="{ active  : isActive('/reportes-venta')}"><a href="#reportes-venta"> Reporte Ventas Facturadas</a></li>
                                 <li class="hide" ng-class="{ active  : isActive('/reportes-cierres')}"><a href="#reportes-cierres"> Reporte Cierres de Caja</a></li>
                                 <li class="hide" ng-class="{ active  : isActive('/generarxml')}"><a href="#generarxml"> Generar Xml</a></li>
                             </ul>

@@ -8,7 +8,48 @@ angular.module('newApp')
     location.reload(); 
     }
     $(document).ready(function () { 
-
+        $('#correoD').load('./tables/correos/tab_destinatarios.php', function() {    
+            $("#table-editable1").dataTable({ "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                }, 
+                "bPaginate" : false,
+                "destroy":true,
+                "searching": false,
+                "autoWidth": false,
+                "select":false,
+                "paging": false,
+                "bFilter": false,
+                "scrollX": false,
+                "bInfo": false, 
+                "order": [[ 0, "asc" ]],
+                "aoColumnDefs": [
+                    {
+                        "targets": [ 0 ],
+                            "className": "hide_column"
+                    }
+            ]});  
+        });
+        $('#correosE').load('./tables/correos/tab_error.php', function() {    
+            $("#table-editable").dataTable({ "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                }, 
+                "bPaginate" : false,
+                "destroy":true,
+                "searching": false,
+                "autoWidth": false,
+                "select":false,
+                "paging": false,
+                "bFilter": false,
+                "scrollX": false,
+                "bInfo": false, 
+                "order": [[ 0, "asc" ]],
+                "aoColumnDefs": [
+                    {
+                        "targets": [ 0 ],
+                            "className": "hide_column"
+                    }
+            ]});  
+        });
         if (document.getElementById("cke-editor1") !== null) {
             CKEDITOR.replace('cke-editor1', {
                 height: '150px',
@@ -490,7 +531,150 @@ angular.module('newApp')
                 $('.page-spinner-loader').addClass('hide');
             });
         });
-        
+        $(document).on('click', '.eliminarD', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            var id=$(this).parents('tr').find('.hide_column')[0].innerHTML;
+            if (confirm("Estas seguro de eliminar?") == false) {
+                $(this).prop("disabled",false);
+                return;
+            }else{
+                $('.page-spinner-loader').removeClass('hide');
+                $('#alerta').load('./tables/correos/alerta.php', {tipo:"eliminarD", id:id},function() {    
+                    $('.page-spinner-loader').addClass('hide');
+                });
+            }
+        });
+        $(document).on('click', '.editarD', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            var estado=$(this).parents('tr').find('.hide_column')[0];
+            $('.page-spinner-loader').removeClass('hide');
+            $('#Cusuarios').load('./tables/correos/editar_destinatario.php', {var1:estado.innerHTML},function() {    
+                $('.page-spinner-loader').addClass('hide');
+                $('#Cusuarios').modal('show'); // abrir
+            });
+            $(this).prop("disabled",false);
+        });
+        $(document).on('click', '.crear_destinatario', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            $('.page-spinner-loader').removeClass('hide');
+            var idPlantilla=$(this).parents().find('#tipo')[0].value;
+            var correo=$(this).parents().find('#correo')[0].value;
+            var band=true;
+            var emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+            if (!emailRegex.test(correo)) {
+                var n = noty({
+                    text        : '<div class="alert alert-warning "><p><strong>Ingrese correo correcto</p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
+                });
+                band=false;
+            }
+            
+            if(band){
+                $('#alerta').load('./tables/correos/alerta.php', {tipo:"crear_destinatario", idPlantilla:idPlantilla,correo:correo},function() {    
+                    $('.page-spinner-loader').addClass('hide');
+                });
+            }else{
+                $('.page-spinner-loader').addClass('hide');
+                $(this).prop("disabled",false);
+            }  
+        });
+        $(document).on('click', '.editar_destinatario', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            $('.page-spinner-loader').removeClass('hide');
+            var idDestinatario=$(this).parents().find('#idDestino')[0].value;
+            var idPlantilla=$(this).parents().find('#tipo')[0].value;
+            var correo=$(this).parents().find('#correo')[0].value;
+            var band=true;
+            var emailRegex = /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+            if (!emailRegex.test(correo)) {
+                var n = noty({
+                    text        : '<div class="alert alert-warning "><p><strong>Ingrese correo correcto</p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
+                });
+                band=false;
+            }
+            
+            if(band){
+                $('#alerta').load('./tables/correos/alerta.php', {tipo:"editar_destinatario", idPlantilla:idPlantilla,correo:correo,id:idDestinatario},function() {    
+                    $('.page-spinner-loader').addClass('hide');
+                });
+            }else{
+                $('.page-spinner-loader').addClass('hide');
+                $(this).prop("disabled",false);
+            }  
+        });
+        $(document).on('click', '.crearDestino', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            $('.page-spinner-loader').removeClass('hide');
+            $('#Cusuarios').load('./tables/correos/crear_destino.php',function() {    
+                $('.page-spinner-loader').addClass('hide');
+                $('#Cusuarios').modal('show'); // abrir
+            });
+            $(this).prop("disabled",false);
+        });
+        $(document).on('click', '.eliminarE', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            var id=$(this).parents('tr').find('.hide_column')[0].innerHTML;
+            if (confirm("Estas seguro de eliminar?") == false) {
+                $(this).prop("disabled",false);
+                return;
+            }else{
+                $('.page-spinner-loader').removeClass('hide');
+                $('#alerta').load('./tables/correos/alerta.php', {tipo:"eliminarE", id:id},function() {    
+                    $('.page-spinner-loader').addClass('hide');
+                });
+            }
+          //  $(this).prop("disabled",false);
+        });
+        $(document).on('click', '.editarE', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            var id=$(this).parents('tr').find('.hide_column')[0].innerHTML;
+            $('.page-spinner-loader').removeClass('hide');
+            $('#alerta').load('./tables/correos/alerta.php', {tipo:"editarE", id:id},function() {    
+                $('.page-spinner-loader').addClass('hide');
+            });
+            $(this).prop("disabled",false);
+        });
+        $(document).on('click', '.enviarT', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            $('.page-spinner-loader').removeClass('hide');
+            $('#alerta').load('./tables/correos/alerta.php', {tipo:"enviarT"},function() {    
+                $('.page-spinner-loader').addClass('hide');
+            });
+            $(this).prop("disabled",false);
+        });
         });
 
       $scope.$on('$destroy', function () {
@@ -502,6 +686,10 @@ angular.module('newApp')
                 editor.instances[name].destroy(true);
             }
         } 
+        var tables = $.fn.dataTable.fnTables(true);
+        $(tables).each(function () {
+            $(this).dataTable().fnDestroy();
+        });
         $(document).off('click','.guardarCorreo');
         $(document).off('click','.correoPrueba');
 
