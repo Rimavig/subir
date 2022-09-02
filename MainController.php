@@ -3438,6 +3438,8 @@ class MainController extends BaseController
             $ticket= [];
             $ticketT=[];
             $asientos= [];
+            $asientos2= [];
+            $asientos3= [];
             $ruta= "http://104.198.222.134/imagenes/evento/";
             date_default_timezone_set('America/Lima');
             $datetime = date("Y-m-d H:i:s");
@@ -3460,6 +3462,21 @@ class MainController extends BaseController
               $plateas=[];
               $ficha=[];
               $texto=($item->platea).":".$item->asiento;
+              if (in_array($item->id_ticket, $asientos3)) {
+                if (is_numeric($item->asiento)) {
+                      $asientos2[$item->id_ticket]= $asientos2[$item->id_ticket]+ $item->asiento;
+                } else {
+                    $asientos2[$item->id_ticket]=$asientos2[$item->id_ticket]+1;
+                }
+              }else{
+                if (is_numeric($item->asiento)) {
+                      $asientos2[$item->id_ticket]= $item->asiento;
+                } else {
+                    $asientos2[$item->id_ticket]=1;
+                }
+                $asientos3[]=$item->id_ticket;
+              }
+
               $asientos[$item->id_ticket][]=$texto;
               $count = count($asientos[$item->id_ticket]);
               for ($i = 0; $i < $count; $i++) {
@@ -3483,13 +3500,14 @@ class MainController extends BaseController
               }
 
             }
-
             foreach ($tickets as $clave) {
                 $ticket[$clave]['asientos']= $asientos[$clave] ;
+                $ticket[$clave]['cantidad_asientos']= $asientos2[$clave] ;
                 $ticketT[]=$ticket[$clave];
             }
 
             $asitn1=[];
+
             $sql= "SELECT te.nombre ,te.duracion ,te.id_evento ,te.tipo ,trg.cantidad,trg.estado ,trg.id_registro_gratuito, ts.nombre as sala, tf.fecha FROM tsa_evento te INNER JOIN tsa_funcion tf ON te.id_evento =tf.id_evento INNER JOIN tsa_sala_mapa tsm ON tsm.id_sala_mapa =te.id_sala_mapa
             INNER JOIN tsa_sala ts ON ts.id_sala =tsm.id_sala INNER JOIN tsa_registro_gratuito trg ON trg.id_funcion =tf.id_funcion and trg.id_usuario_cliente =:id_usuario;";
             $statement = $db->prepare($sql);
@@ -3504,7 +3522,7 @@ class MainController extends BaseController
                 $auth_token = base64_encode($miCadena);
                 $auth_token1 = base64_encode($auth_token);
                 $ticketT[]= array('id_ticket'=> $item->id_registro_gratuito, 'nombre'=> $item->nombre, 'duracion'=> $item->duracion, 'imagen'=> $ruta_evento.$item->id_evento."H.png",
-               'tipo'=> $item->tipo,'sala'=> $item->sala,'precio'=>"",'fecha'=> $item->fecha,'estado'=> $item->estado,'qr'=>$auth_token1,'asientos'=>$item->cantidad );
+               'tipo'=> $item->tipo,'sala'=> $item->sala,'precio'=>"",'fecha'=> $item->fecha,'estado'=> $item->estado,'qr'=>$auth_token1,'asientos'=>$item->cantidad,'cantidad_asientos'=>$item->cantidad );
 
             }
             usort($ticketT, function ($a, $b) {
@@ -7042,7 +7060,7 @@ class MainController extends BaseController
                         $auth_token1 = base64_encode($auth_token);
                         $nombreU=$item->nombreU;
                         $apellidoU=$item->apellidosU;
-                        $client->sendMail1("3", $email, $auth_token1,($nombreU).' '.($apellidoU),"");
+                        $client->sendMail1("3", $email,  $item->id_ticket,($nombreU).' '.($apellidoU),$auth_token1);
                         $ticket[$item->id_ticket]= array('id_ticket'=> $item->id_ticket, 'nombre'=> $item->nombre, 'duracion'=> $item->duracion, 'imagen'=> $ruta_evento.$item->id_evento."H.png",
                          'tipo'=> $item->tipo,'sala'=> $item->sala,'precio'=> $item->precio,'fecha'=> $item->fecha,'estado'=> $item->estado_ticket,'qr'=>$auth_token1);
                         $tickets[]= $item->id_ticket;
@@ -7501,7 +7519,7 @@ class MainController extends BaseController
             while($item = $statement->fetch()){
               $categorias['lineas'][]= array('titulo'=> $item->titulo, 'descripcion'=> $item->descripcion, 'imagen'=> $ruta.($item->id_informacion_tabla).".png");
             }
-            $$sql = "SELECT * FROM tsa_informacion WHERE estado='A' and tipo='proyectos'";
+            $sql = "SELECT * FROM tsa_informacion WHERE estado='A' and tipo='proyectos'";
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
@@ -7658,7 +7676,6 @@ class MainController extends BaseController
                   $tipoA="W";
                 }
             }
-            $response->getBody()->write(json_encode($tipoA));
             $response->getBody()->write(json_encode($categorias));
             return $response;
         } catch (\PDOException $th) {
