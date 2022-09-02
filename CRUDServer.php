@@ -1552,16 +1552,18 @@ interface CRUDServerIf {
   /**
    * @param string $celular
    * @param string $correo
+   * @param string $tipo
    * @return string
    */
-  public function generarCodigo($celular, $correo);
+  public function generarCodigo($celular, $correo, $tipo);
   /**
    * @param string $celular
    * @param string $codigo
    * @param string $clave
+   * @param string $tipo
    * @return string
    */
-  public function validadCodigo($celular, $codigo, $clave);
+  public function validadCodigo($celular, $codigo, $clave, $tipo);
   /**
    * @param string $tipo
    * @return string
@@ -1585,6 +1587,26 @@ interface CRUDServerIf {
    * @return string
    */
   public function getAllInformacionTabla($tipo);
+  /**
+   * @param string $tipo
+   * @return string
+   */
+  public function getAllGeneral($tipo);
+  /**
+   * @param string $tipo
+   * @param string $id
+   * @return string
+   */
+  public function getGeneral($tipo, $id);
+  /**
+   * @param string $tipo
+   * @param string $id
+   * @param string $estado
+   * @param string $estado2
+   * @param string $usuario_modificacion
+   * @return string
+   */
+  public function updateGeneral($tipo, $id, $estado, $estado2, $usuario_modificacion);
   /**
    * @param string $id
    * @return string
@@ -12842,17 +12864,18 @@ class CRUDServerClient implements \CRUDServerIf {
     throw new \Exception("login failed: unknown result");
   }
 
-  public function generarCodigo($celular, $correo)
+  public function generarCodigo($celular, $correo, $tipo)
   {
-    $this->send_generarCodigo($celular, $correo);
+    $this->send_generarCodigo($celular, $correo, $tipo);
     return $this->recv_generarCodigo();
   }
 
-  public function send_generarCodigo($celular, $correo)
+  public function send_generarCodigo($celular, $correo, $tipo)
   {
     $args = new \CRUDServer_generarCodigo_args();
     $args->celular = $celular;
     $args->correo = $correo;
+    $args->tipo = $tipo;
     $bin_accel = ($this->output_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_write_binary');
     if ($bin_accel)
     {
@@ -12894,18 +12917,19 @@ class CRUDServerClient implements \CRUDServerIf {
     throw new \Exception("generarCodigo failed: unknown result");
   }
 
-  public function validadCodigo($celular, $codigo, $clave)
+  public function validadCodigo($celular, $codigo, $clave, $tipo)
   {
-    $this->send_validadCodigo($celular, $codigo, $clave);
+    $this->send_validadCodigo($celular, $codigo, $clave, $tipo);
     return $this->recv_validadCodigo();
   }
 
-  public function send_validadCodigo($celular, $codigo, $clave)
+  public function send_validadCodigo($celular, $codigo, $clave, $tipo)
   {
     $args = new \CRUDServer_validadCodigo_args();
     $args->celular = $celular;
     $args->codigo = $codigo;
     $args->clave = $clave;
+    $args->tipo = $tipo;
     $bin_accel = ($this->output_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_write_binary');
     if ($bin_accel)
     {
@@ -13152,6 +13176,164 @@ class CRUDServerClient implements \CRUDServerIf {
       return $result->success;
     }
     throw new \Exception("getAllInformacionTabla failed: unknown result");
+  }
+
+  public function getAllGeneral($tipo)
+  {
+    $this->send_getAllGeneral($tipo);
+    return $this->recv_getAllGeneral();
+  }
+
+  public function send_getAllGeneral($tipo)
+  {
+    $args = new \CRUDServer_getAllGeneral_args();
+    $args->tipo = $tipo;
+    $bin_accel = ($this->output_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_write_binary');
+    if ($bin_accel)
+    {
+      thrift_protocol_write_binary($this->output_, 'getAllGeneral', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
+    }
+    else
+    {
+      $this->output_->writeMessageBegin('getAllGeneral', TMessageType::CALL, $this->seqid_);
+      $args->write($this->output_);
+      $this->output_->writeMessageEnd();
+      $this->output_->getTransport()->flush();
+    }
+  }
+
+  public function recv_getAllGeneral()
+  {
+    $bin_accel = ($this->input_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_read_binary');
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, '\CRUDServer_getAllGeneral_result', $this->input_->isStrictRead());
+    else
+    {
+      $rseqid = 0;
+      $fname = null;
+      $mtype = 0;
+
+      $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+      if ($mtype == TMessageType::EXCEPTION) {
+        $x = new TApplicationException();
+        $x->read($this->input_);
+        $this->input_->readMessageEnd();
+        throw $x;
+      }
+      $result = new \CRUDServer_getAllGeneral_result();
+      $result->read($this->input_);
+      $this->input_->readMessageEnd();
+    }
+    if ($result->success !== null) {
+      return $result->success;
+    }
+    throw new \Exception("getAllGeneral failed: unknown result");
+  }
+
+  public function getGeneral($tipo, $id)
+  {
+    $this->send_getGeneral($tipo, $id);
+    return $this->recv_getGeneral();
+  }
+
+  public function send_getGeneral($tipo, $id)
+  {
+    $args = new \CRUDServer_getGeneral_args();
+    $args->tipo = $tipo;
+    $args->id = $id;
+    $bin_accel = ($this->output_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_write_binary');
+    if ($bin_accel)
+    {
+      thrift_protocol_write_binary($this->output_, 'getGeneral', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
+    }
+    else
+    {
+      $this->output_->writeMessageBegin('getGeneral', TMessageType::CALL, $this->seqid_);
+      $args->write($this->output_);
+      $this->output_->writeMessageEnd();
+      $this->output_->getTransport()->flush();
+    }
+  }
+
+  public function recv_getGeneral()
+  {
+    $bin_accel = ($this->input_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_read_binary');
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, '\CRUDServer_getGeneral_result', $this->input_->isStrictRead());
+    else
+    {
+      $rseqid = 0;
+      $fname = null;
+      $mtype = 0;
+
+      $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+      if ($mtype == TMessageType::EXCEPTION) {
+        $x = new TApplicationException();
+        $x->read($this->input_);
+        $this->input_->readMessageEnd();
+        throw $x;
+      }
+      $result = new \CRUDServer_getGeneral_result();
+      $result->read($this->input_);
+      $this->input_->readMessageEnd();
+    }
+    if ($result->success !== null) {
+      return $result->success;
+    }
+    throw new \Exception("getGeneral failed: unknown result");
+  }
+
+  public function updateGeneral($tipo, $id, $estado, $estado2, $usuario_modificacion)
+  {
+    $this->send_updateGeneral($tipo, $id, $estado, $estado2, $usuario_modificacion);
+    return $this->recv_updateGeneral();
+  }
+
+  public function send_updateGeneral($tipo, $id, $estado, $estado2, $usuario_modificacion)
+  {
+    $args = new \CRUDServer_updateGeneral_args();
+    $args->tipo = $tipo;
+    $args->id = $id;
+    $args->estado = $estado;
+    $args->estado2 = $estado2;
+    $args->usuario_modificacion = $usuario_modificacion;
+    $bin_accel = ($this->output_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_write_binary');
+    if ($bin_accel)
+    {
+      thrift_protocol_write_binary($this->output_, 'updateGeneral', TMessageType::CALL, $args, $this->seqid_, $this->output_->isStrictWrite());
+    }
+    else
+    {
+      $this->output_->writeMessageBegin('updateGeneral', TMessageType::CALL, $this->seqid_);
+      $args->write($this->output_);
+      $this->output_->writeMessageEnd();
+      $this->output_->getTransport()->flush();
+    }
+  }
+
+  public function recv_updateGeneral()
+  {
+    $bin_accel = ($this->input_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_read_binary');
+    if ($bin_accel) $result = thrift_protocol_read_binary($this->input_, '\CRUDServer_updateGeneral_result', $this->input_->isStrictRead());
+    else
+    {
+      $rseqid = 0;
+      $fname = null;
+      $mtype = 0;
+
+      $this->input_->readMessageBegin($fname, $mtype, $rseqid);
+      if ($mtype == TMessageType::EXCEPTION) {
+        $x = new TApplicationException();
+        $x->read($this->input_);
+        $this->input_->readMessageEnd();
+        throw $x;
+      }
+      $result = new \CRUDServer_updateGeneral_result();
+      $result->read($this->input_);
+      $this->input_->readMessageEnd();
+    }
+    if ($result->success !== null) {
+      return $result->success;
+    }
+    throw new \Exception("updateGeneral failed: unknown result");
   }
 
   public function getInformacionTabla($id)
@@ -57645,6 +57827,11 @@ class CRUDServer_generarCodigo_args {
       'isRequired' => false,
       'type' => TType::STRING,
       ),
+    3 => array(
+      'var' => 'tipo',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
     );
 
   /**
@@ -57655,6 +57842,10 @@ class CRUDServer_generarCodigo_args {
    * @var string
    */
   public $correo = null;
+  /**
+   * @var string
+   */
+  public $tipo = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -57663,6 +57854,9 @@ class CRUDServer_generarCodigo_args {
       }
       if (isset($vals['correo'])) {
         $this->correo = $vals['correo'];
+      }
+      if (isset($vals['tipo'])) {
+        $this->tipo = $vals['tipo'];
       }
     }
   }
@@ -57700,6 +57894,13 @@ class CRUDServer_generarCodigo_args {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 3:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->tipo);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -57721,6 +57922,11 @@ class CRUDServer_generarCodigo_args {
     if ($this->correo !== null) {
       $xfer += $output->writeFieldBegin('correo', TType::STRING, 2);
       $xfer += $output->writeString($this->correo);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->tipo !== null) {
+      $xfer += $output->writeFieldBegin('tipo', TType::STRING, 3);
+      $xfer += $output->writeString($this->tipo);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -57824,6 +58030,11 @@ class CRUDServer_validadCodigo_args {
       'isRequired' => false,
       'type' => TType::STRING,
       ),
+    4 => array(
+      'var' => 'tipo',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
     );
 
   /**
@@ -57838,6 +58049,10 @@ class CRUDServer_validadCodigo_args {
    * @var string
    */
   public $clave = null;
+  /**
+   * @var string
+   */
+  public $tipo = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -57849,6 +58064,9 @@ class CRUDServer_validadCodigo_args {
       }
       if (isset($vals['clave'])) {
         $this->clave = $vals['clave'];
+      }
+      if (isset($vals['tipo'])) {
+        $this->tipo = $vals['tipo'];
       }
     }
   }
@@ -57893,6 +58111,13 @@ class CRUDServer_validadCodigo_args {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 4:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->tipo);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -57919,6 +58144,11 @@ class CRUDServer_validadCodigo_args {
     if ($this->clave !== null) {
       $xfer += $output->writeFieldBegin('clave', TType::STRING, 3);
       $xfer += $output->writeString($this->clave);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->tipo !== null) {
+      $xfer += $output->writeFieldBegin('tipo', TType::STRING, 4);
+      $xfer += $output->writeString($this->tipo);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
@@ -58663,6 +58893,576 @@ class CRUDServer_getAllInformacionTabla_result {
   public function write($output) {
     $xfer = 0;
     $xfer += $output->writeStructBegin('CRUDServer_getAllInformacionTabla_result');
+    if ($this->success !== null) {
+      $xfer += $output->writeFieldBegin('success', TType::STRING, 0);
+      $xfer += $output->writeString($this->success);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class CRUDServer_getAllGeneral_args {
+  static $isValidate = false;
+
+  static $_TSPEC = array(
+    1 => array(
+      'var' => 'tipo',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
+    );
+
+  /**
+   * @var string
+   */
+  public $tipo = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['tipo'])) {
+        $this->tipo = $vals['tipo'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'CRUDServer_getAllGeneral_args';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->tipo);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('CRUDServer_getAllGeneral_args');
+    if ($this->tipo !== null) {
+      $xfer += $output->writeFieldBegin('tipo', TType::STRING, 1);
+      $xfer += $output->writeString($this->tipo);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class CRUDServer_getAllGeneral_result {
+  static $isValidate = false;
+
+  static $_TSPEC = array(
+    0 => array(
+      'var' => 'success',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
+    );
+
+  /**
+   * @var string
+   */
+  public $success = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['success'])) {
+        $this->success = $vals['success'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'CRUDServer_getAllGeneral_result';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 0:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->success);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('CRUDServer_getAllGeneral_result');
+    if ($this->success !== null) {
+      $xfer += $output->writeFieldBegin('success', TType::STRING, 0);
+      $xfer += $output->writeString($this->success);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class CRUDServer_getGeneral_args {
+  static $isValidate = false;
+
+  static $_TSPEC = array(
+    1 => array(
+      'var' => 'tipo',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
+    2 => array(
+      'var' => 'id',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
+    );
+
+  /**
+   * @var string
+   */
+  public $tipo = null;
+  /**
+   * @var string
+   */
+  public $id = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['tipo'])) {
+        $this->tipo = $vals['tipo'];
+      }
+      if (isset($vals['id'])) {
+        $this->id = $vals['id'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'CRUDServer_getGeneral_args';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->tipo);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('CRUDServer_getGeneral_args');
+    if ($this->tipo !== null) {
+      $xfer += $output->writeFieldBegin('tipo', TType::STRING, 1);
+      $xfer += $output->writeString($this->tipo);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->id !== null) {
+      $xfer += $output->writeFieldBegin('id', TType::STRING, 2);
+      $xfer += $output->writeString($this->id);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class CRUDServer_getGeneral_result {
+  static $isValidate = false;
+
+  static $_TSPEC = array(
+    0 => array(
+      'var' => 'success',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
+    );
+
+  /**
+   * @var string
+   */
+  public $success = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['success'])) {
+        $this->success = $vals['success'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'CRUDServer_getGeneral_result';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 0:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->success);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('CRUDServer_getGeneral_result');
+    if ($this->success !== null) {
+      $xfer += $output->writeFieldBegin('success', TType::STRING, 0);
+      $xfer += $output->writeString($this->success);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class CRUDServer_updateGeneral_args {
+  static $isValidate = false;
+
+  static $_TSPEC = array(
+    1 => array(
+      'var' => 'tipo',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
+    2 => array(
+      'var' => 'id',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
+    3 => array(
+      'var' => 'estado',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
+    4 => array(
+      'var' => 'estado2',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
+    5 => array(
+      'var' => 'usuario_modificacion',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
+    );
+
+  /**
+   * @var string
+   */
+  public $tipo = null;
+  /**
+   * @var string
+   */
+  public $id = null;
+  /**
+   * @var string
+   */
+  public $estado = null;
+  /**
+   * @var string
+   */
+  public $estado2 = null;
+  /**
+   * @var string
+   */
+  public $usuario_modificacion = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['tipo'])) {
+        $this->tipo = $vals['tipo'];
+      }
+      if (isset($vals['id'])) {
+        $this->id = $vals['id'];
+      }
+      if (isset($vals['estado'])) {
+        $this->estado = $vals['estado'];
+      }
+      if (isset($vals['estado2'])) {
+        $this->estado2 = $vals['estado2'];
+      }
+      if (isset($vals['usuario_modificacion'])) {
+        $this->usuario_modificacion = $vals['usuario_modificacion'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'CRUDServer_updateGeneral_args';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->tipo);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->id);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->estado);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 4:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->estado2);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 5:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->usuario_modificacion);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('CRUDServer_updateGeneral_args');
+    if ($this->tipo !== null) {
+      $xfer += $output->writeFieldBegin('tipo', TType::STRING, 1);
+      $xfer += $output->writeString($this->tipo);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->id !== null) {
+      $xfer += $output->writeFieldBegin('id', TType::STRING, 2);
+      $xfer += $output->writeString($this->id);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->estado !== null) {
+      $xfer += $output->writeFieldBegin('estado', TType::STRING, 3);
+      $xfer += $output->writeString($this->estado);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->estado2 !== null) {
+      $xfer += $output->writeFieldBegin('estado2', TType::STRING, 4);
+      $xfer += $output->writeString($this->estado2);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->usuario_modificacion !== null) {
+      $xfer += $output->writeFieldBegin('usuario_modificacion', TType::STRING, 5);
+      $xfer += $output->writeString($this->usuario_modificacion);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class CRUDServer_updateGeneral_result {
+  static $isValidate = false;
+
+  static $_TSPEC = array(
+    0 => array(
+      'var' => 'success',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
+    );
+
+  /**
+   * @var string
+   */
+  public $success = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['success'])) {
+        $this->success = $vals['success'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'CRUDServer_updateGeneral_result';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 0:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->success);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('CRUDServer_updateGeneral_result');
     if ($this->success !== null) {
       $xfer += $output->writeFieldBegin('success', TType::STRING, 0);
       $xfer += $output->writeString($this->success);
