@@ -3735,8 +3735,8 @@ class MainController extends BaseController
             $response->getBody()->write(json_encode($out));
             return $response->withStatus(401);
         }
-        $API_LOGIN_DEV     = "TPP3-EC-SERVER";
-        $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6";
+        $API_LOGIN_DEV     = "TEATROSA-EC-SERVER";
+        $API_KEY_DEV       = "5W1BGgglGnWx9bVYJlatix2d7TY7xj";
         $server_application_code = $API_LOGIN_DEV;
         $server_app_key = $API_KEY_DEV ;
         $date = new \DateTime();
@@ -4615,8 +4615,8 @@ class MainController extends BaseController
 
     public function rembolso($id_transacion)
     {
-          $API_LOGIN_DEV     = "TPP3-EC-SERVER";
-          $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6";
+          $API_LOGIN_DEV     = "TEATROSA-EC-SERVER";
+          $API_KEY_DEV       = "5W1BGgglGnWx9bVYJlatix2d7TY7xj";
           $server_application_code = $API_LOGIN_DEV;
           $server_app_key = $API_KEY_DEV ;
           $date = new \DateTime();
@@ -4629,7 +4629,7 @@ class MainController extends BaseController
           $transaction["id"]=$id_transacion;
           $data = array();
           $data["transaction"] =$transaction;
-          $url="https://ccapi-stg.paymentez.com/v2/transaction/refund/";
+          $url="https://ccapi.paymentez.com/v2/transaction/refund/";
           $curl = curl_init($url);
           $headers = array();
           $headers[] = 'Cache-Control: no-cache';
@@ -4900,8 +4900,8 @@ class MainController extends BaseController
         $authorization_code="";
         $status_transacion="";
         try {
-            $API_LOGIN_DEV     = "TPP3-EC-SERVER";
-            $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6";
+            $API_LOGIN_DEV     = "TEATROSA-EC-SERVER";
+            $API_KEY_DEV       = "5W1BGgglGnWx9bVYJlatix2d7TY7xj";
             $server_application_code = $API_LOGIN_DEV;
             $server_app_key = $API_KEY_DEV ;
             $date = new \DateTime();
@@ -4924,7 +4924,7 @@ class MainController extends BaseController
             $data["user"] =$user;
             $data["order"] = $order;
             $data["card"] = $card;
-            $url="https://ccapi-stg.paymentez.com/v2/transaction/debit/";
+            $url="https://ccapi.paymentez.com/v2/transaction/debit/";
             $curl = curl_init($url);
             $headers = array();
             $headers[] = 'Cache-Control: no-cache';
@@ -5306,8 +5306,8 @@ class MainController extends BaseController
         //tipo,id_evento,id_funcion,asiento1-asiento2,id_promocion,total, descuento;
 
         try {
-            $API_LOGIN_DEV     = "TPP3-EC-SERVER";
-            $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6";
+            $API_LOGIN_DEV     = "TEATROSA-EC-SERVER";
+            $API_KEY_DEV       = "5W1BGgglGnWx9bVYJlatix2d7TY7xj";
             $server_application_code = $API_LOGIN_DEV;
             $server_app_key = $API_KEY_DEV ;
             $date = new \DateTime();
@@ -5317,7 +5317,7 @@ class MainController extends BaseController
             $uniq_token_string = $server_app_key.$unix_timestamp;
             $uniq_token_hash = hash('sha256', $uniq_token_string);
             $auth_token = base64_encode($server_application_code.";".$unix_timestamp.";".$uniq_token_hash);
-            $url="https://ccapi-stg.paymentez.com/v2/transaction/".$id_transacion;
+            $url="https://ccapi.paymentez.com/v2/transaction/".$id_transacion;
             $curl = curl_init($url);
             $headers = array();
             $headers[] = 'Cache-Control: no-cache';
@@ -6320,8 +6320,8 @@ class MainController extends BaseController
         $authorization_code="";
         $status_transacion="";
         try {
-            $API_LOGIN_DEV     = "TPP3-EC-SERVER";
-            $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6";
+            $API_LOGIN_DEV     = "TEATROSA-EC-SERVER";
+            $API_KEY_DEV       = "5W1BGgglGnWx9bVYJlatix2d7TY7xj";
             $server_application_code = $API_LOGIN_DEV;
             $server_app_key = $API_KEY_DEV ;
             $date = new \DateTime();
@@ -6344,7 +6344,7 @@ class MainController extends BaseController
             $data["user"] =$user;
             $data["order"] = $order;
             $data["card"] = $card;
-            $url="https://ccapi-stg.paymentez.com/v2/transaction/debit/";
+            $url="https://ccapi.paymentez.com/v2/transaction/debit/";
             $curl = curl_init($url);
             $headers = array();
             $headers[] = 'Cache-Control: no-cache';
