@@ -373,10 +373,6 @@ angular.module('newApp').factory('pluginsService', [function () {
                         carga="tables/facturacion/caja_movimiento_data.php?var1="+txt;
                     }else if ($(this).hasClass('reportesV_data')) {
                         carga="tables/facturacion/reportes_venta_data.php";
-                    }else if ($(this).hasClass('correos_admin_data')) {
-                        carga="tables/correos/otros_data.php";
-                    }else if ($(this).hasClass('correos_error_data')) {
-                        carga="tables/correos/error_data.php";
                     }
                     if ($(this).hasClass('no-descargar')) {
                         esconder=[];
@@ -791,8 +787,7 @@ angular.module('newApp').factory('pluginsService', [function () {
                                 { "sWidth": "15%", "className": "text-center", "aTargets": [ 1,2]},
                                 { "sWidth": "10%", "className": "text-center", "aTargets": [ 3]},
                                 { "sWidth": "5%", "className": "text-center", "aTargets": [ 4,5,6,7,8,9]},
-                                { "sWidth": "10%", "className": "text-center", "aTargets": [ 11]},
-                                { "sWidth": "5%", "className": "text-center", "aTargets": 10}
+                                { "sWidth": "5%", "className": "text-center", "aTargets": [ 11,10,12,13]}
                             ],
                             "lengthMenu": [[10, 25, 50, 75, 100,-1],[10,25,50,75,100,"All"]],
                             "pageLength": 10,
@@ -821,33 +816,6 @@ angular.module('newApp').factory('pluginsService', [function () {
                                     },
                                 { "sWidth": "10%", "className": "text-center", "aTargets": [ 1,2,4,6]},
                                 { "sWidth": "7%", "className":  "text-center", "aTargets": [ 3,5,7,8] }
-                            ],
-                            "lengthMenu": [[10, 25, 50, 75, 100,-1],[10,25,50,75,100,"All"]],
-                            "pageLength": 10,
-                            "dom": "<'row'<'col-xs-6 col-sm-4 col-md-6 tabla-estilo 'l><'col-xs-6 col-sm-5 col-md-5 tabla-estilo'f><'col-xs-6 col-sm-5 col-md-6 tabla-estilo1'B>r>t<'row'<'col-xs-12 col-sm-6 col-md-6 tabla-estilo'i><'spcol-md-6an6'p>>",
-                            "buttons" : esconder
-                        });
-                        console.log("1");
-
-                    }
-                    if ($(this).hasClass('table-correo-admin')) {
-                        table =$(this).dataTable({
-                            "bPaginate" : true,
-                            "destroy":true,
-                            "searching": true,
-                            "select":true,
-                            "language": {
-                                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
-                                },
-                            "ajax": carga,
-                           
-                            "order": [[ 1, "desc" ]],
-                            "autoWidth": false,
-                            "aoColumnDefs": [
-                                {
-                                    "targets": [ 0],
-                                        "className": "hide_column"
-                                    }
                             ],
                             "lengthMenu": [[10, 25, 50, 75, 100,-1],[10,25,50,75,100,"All"]],
                             "pageLength": 10,

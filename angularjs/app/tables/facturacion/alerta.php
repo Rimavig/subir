@@ -284,7 +284,10 @@ if($tipo=="insertCompra"){
         }else if ( $tipo=="reserva"){
             ?>
             <script type="text/javascript"> 
-                 $('.page-spinner-loader').removeClass('hide');
+                $('.page-spinner-loader').removeClass('hide');
+                $('#totalCaja').load('./tables/facturacion/total.php',function() {   
+                    
+                });
                 $('#tablaTaquilla').load('./tables/facturacion/caja-venta.php', {var1:<?php echo $id_evento;?>},function() { 
                     $('.tablaCajas').addClass('hide');   
                     $('.page-spinner-loader').addClass('hide');
@@ -315,9 +318,7 @@ if($tipo=="insertCompra"){
                     });
                 });
                 CounterInit(600);
-                $('#totalCaja').load('./tables/facturacion/total.php',function() {   
-                    
-                });
+
             </script>
             <?php
         }else if ( $tipo=="deleteReserva"){
@@ -514,12 +515,11 @@ if($tipo=="insertCompra"){
         }else if ( $tipo=="deleteCompra"){
             ?>
             <script type="text/javascript"> 
-                
+                var table = $('#table-ventas').DataTable();
+                table.ajax.reload();
                 $('.infoCompraMV').addClass('hide');   
                 $('.taquillaMV').addClass('hide');
                 $('.taquillaG').removeClass('hide');
-                var table = $('#table-ventas').DataTable();
-                table.ajax.reload();
                 var n = noty({
                 text        : '<div class="alert alert-success "><p><strong>Se eliminó con éxito</p></div>',
                 layout      : 'topCenter', //or left, right, bottom-right...
@@ -535,38 +535,62 @@ if($tipo=="insertCompra"){
             </script>
             <?php
         }else if ( $tipo=="editarF"){
-            $correo=$_POST["correo"];
-            $client->updateGeneral("factura_correo",$_POST["idCompra"],$_POST["correo"],"",$_SESSION["usuario"]);
-            ?>
-            <script type="text/javascript"> 
-                $('.page-spinner-loader').removeClass('hide');
-                var table = $('#table-ventas').DataTable();
-                table.ajax.reload();
-                var idCompra=<?php echo $_POST["idCompra"];?> ;
-                $('.infoCompraMV').load('./tables/facturacion/info_compra.php', {var1:idCompra, var2:"editarVC"},function() {    
-                    $('.page-spinner-loader').addClass('hide');
-                    $('.infoCompraMV').removeClass('hide');   
-                    $('.taquillaMV').addClass('hide');
-                    $('.taquillaG').addClass('hide');
-                    var n = noty({
-                        text        : '<div class="alert alert-success "><p><strong>Se editó con éxito</p></div>',
-                        layout      : 'topCenter', //or left, right, bottom-right...
-                        theme       : 'made',
-                        type        : 'error',
-                        maxVisible  : 5,
-                        animation   : {
-                            open  : 'animated bounceIn',
-                            close : 'animated bounceOut'
-                        },
-                        timeout: 3000,
-                        });
-                        $('#Cusuarios').modal('hide'); 
-                });
-              
-
+            if($_POST["idCompra"]!="0"){
+                $correo=$_POST["correo"];
+                $client->updateGeneral("factura_correo",$_POST["idCompra"],$_POST["correo"],"",$_SESSION["usuario"]);
+                ?>
+                <script type="text/javascript"> 
+                    $('.page-spinner-loader').removeClass('hide');
+                    var table = $('#table-ventas').DataTable();
+                    table.ajax.reload();
+                    var idCompra=<?php echo $_POST["idCompra"];?> ;
+                    $('.infoCompraMV').load('./tables/facturacion/info_compra.php', {var1:idCompra, var2:"editarVC"},function() {    
+                        $('.page-spinner-loader').addClass('hide');
+                        $('.infoCompraMV').removeClass('hide');   
+                        $('.taquillaMV').addClass('hide');
+                        $('.taquillaG').addClass('hide');
+                        var n = noty({
+                            text        : '<div class="alert alert-success "><p><strong>Se editó con éxito</p></div>',
+                            layout      : 'topCenter', //or left, right, bottom-right...
+                            theme       : 'made',
+                            type        : 'error',
+                            maxVisible  : 5,
+                            animation   : {
+                                open  : 'animated bounceIn',
+                                close : 'animated bounceOut'
+                            },
+                            timeout: 3000,
+                            });
+                            $('#Cusuarios').modal('hide'); 
+                    });
                 
-            </script>
+
+                    
+                </script>
             <?php
+            }else{
+                ?>
+                <script type="text/javascript"> 
+                    $('.page-spinner-loader').removeClass('hide');
+                    var table = $('#table-editable1').DataTable();
+                    table.ajax.reload();
+                    var n = noty({
+                            text        : '<div class="alert alert-success "><p><strong>Se editó con éxito</p></div>',
+                            layout      : 'topCenter', //or left, right, bottom-right...
+                            theme       : 'made',
+                            type        : 'error',
+                            maxVisible  : 5,
+                            animation   : {
+                                open  : 'animated bounceIn',
+                                close : 'animated bounceOut'
+                            },
+                            timeout: 3000,
+                    });
+                    $('#Cusuarios').modal('hide'); 
+                </script>
+                  <?php
+            }
+            
         }else if ( $tipo=="editarF2"){
             ?>
             <script type="text/javascript"> 
@@ -840,6 +864,11 @@ if($tipo=="insertCompra"){
         }else if ( $tipo=="facturar" | $tipo=="notaCredito"){
             ?>
             <script type="text/javascript"> 
+                var table = $('#table-ventas').DataTable();
+                table.ajax.reload();
+                $('.infoCompraMV').addClass('hide');   
+                $('.taquillaMV').addClass('hide');
+                $('.taquillaG').removeClass('hide');
                 var n = noty({
                     text        : '<div class="alert alert-warning "><p><strong><?php echo $resultado;?></p></div>',
                     layout      : 'topCenter', //or left, right, bottom-right...
@@ -852,8 +881,6 @@ if($tipo=="insertCompra"){
                     },
                     timeout: 10000,
                 });
-                var table = $('#table-ventas').DataTable();
-                table.ajax.reload();  
                 $(".facturar").prop("disabled",false);
                 $(".notaCredito").prop("disabled",false);
             </script>

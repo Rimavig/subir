@@ -141,14 +141,46 @@ if (isset($_POST["estado"])) {
     $re = $client->updateEstadoPromocion($id_tipoPromo,$estado,$tipo,$tipoR,$_SESSION["usuario"]);
     $resultado = "".$re;
 }
-
-?>
-<script type="text/javascript"> 
+if (isset($_POST["cantidad"])) {
+    ?>
+    <script type="text/javascript"> 
     function esconder(){
-        $('#evento  option:first').prop('selected', true);
-        
+        $('#datos').load('./tables/procesos/datos.php',{funcion:<?php echo $funcion; ?>, platea:<?php echo $platea; ?>},function() {    
+            $('.page-spinner-loader').addClass('hide');
+            $(this).parents().find('#datos').show();
+        });
     }
-</script>
+    </script>
+    <?php
+}else if (isset($_POST["asiento"])) {
+    ?>
+    <script type="text/javascript"> 
+    function esconder(){
+        $('#mensaje3').tagsinput('removeAll');
+        $('#mensaje4').tagsinput('removeAll');
+        $('#verSala1').load('./tables/procesos/ver_sala.php', {var1:<?php echo $funcion; ?>, var2:<?php echo $_POST["idEvento"]; ?>, tipo:"bloqueo"},function() {    
+            $('.page-spinner-loader').addClass('hide');
+            $(this).parents().find('#verSala1').show();
+        });
+    }
+    </script>
+    <?php
+}else{
+    ?>
+    <script type="text/javascript"> 
+    function esconder(){
+        $('#mensaje3').tagsinput('removeAll');
+        $('#mensaje4').tagsinput('removeAll');
+        $('#verSala1').load('./tables/procesos/ver_salaG.php', {var1:<?php echo $funcion; ?>, var2:<?php echo $_POST["idEvento"]; ?>, tipo:"bloqueo"},function() {    
+            $('.page-spinner-loader').addClass('hide');
+            $(this).parents().find('#verSala1').show();
+        });
+       
+    }
+    </script>
+    <?php
+}
+?>
 
 <?php
 if($resultado=="true"){

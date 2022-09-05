@@ -142,6 +142,7 @@ angular.module('newApp')
                         text: '<i class="fa fa-refresh"></i>',
                         "className": 'btn btn-default',
                         action: function () {
+                            var table = $('#table-editable1').DataTable();
                             table.ajax.reload();
                         }
                     }                                       
@@ -813,7 +814,7 @@ angular.module('newApp')
             e.preventDefault();
             e.stopImmediatePropagation();
             $(this).prop("disabled",true); 
-            var id=$(this).parents().find('#idUsuario')[0].value;
+            var id=$(this).parents().find('#idUsuario1')[0].value;
             $('.page-spinner-loader').removeClass('hide');
             $('#Cusuarios').load('./tables/usuarios/crear_facturacion.php',{var1:id, tipo:"evento"},function() {    
                 $('.page-spinner-loader').addClass('hide');
@@ -835,7 +836,11 @@ angular.module('newApp')
             var direccion=$(this).parents().find('#direccionF')[0].value;
             var correo=$(this).parents().find('#correoF')[0].value;
             var pasaporte=$(this).parents().find('#pasaporte')[0].value;
-            var idUsuario=$(this).parents().find('#idUsuario')[0].value;
+            if ( document.getElementById( "idCompra" )) {
+                var idUsuario=$(this).parents().find('#idUsuario')[0].value;
+            }else{
+                var idUsuario=$(this).parents().find('#idUsuario1')[0].value;
+            }
             var id=$(this).parents().find('#id')[0].value;
             var band=true;
             if(direccion.length<3){
@@ -995,7 +1000,12 @@ angular.module('newApp')
                 }
             }
             if(band){
-                var idCompra=$(this).parents().find('#idCompra')[0].value;
+                if ( document.getElementById( "idCompra" )) {
+                    var idCompra=$(this).parents().find('#idCompra')[0].value;
+                }else{
+                    var idCompra="0";
+                }
+               
                 $('#alerta').load('./tables/facturacion/alerta.php', {tipo:"editarF",id:id, nombres:nombres,apellidos:apellidos,cedula:cedula,razon:razon,direccion:direccion,correo:correo, ruc:ruc,pasaporte:pasaporte,tipoF:tipo,usuario:idUsuario,idCompra:idCompra},function() {    
                     $('.page-spinner-loader').addClass('hide');
                 });
@@ -1006,6 +1016,7 @@ angular.module('newApp')
            
         //    $(this).prop("disabled",false);
         });
+        
         $(document).on('click', '.editar_facturacion2', function (e) {
             e.preventDefault();
             e.stopImmediatePropagation();
@@ -1057,7 +1068,7 @@ angular.module('newApp')
             var pasaporte=$(this).parents().find('#pasaporte')[0].value;
             var direccion=$(this).parents().find('#direccionF')[0].value;
             var correo=$(this).parents().find('#correoF')[0].value;
-            var id=$(this).parents().find('#idUsuario')[0].value;
+            var id=$(this).parents().find('#idUsuario1')[0].value;
             var band=true;
             console.log(direccion);
             if(direccion.length<5){

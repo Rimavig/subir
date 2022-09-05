@@ -645,6 +645,7 @@ angular.module('newApp')
             var platea=$(this).parents().find('.plateas')[0].value;
             var tipo=$(this).parents().find('.tipo')[0].value;
             var tipoR=$(this).parents().find('.reserva')[0].value;
+            var idEvento=$(this).parents().find('.evento')[0].value;
             var band=true;
             var nombre="";
             var correo="";
@@ -722,14 +723,14 @@ angular.module('newApp')
                     var desde=$(this).parents().find('.asientoF1')[0].value;
                     var hasta=$(this).parents().find('.asientoF2')[0].value;
                     $('.page-spinner-loader').removeClass('hide');
-                    $('#alerta').load('./tables/procesos/alerta.php', {funcion:funcion,platea:platea,tipo:tipo, fila:fila, desde:desde, hasta:hasta, tipoR:tipoR, nombre:nombre, correo:correo, descripcion:descripcion},function() {    
+                    $('#alerta').load('./tables/procesos/alerta.php', {idEvento:idEvento,funcion:funcion,platea:platea,tipo:tipo, fila:fila, desde:desde, hasta:hasta, tipoR:tipoR, nombre:nombre, correo:correo, descripcion:descripcion},function() {    
                         $('.page-spinner-loader').addClass('hide');
                     });
                     $(this).prop("disabled",false);
                 }else if ( tipo=="laterales"){
                     var lateral=$(this).parents().find('.laterales')[0].value;
                     $('.page-spinner-loader').removeClass('hide');
-                    $('#alerta').load('./tables/procesos/alerta.php', {funcion:funcion,platea:platea,tipo:tipo, lateral:lateral, tipoR:tipoR, nombre:nombre, correo:correo, descripcion:descripcion},function() {    
+                    $('#alerta').load('./tables/procesos/alerta.php', {idEvento:idEvento,funcion:funcion,platea:platea,tipo:tipo, lateral:lateral, tipoR:tipoR, nombre:nombre, correo:correo, descripcion:descripcion},function() {    
                         $('.page-spinner-loader').addClass('hide');
                     });
                     $(this).prop("disabled",false);
@@ -773,7 +774,7 @@ angular.module('newApp')
                         });
                     }else{
                         $('.page-spinner-loader').removeClass('hide');
-                        $('#alerta').load('./tables/procesos/alerta.php', {funcion:funcion,platea:platea,tipo:tipo, asiento:asiento, tipoR:tipoR, nombre:nombre, correo:correo, descripcion:descripcion},function() {    
+                        $('#alerta').load('./tables/procesos/alerta.php', {idEvento:idEvento,funcion:funcion,platea:platea,tipo:tipo, asiento:asiento, tipoR:tipoR, nombre:nombre, correo:correo, descripcion:descripcion},function() {    
                             $('.page-spinner-loader').addClass('hide');
                         });
                     }

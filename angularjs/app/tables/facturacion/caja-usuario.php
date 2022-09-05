@@ -25,10 +25,11 @@ if (isset($_POST["var1"])) {
 
             }else{
                 $nombres=$datos[4];
-                $identificacion=$datos[3];
+                $identificacion=$datos[9];
             }
             $direccion=$datos[6];
             $correo=$datos[7];
+            $idUsuario=$datos[10];
         }
     }
 }
@@ -61,6 +62,10 @@ if (isset($_POST["var1"])) {
     if($var1==1){
         ?> 
         <input type="text" id="idUsuario" class="esconder"  value="<?php echo $var1; ?>" disabled>
+        <?php
+    }else{
+        ?> 
+        <input type="text" id="idUsuario" class="esconder"  value="<?php echo $idUsuario; ?>" disabled>
         <?php
     }
     ?>

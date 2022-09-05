@@ -1765,6 +1765,12 @@ interface CRUDServerIf {
    */
   public function getAllBanner();
   /**
+   * @param string $idCompra
+   * @param string $tipo
+   * @param string $usuario_modificacion
+   */
+  public function compraFactura($idCompra, $tipo, $usuario_modificacion);
+  /**
    * @param string $id
    * @return string
    */
@@ -14643,6 +14649,30 @@ class CRUDServerClient implements \CRUDServerIf {
     throw new \Exception("getAllBanner failed: unknown result");
   }
 
+  public function compraFactura($idCompra, $tipo, $usuario_modificacion)
+  {
+    $this->send_compraFactura($idCompra, $tipo, $usuario_modificacion);
+  }
+
+  public function send_compraFactura($idCompra, $tipo, $usuario_modificacion)
+  {
+    $args = new \CRUDServer_compraFactura_args();
+    $args->idCompra = $idCompra;
+    $args->tipo = $tipo;
+    $args->usuario_modificacion = $usuario_modificacion;
+    $bin_accel = ($this->output_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_write_binary');
+    if ($bin_accel)
+    {
+      thrift_protocol_write_binary($this->output_, 'compraFactura', TMessageType::ONEWAY, $args, $this->seqid_, $this->output_->isStrictWrite());
+    }
+    else
+    {
+      $this->output_->writeMessageBegin('compraFactura', TMessageType::ONEWAY, $this->seqid_);
+      $args->write($this->output_);
+      $this->output_->writeMessageEnd();
+      $this->output_->getTransport()->flush();
+    }
+  }
   public function getBanner($id)
   {
     $this->send_getBanner($id);
@@ -63978,6 +64008,129 @@ class CRUDServer_getAllBanner_result {
     if ($this->success !== null) {
       $xfer += $output->writeFieldBegin('success', TType::STRING, 0);
       $xfer += $output->writeString($this->success);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class CRUDServer_compraFactura_args {
+  static $isValidate = false;
+
+  static $_TSPEC = array(
+    1 => array(
+      'var' => 'idCompra',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
+    2 => array(
+      'var' => 'tipo',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
+    3 => array(
+      'var' => 'usuario_modificacion',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
+    );
+
+  /**
+   * @var string
+   */
+  public $idCompra = null;
+  /**
+   * @var string
+   */
+  public $tipo = null;
+  /**
+   * @var string
+   */
+  public $usuario_modificacion = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['idCompra'])) {
+        $this->idCompra = $vals['idCompra'];
+      }
+      if (isset($vals['tipo'])) {
+        $this->tipo = $vals['tipo'];
+      }
+      if (isset($vals['usuario_modificacion'])) {
+        $this->usuario_modificacion = $vals['usuario_modificacion'];
+      }
+    }
+  }
+
+  public function getName() {
+    return 'CRUDServer_compraFactura_args';
+  }
+
+  public function read($input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->idCompra);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->tipo);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->usuario_modificacion);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write($output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('CRUDServer_compraFactura_args');
+    if ($this->idCompra !== null) {
+      $xfer += $output->writeFieldBegin('idCompra', TType::STRING, 1);
+      $xfer += $output->writeString($this->idCompra);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->tipo !== null) {
+      $xfer += $output->writeFieldBegin('tipo', TType::STRING, 2);
+      $xfer += $output->writeString($this->tipo);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->usuario_modificacion !== null) {
+      $xfer += $output->writeFieldBegin('usuario_modificacion', TType::STRING, 3);
+      $xfer += $output->writeString($this->usuario_modificacion);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

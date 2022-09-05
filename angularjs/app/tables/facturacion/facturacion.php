@@ -18,7 +18,7 @@ if (isset($_POST["var1"])) {
                     <button class="crearF btn btn-sm btn-dark"  href="javascript:;"><i class="fa fa-plus"></i> Facturación</button>
                 </div>
             </div>
-            <input type="text" id="idUsuario" class="esconder"  value="<?php echo $var1; ?>" disabled>
+            <input type="text" id="idUsuario1" class="esconder"  value="<?php echo $var1; ?>" disabled>
             <table class="table " data-table-name="Datos de Factura"  id="table-editable1" style="table-layout: fixed;">
                 <thead>
                     <tr>
