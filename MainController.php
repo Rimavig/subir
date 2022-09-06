@@ -2468,7 +2468,7 @@ class MainController extends BaseController
         $sql = "SELECT * FROM tsa_contacto";
         //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
         $statement = $db->prepare($sql);
-        $ruta= "http://104.198.222.134/imagenes/logo/";;
+        $ruta= "https://teatrosanchezaguilar.org/imagenes/logo/";;
         try {
             $result = $statement->execute();
         } catch (\PDOException $th) {
@@ -2784,7 +2784,7 @@ class MainController extends BaseController
         $sql = "SELECT * FROM tsa_fundacion";
         //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
         $statement = $db->prepare($sql);
-        $ruta= "http://104.198.222.134/imagenes/logo/";;
+        $ruta= "https://teatrosanchezaguilar.org/imagenes/logo/";;
         try {
             $result = $statement->execute();
             $band=true;
@@ -2907,7 +2907,7 @@ class MainController extends BaseController
             $estrellaT= [];
             $eventos= [];
             //$ruta1= "C:\Users\rwiva\Downloads\lontanov-qrticket-corpapi-9588f9e8474c";
-            $ruta= "http://104.198.222.134/imagenes/evento/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";
             date_default_timezone_set('America/Lima');
             $datetime = date("Y-m-d H:i:s");
             while($item = $statement->fetch()){
@@ -3007,7 +3007,7 @@ class MainController extends BaseController
             $band2=true;
             $band3=true;
             $cartelera= [];
-            $ruta= "http://104.198.222.134/imagenes/evento/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";
             $sql = "SELECT te.*, tc.nombre as categoria FROM tsa_evento te  INNER JOIN  tsa_categoria tc ON te.id_categoria=tc.id_categoria and te.estado='A'";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
@@ -3095,7 +3095,7 @@ class MainController extends BaseController
             $cartelera= [];
             $carteleraT= [];
             $horarios= [];
-            $ruta= "http://104.198.222.134/imagenes/evento/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";
             date_default_timezone_set('America/Lima');
             $datetime = date("Y-m-d H:i:s");
             while($item = $statement->fetch()){
@@ -3195,7 +3195,7 @@ class MainController extends BaseController
             $cartelera= [];
             $carteleraT= [];
             $horarios= [];
-            $ruta= "http://104.198.222.134/imagenes/evento/";;
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";;
             date_default_timezone_set('America/Lima');
             $datetime = date("Y-m-d H:i:s");
             while($item = $statement->fetch()){
@@ -3289,7 +3289,7 @@ class MainController extends BaseController
             $cartelera= [];
             $carteleraT= [];
             $horarios= [];
-            $ruta= "http://104.198.222.134/imagenes/evento/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";
             date_default_timezone_set('America/Lima');
             $datetime = date("Y-m-d H:i:s");
             while($item = $statement->fetch()){
@@ -3440,7 +3440,7 @@ class MainController extends BaseController
             $asientos= [];
             $asientos2= [];
             $asientos3= [];
-            $ruta= "http://104.198.222.134/imagenes/evento/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";
             date_default_timezone_set('America/Lima');
             $datetime = date("Y-m-d H:i:s");
             while($item = $statement->fetch()){
@@ -3585,7 +3585,7 @@ class MainController extends BaseController
         $id_funcion= trim($body["id_funcion"]);
         $id_evento= trim($body["id_evento"]);
         try {
-            $ruta= "http://104.198.222.134/imagenes/distribucion/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/distribucion/";
             date_default_timezone_set('America/Lima');
             $datetime = date("Y-m-d H:i:s");
             $sql = "SELECT tp.*, tpf.vendido as vendido1 FROM tsa_platea tp INNER JOIN tsa_platea_funcion tpf ON tp.id_platea = tpf.id_platea  and tpf.id_funcion=:idFuncion INNER JOIN tsa_evento te ON te.id_evento =tp.id_evento and te.id_evento =:id_evento";
@@ -3754,6 +3754,50 @@ class MainController extends BaseController
         return $response;
     }
 
+    public function getToken_client($request, $response, $args){
+        include("error.php");
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $out["codigo"] = "100";
+            $out["mensaje"] = $error_100_mensaje;
+            $out["causa"] =  $error_100_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            $out["codigo"] = "101";
+            $out["mensaje"] = $error_101_mensaje;
+            $out["causa"] = $error_101_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(401);
+        }
+        $API_LOGIN_DEV     = "TEATROSA-EC-CLIENT";
+        $API_KEY_DEV       = "4ZBBpjyBcFip7tTJCW4N0M6ImQ284E";
+        $server_application_code = $API_LOGIN_DEV;
+        $server_app_key = $API_KEY_DEV ;
+        $date = new \DateTime();
+        //$date = date("Y-m-d H:i:s");
+        $unix_timestamp = $date->getTimestamp();
+        // $unix_timestamp = "1546543146";
+        $uniq_token_string = $server_app_key.$unix_timestamp;
+        $uniq_token_hash = hash('sha256', $uniq_token_string);
+        $auth_token = base64_encode($server_application_code.";".$unix_timestamp.";".$uniq_token_hash);
+        $out['TIMESTAMP'] =$unix_timestamp;
+        $out['UNIQTOKENST'] =$uniq_token_string;
+        $out['UNIQTOHAS'] =$uniq_token_hash;
+        $out['AUTHTOKEN'] =$auth_token;
+        $response->getBody()->write(json_encode($out));
+        return $response;
+    }
     public function getPromociones($request, $response, $args){
         include("error.php");
         $response = $response->withHeader('Content-Type', 'application/json');
@@ -3802,7 +3846,7 @@ class MainController extends BaseController
         try {
             $eventos= [];
             $promocion=[];
-            $ruta= "http://104.198.222.134/imagenes/evento/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";
             $sql = "SELECT te.nombre ,te.id_evento, tfc.cantidad_ticket, tfc.id_factor_compra AS id_promo, tp.tipo_acceso FROM tsa_evento te INNER JOIN tsa_factor_compra tfc ON te.id_evento = tfc.id_evento INNER JOIN tsa_promocion tp ON tp.id_promocion=tfc.id_promocion and te.id_evento=1 and te.estado='A' and tfc.estado='A'";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
@@ -4019,7 +4063,7 @@ class MainController extends BaseController
         $id_usuario= trim($body["id_usuario"]);
         try {
             $promocion=[];
-            $ruta= "http://104.198.222.134/imagenes/evento/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";
             $sql = "SELECT * FROM tsa_promocion tp INNER JOIN tsa_factor_compra tfc ON tp.id_promocion =tfc.id_promocion and tfc.estado ='A' and fecha_inicio <= NOW() and fecha_final >=NOW() and (tfc.id_evento=:id_evento  OR tfc.id_evento=1) ";
             $statement = $db->prepare($sql);
             $statement->bindValue(':id_evento', $id_evento, \PDO::PARAM_STR);
@@ -4234,7 +4278,7 @@ class MainController extends BaseController
         $id_usuario= trim($body["id_usuario"]);
         try {
             $promocion=[];
-            $ruta= "http://104.198.222.134/imagenes/evento/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";
             $sql = "SELECT * FROM tsa_promocion tp INNER JOIN tsa_codigo_promocional tfc ON tp.id_promocion =tfc.id_promocion and tfc.estado ='A' and fecha_inicio <= NOW() and fecha_final >=NOW() and tfc.codigo=:codigo and ( tfc.id_evento=:id_evento or tfc.id_evento=1)";
             $statement = $db->prepare($sql);
             $statement->bindValue(':codigo', $codigo, \PDO::PARAM_STR);
@@ -4608,7 +4652,7 @@ class MainController extends BaseController
             $response->getBody()->write(json_encode($out));
             return $response->withStatus(401);
         }
-        $categorias=  array('LOGIN_DEV_SERVER'=> 'TPP3-EC-SERVER', 'KEY_DEV_SERVER'=> 'JdXTDl2d0o0B8ANZ1heJOq7tf62PC6','LOGIN_DEV_CLIENT'=> 'TPP3-EC-CLIENT', 'KEY_DEV_CLIENT'=> 'ZfapAKOk4QFXheRNvndVib9XU3szzg');
+        $categorias=  array('LOGIN_DEV_SERVER'=> 'TEATROSA-EC-SERVER', 'KEY_DEV_SERVER'=> '5W1BGgglGnWx9bVYJlatix2d7TY7xj','LOGIN_DEV_CLIENT'=> 'TEATROSA-EC-CLIENT', 'KEY_DEV_CLIENT'=> '4ZBBpjyBcFip7tTJCW4N0M6ImQ284E');
         $response->getBody()->write(json_encode($categorias));
         return $response;
     }
@@ -6001,6 +6045,7 @@ class MainController extends BaseController
               $statement->execute();
               $nombreU="TEATRO";
               $apellidoU="SANCHEZ AGUILAR";
+              $client1->compraFactura($id_compra,"C",$user_id);
               foreach($lista3 as $llave => $valores) {
                 if (!in_array($valores, $lista4)) {
                   $sql = "SELECT tuc.nombres as nombreU, tuc.apellidos as apellidosU, te.*, tt.precio ,tt.sala, tf.fecha, tt.id_ticket, tta.asiento,tt.estado as estado_ticket FROM tsa_ticket tt
@@ -6016,7 +6061,7 @@ class MainController extends BaseController
                   $ticket= [];
 
                   $asientos= [];
-                  $ruta= "http://104.198.222.134/imagenes/evento/";
+                  $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";
                   while($item = $statement->fetch()){
                     if (!in_array($item->id_ticket, $tickets)) {
                         $cad = "000000000000";
@@ -6043,7 +6088,7 @@ class MainController extends BaseController
                 }
 
               }
-                $client1->compraFactura($id_compra,"C",$user_id);
+
               if ($donacion!="0") {
                 $client->sendMail1("4", $email, "",($nombreU).' '.($apellidoU),"");
               }
@@ -7052,7 +7097,7 @@ class MainController extends BaseController
                   $ticket= [];
 
                   $asientos= [];
-                  $ruta= "http://104.198.222.134/imagenes/evento/";
+                  $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";
                   while($item = $statement->fetch()){
                     if (!in_array($item->id_ticket, $tickets)) {
                         $cad = "000000000000";
@@ -7133,7 +7178,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/banner/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/banner/";
             $categorias['Destacados']=[];
             $categorias['Publicidad']=[];
             while($item = $statement->fetch()){
@@ -7143,7 +7188,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/publicidad/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/publicidad/";
             while($item = $statement->fetch()){
               $categorias['Publicidad'][]=  array('id'=> $item->id_publicidad_web, 'tipo'=> $item->tipo, 'link'=> $item->link, 'imagen'=> $ruta.($item->id_publicidad_web).".png");
             }
@@ -7193,7 +7238,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/banner/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/banner/";
             while($item = $statement->fetch()){
               $categorias['nombre_banner']=  $item->nombre;
               $categorias['imagen_banner']=  $ruta.$item->imagen;
@@ -7217,7 +7262,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/banner/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/banner/";
             $categorias['objetivos']=[];
             while($item = $statement->fetch()){
               $categorias['objetivos'][]=  $item->descripcion;
@@ -7226,7 +7271,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/otras/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/otras/";
             $categorias['instalaciones']=[];
             while($item = $statement->fetch()){
               $categorias['instalaciones'][]= array('titulo'=> $item->titulo, 'descripcion'=> $item->descripcion, 'imagen'=> $ruta.($item->id_informacion_tabla).".png");
@@ -7235,7 +7280,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/evento/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";
             $categorias['temporadas']=[];
             while($item = $statement->fetch()){
               $categorias['temporadas'][]= array('id_evento'=> $item->id_evento,'titulo'=> $item->nombre,'imagen'=> $ruta.($item->id_evento)."H.png");
@@ -7286,7 +7331,7 @@ class MainController extends BaseController
           //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
           $statement = $db->prepare($sql);
           $result = $statement->execute();
-          $ruta= "http://104.198.222.134/imagenes/banner/";
+          $ruta= "https://teatrosanchezaguilar.org/imagenes/banner/";
           while($item = $statement->fetch()){
             $categorias['nombre_banner']=  $item->nombre;
             $categorias['imagen_banner']=  $ruta.$item->imagen;
@@ -7295,7 +7340,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/otras/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/otras/";
             $categorias['noticias']=[];
             while($item = $statement->fetch()){
               $categorias['noticias'][]=  array('titulo'=> $item->titulo, 'descripcion'=> $item->descripcion, 'imagen'=> $ruta.($item->id_informacion_tabla).".png");;
@@ -7346,7 +7391,7 @@ class MainController extends BaseController
           //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
           $statement = $db->prepare($sql);
           $result = $statement->execute();
-          $ruta= "http://104.198.222.134/imagenes/banner/";
+          $ruta= "https://teatrosanchezaguilar.org/imagenes/banner/";
           while($item = $statement->fetch()){
             $categorias['nombre_banner']=  $item->nombre;
             $categorias['imagen_banner']=  $ruta.$item->imagen;
@@ -7355,7 +7400,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/otras/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/otras/";
             $categorias['espacios']=[];
             while($item = $statement->fetch()){
               $categorias['espacios'][]=  array('id_espacios'=> $item->id_informacion_tabla , 'titulo'=> $item->titulo, 'descripcion'=> $item->descripcion, 'imagen'=> $ruta.($item->id_informacion_tabla).".png");;
@@ -7364,7 +7409,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/otras/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/otras/";
             $categorias['realizados']=[];
             while($item = $statement->fetch()){
               $categorias['realizados'][]=  array('id_realizados'=> $item->id_informacion_tabla , 'titulo'=> $item->titulo, 'descripcion'=> $item->descripcion, 'imagen'=> $ruta.($item->id_informacion_tabla).".png");;
@@ -7427,7 +7472,7 @@ class MainController extends BaseController
             $statement = $db->prepare($sql);
             $statement->bindValue(':id_realizados', $id_realizados, \PDO::PARAM_STR);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/banner/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/banner/";
             while($item = $statement->fetch()){
               $categorias['titulo']=  $item->titulo;
               $categorias['descripcion']= $item->descripcion;
@@ -7436,7 +7481,7 @@ class MainController extends BaseController
             $statement = $db->prepare($sql);
             $statement->bindValue(':id_realizados', $id_realizados, \PDO::PARAM_STR);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/descargable/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/descargable/";
             $categorias['informacion']=[];
             while($item = $statement->fetch()){
               $categorias['informacion'][]=  array( 'titulo'=> $item->titulo, 'archivo'=> $ruta.($item->id_informacion_descargable).".pdf");;
@@ -7445,7 +7490,7 @@ class MainController extends BaseController
             $statement = $db->prepare($sql);
             $statement->bindValue(':id_realizados', $id_realizados, \PDO::PARAM_STR);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/galeria/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/galeria/";
             $categorias['galeria']=[];
             while($item = $statement->fetch()){
               $categorias['galeria'][]= $ruta.($item->id_informacion_galeria).".png";
@@ -7496,7 +7541,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/banner/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/banner/";
             while($item = $statement->fetch()){
               $categorias['nombre_banner']=  $item->nombre;
               $categorias['imagen_banner']=  $ruta.$item->imagen;
@@ -7519,7 +7564,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/otras/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/otras/";
             $categorias['lineas']=[];
             while($item = $statement->fetch()){
               $categorias['lineas'][]= array('titulo'=> $item->titulo, 'descripcion'=> $item->descripcion, 'imagen'=> $ruta.($item->id_informacion_tabla).".png");
@@ -7535,7 +7580,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/otras/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/otras/";
             $categorias['proyectos']=[];
             while($item = $statement->fetch()){
               $categorias['proyectos'][]= array('id_proyectos'=> $item->id_informacion_tabla,'titulo'=> $item->titulo, 'descripcion'=> $item->descripcion, 'imagen'=> $ruta.($item->id_informacion_tabla).".png");
@@ -7586,7 +7631,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/banner/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/banner/";
             while($item = $statement->fetch()){
               $categorias['nombre_banner']=  $item->nombre;
               $categorias['imagen_banner']=  $ruta.$item->imagen;
@@ -7661,7 +7706,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/banner/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/banner/";
             while($item = $statement->fetch()){
               $categorias['nombre_banner']=  $item->nombre;
               $categorias['imagen_banner']=  $ruta.$item->imagen;
@@ -7727,7 +7772,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/banner/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/banner/";
             while($item = $statement->fetch()){
               $categorias['nombre_banner']=  $item->nombre;
               $categorias['imagen_banner']=  $ruta.$item->imagen;
@@ -7736,7 +7781,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/otras/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/otras/";
             $categorias['ambiental']=[];
             while($item = $statement->fetch()){
               $categorias['ambiental'][]= array('titulo'=> $item->titulo, 'descripcion'=> $item->descripcion,'imagen'=> $ruta.($item->id_informacion_tabla).".png");
@@ -7788,7 +7833,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/banner/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/banner/";
             while($item = $statement->fetch()){
               $categorias['nombre_banner']=  $item->nombre;
               $categorias['imagen_banner']=  $ruta.$item->imagen;
@@ -7804,7 +7849,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/otras/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/otras/";
             $categorias['beneficios']=[];
             while($item = $statement->fetch()){
               $categorias['beneficios'][]= array('titulo'=> $item->titulo, 'descripcion'=> $item->descripcion,'imagen'=> $ruta.($item->id_informacion_tabla).".png");
@@ -7863,7 +7908,7 @@ class MainController extends BaseController
             //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
-            $ruta= "http://104.198.222.134/imagenes/banner/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/banner/";
             $categorias=[];
             while($item = $statement->fetch()){
               $categorias= array('titulo'=> $item->nombre, 'link'=> $item->descripcion,'imagen'=> $ruta.($item->imagen),'estado'=> $item->estado);
@@ -8148,7 +8193,7 @@ class MainController extends BaseController
             $band2=true;
             $band3=true;
             $cartelera= [];
-            $ruta= "http://104.198.222.134/imagenes/evento/";
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";
             $sql = "SELECT te.*, tc.nombre as categoria FROM tsa_evento te  INNER JOIN  tsa_categoria tc ON te.id_categoria=tc.id_categoria and te.estado='A' and te.tipo !='I'";
             $statement = $db->prepare($sql);
             $result = $statement->execute();
