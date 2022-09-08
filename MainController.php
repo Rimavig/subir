@@ -1278,7 +1278,7 @@ class MainController extends BaseController
               }
             }
             foreach($asientos as $llave => $valores) {
-              $sql = "INSERT INTO teatro.tsa_bloqueo_asiento (id_usuario_cliente,id_distribucion) VALUES (:id_usuario,:asiento)";
+              $sql = "INSERT INTO teatro_backup.tsa_bloqueo_asiento (id_usuario_cliente,id_distribucion) VALUES (:id_usuario,:asiento)";
               $statement = $db->prepare($sql);
               $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
               $statement->bindValue(':asiento', $valores, \PDO::PARAM_STR);
@@ -1356,7 +1356,7 @@ class MainController extends BaseController
               }
             }
             foreach($asientos as $llave => $valores) {
-              $sql = "UPDATE teatro.tsa_bloqueo_asiento set fecha_creacion =now() WHERE id_usuario_cliente=:id_usuario and id_distribucion=:asiento";
+              $sql = "UPDATE teatro_backup.tsa_bloqueo_asiento set fecha_creacion =now() WHERE id_usuario_cliente=:id_usuario and id_distribucion=:asiento";
               $statement = $db->prepare($sql);
               $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
               $statement->bindValue(':asiento', $valores, \PDO::PARAM_STR);
@@ -1536,7 +1536,7 @@ class MainController extends BaseController
                   }
               }
 
-              $sql = "INSERT INTO teatro.tsa_bloqueo_cantidad (id_usuario_cliente,id_platea_funcion,cantidad) VALUES (:id_usuario,:id_platea_funcion, :cantidad)";
+              $sql = "INSERT INTO teatro_backup.tsa_bloqueo_cantidad (id_usuario_cliente,id_platea_funcion,cantidad) VALUES (:id_usuario,:id_platea_funcion, :cantidad)";
               $statement = $db->prepare($sql);
               $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
               $statement->bindValue(':id_platea_funcion', $id_platea_funcion, \PDO::PARAM_STR);
@@ -1621,7 +1621,7 @@ class MainController extends BaseController
               }else{
                 $id_platea_funcion=  $item->id_platea_funcion;
               }
-              $sql = "UPDATE teatro.tsa_bloqueo_cantidad set fecha_creacion =now() WHERE id_usuario_cliente=:id_usuario and id_platea_funcion=:id_platea_funcion and cantidad=:cantidad";
+              $sql = "UPDATE teatro_backup.tsa_bloqueo_cantidad set fecha_creacion =now() WHERE id_usuario_cliente=:id_usuario and id_platea_funcion=:id_platea_funcion and cantidad=:cantidad";
               $statement = $db->prepare($sql);
               $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
               $statement->bindValue(':id_platea_funcion', $id_platea_funcion, \PDO::PARAM_STR);
@@ -1704,7 +1704,7 @@ class MainController extends BaseController
               }else{
                 $id_platea_funcion=  $item->id_platea_funcion;
               }
-              $sql = "DELETE FROM teatro.tsa_bloqueo_cantidad WHERE id_usuario_cliente=:id_usuario and id_platea_funcion=:id_platea_funcion and cantidad=:cantidad";
+              $sql = "DELETE FROM teatro_backup.tsa_bloqueo_cantidad WHERE id_usuario_cliente=:id_usuario and id_platea_funcion=:id_platea_funcion and cantidad=:cantidad";
               $statement = $db->prepare($sql);
               $statement->bindValue(':id_usuario', $usuario, \PDO::PARAM_STR);
               $statement->bindValue(':id_platea_funcion', $id_platea_funcion, \PDO::PARAM_STR);
@@ -1960,7 +1960,7 @@ class MainController extends BaseController
         $ruc = trim($body['ruc']);
         $tipo = trim($body['tipo']);
         try {
-            $sql = "UPDATE teatro.tsa_facturacion SET nombres=:nombres, apellidos=:apellidos, razon_social=:razon_social, cedula=:cedula, ruc=:ruc, tipo=:tipo, correo=:correo, direccion=:direccion WHERE id_facturacion=:id_facturacion";
+            $sql = "UPDATE teatro_backup.tsa_facturacion SET nombres=:nombres, apellidos=:apellidos, razon_social=:razon_social, cedula=:cedula, ruc=:ruc, tipo=:tipo, correo=:correo, direccion=:direccion WHERE id_facturacion=:id_facturacion";
             $statement = $db->prepare($sql);
             $statement->bindValue(':nombres', $nombres, \PDO::PARAM_STR);
             $statement->bindValue(':id_facturacion', $id_facturacion, \PDO::PARAM_STR);
@@ -2106,7 +2106,7 @@ class MainController extends BaseController
         $correo = trim($body['correo']);
         $ruc = trim($body['ruc']);
         $tipo = trim($body['tipo']);
-        $sql = "INSERT INTO teatro.tsa_facturacion (id_usuario_cliente,nombres,apellidos,cedula,razon_social,ruc,tipo,direccion,correo,usuario_creacion)
+        $sql = "INSERT INTO teatro_backup.tsa_facturacion (id_usuario_cliente,nombres,apellidos,cedula,razon_social,ruc,tipo,direccion,correo,usuario_creacion)
 	       VALUES (:id_usuario,:nombres,:apellidos,:cedula,:razon_social,:ruc,:tipo,:direccion,:correo,'usuario')";
         //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
         $statement = $db->prepare($sql);
@@ -2181,7 +2181,7 @@ class MainController extends BaseController
             $band=true;
             while($item = $statement->fetch()){
                 $band=false;
-                $sql = " UPDATE teatro.tsa_facturacion_favorita SET id_facturacion=:id_facturacion WHERE id_facturacion_favorita=$item->id_facturacion_favorita";
+                $sql = " UPDATE teatro_backup.tsa_facturacion_favorita SET id_facturacion=:id_facturacion WHERE id_facturacion_favorita=$item->id_facturacion_favorita";
                 $statement1 = $db->prepare($sql);
                 $statement1->bindValue(':id_facturacion', $id_facturacion, \PDO::PARAM_STR);
                 $result = $statement1->execute();
@@ -2190,7 +2190,7 @@ class MainController extends BaseController
                 return $response;
             }
             if($band){
-                $sql = "INSERT INTO teatro.tsa_facturacion_favorita (id_usuario_cliente,id_facturacion,usuario_creacion) VALUES (:id_usuario,:id_facturacion,'usuario')";
+                $sql = "INSERT INTO teatro_backup.tsa_facturacion_favorita (id_usuario_cliente,id_facturacion,usuario_creacion) VALUES (:id_usuario,:id_facturacion,'usuario')";
                 $statement = $db->prepare($sql);
                 $statement->bindValue(':id_facturacion', $id_facturacion, \PDO::PARAM_STR);
                 $statement->bindValue(':id_usuario', $id_usuario, \PDO::PARAM_STR);
@@ -2328,7 +2328,7 @@ class MainController extends BaseController
             $band=true;
             while($item = $statement->fetch()){
                 $band=false;
-                $sql = "UPDATE teatro.tsa_tarjeta_favorita SET bin=:bin1 , `status`=:status1, token=:token, holder_name=:holder_name, expiry_year=:expiry_year, expiry_month=:expiry_month, transaction_reference=:transaction_reference, `type`=:type1, `number`=:number1  WHERE id_tarjeta_favorita=$item->id_tarjeta_favorita";
+                $sql = "UPDATE teatro_backup.tsa_tarjeta_favorita SET bin=:bin1 , `status`=:status1, token=:token, holder_name=:holder_name, expiry_year=:expiry_year, expiry_month=:expiry_month, transaction_reference=:transaction_reference, `type`=:type1, `number`=:number1  WHERE id_tarjeta_favorita=$item->id_tarjeta_favorita";
                 $statement1 = $db->prepare($sql);
                 $statement1->bindValue(':bin1', $bin, \PDO::PARAM_STR);
                 $statement1->bindValue(':status1', $status, \PDO::PARAM_STR);
@@ -2345,7 +2345,7 @@ class MainController extends BaseController
                 return $response;
             }
             if($band){
-                $sql = "INSERT INTO teatro.tsa_tarjeta_favorita (id_usuario_cliente,bin,`status`,token,holder_name,expiry_year,expiry_month,transaction_reference,`type`,`number`,usuario_creacion)
+                $sql = "INSERT INTO teatro_backup.tsa_tarjeta_favorita (id_usuario_cliente,bin,`status`,token,holder_name,expiry_year,expiry_month,transaction_reference,`type`,`number`,usuario_creacion)
 	            VALUES (:id_usuario,:bin,:status1,:token,:holder_name,:expiry_year,:expiry_month,:transaction_reference,:type1,:number1,'usuario')";
                 $statement = $db->prepare($sql);
                 $statement->bindValue(':id_usuario', $id_usuario, \PDO::PARAM_STR);
@@ -2485,7 +2485,7 @@ class MainController extends BaseController
         while($item = $statement->fetch()){
           $band=false;
           $out= array('id'=> $item->id_contacto, 'nombre'=> $item->nombre, 'celular'=> $item->celular, 'telefono'=> $item->telefono, 'direccion'=> $item->direccion, 'correo'=> $item->correo, 'pagina'=> $item->pagina,
-          'facebook'=> $item->facebook, 'instagram'=> $item->instagram, 'youtube'=> $item->youtube, 'linkedin'=> $item->linkedin, 'whatsapp'=> $item->whatsapp, 'logo_light'=>$ruta_logo.$item->logo_light, 'logo_dark'=> $ruta_logo.$item->logo_dark, 'terminos_condiciones'=>'https://qr-ticket.app/privacy.html');
+          'facebook'=> $item->facebook, 'instagram'=> $item->instagram, 'youtube'=> $item->youtube, 'linkedin'=> $item->linkedin, 'whatsapp'=> $item->whatsapp, 'logo_light'=>$ruta_logo.$item->logo_light, 'logo_dark'=> $ruta_logo.$item->logo_dark, 'terminos_condiciones'=>'https://teatrosanchezaguilar.org/terminos.html');
         }
        if ($band) {
          $out["codigo"] = "208";
@@ -2797,7 +2797,7 @@ class MainController extends BaseController
               $precio[]=$item->precio4;
               $precio[]=$item->precio5;
               $precio[]=$item->precio6;
-              $out= array('id'=> $item->id_fundacion, 'titulo'=> $item->nombre, 'descripcion1'=> $item->descripcion1, 'descripcion2'=> $item->descripcion2, 'imagen'=>$ruta_logo.$item->imagen, 'precio'=>$precio ,  'terminos_condiciones'=>'https://qr-ticket.app/privacy.html');
+              $out= array('id'=> $item->id_fundacion, 'titulo'=> $item->nombre, 'descripcion1'=> $item->descripcion1, 'descripcion2'=> $item->descripcion2, 'imagen'=>$ruta_logo.$item->imagen, 'precio'=>$precio ,  'terminos_condiciones'=>'https://teatrosanchezaguilar.org/terminos.html');
             }
             $sql = "SELECT ts.nombres, ts.apellidos,ts.codigo_identificador, ts.puntos_acumulados, ts.fecha_caducidad FROM tsa_usuario_cliente ts WHERE ts.id_usuario_cliente=:id_usuario";
             $statement = $db->prepare($sql);
@@ -3735,8 +3735,8 @@ class MainController extends BaseController
             $response->getBody()->write(json_encode($out));
             return $response->withStatus(401);
         }
-        $API_LOGIN_DEV     = "TEATROSA-EC-SERVER";
-        $API_KEY_DEV       = "5W1BGgglGnWx9bVYJlatix2d7TY7xj";
+        $API_LOGIN_DEV     = "TPP3-EC-SERVER";
+        $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6";
         $server_application_code = $API_LOGIN_DEV;
         $server_app_key = $API_KEY_DEV ;
         $date = new \DateTime();
@@ -3780,8 +3780,8 @@ class MainController extends BaseController
             $response->getBody()->write(json_encode($out));
             return $response->withStatus(401);
         }
-        $API_LOGIN_DEV     = "TEATROSA-EC-CLIENT";
-        $API_KEY_DEV       = "4ZBBpjyBcFip7tTJCW4N0M6ImQ284E";
+        $API_LOGIN_DEV     = "TPP3-EC-CLIENT";
+        $API_KEY_DEV       = "ZfapAKOk4QFXheRNvndVib9XU3szzg";
         $server_application_code = $API_LOGIN_DEV;
         $server_app_key = $API_KEY_DEV ;
         $date = new \DateTime();
@@ -4391,7 +4391,7 @@ class MainController extends BaseController
                   $id_callback_paymentez=$item->id_callback_paymentez;
             }
             if ($band) {
-              $sql = "INSERT INTO teatro.tsa_callback_paymentez (status,order_description,authorization_code,status_detail,`date`,message,id,dev_reference,carrier_code,amount,paid_date,installments,ltp_id,stoken,application_code,userid,useremail,bin,holder_name,`type`,`number`,origin)
+              $sql = "INSERT INTO teatro_backup.tsa_callback_paymentez (status,order_description,authorization_code,status_detail,`date`,message,id,dev_reference,carrier_code,amount,paid_date,installments,ltp_id,stoken,application_code,userid,useremail,bin,holder_name,`type`,`number`,origin)
     	        VALUES (:status,:order_description,:authorization_code,:status_detail,:date1,:message,:id,:dev_reference,:carrier_code,:amount,:paid_date,:installments,:ltp_id,:stoken,:application_code,:userid,:useremail,:bin,:holder_name,:type1,:number1,:origin)";
               $statement = $db->prepare($sql);
               $statement->bindValue(':status', $status, \PDO::PARAM_STR);
@@ -4418,7 +4418,7 @@ class MainController extends BaseController
               $statement->bindValue(':origin', $origin, \PDO::PARAM_STR);
               $statement->execute();
             }else {
-              $sql = "UPDATE teatro.tsa_callback_paymentez SET status=:status,order_description=:order_description,authorization_code=:authorization_code,status_detail=:status_detail,
+              $sql = "UPDATE teatro_backup.tsa_callback_paymentez SET status=:status,order_description=:order_description,authorization_code=:authorization_code,status_detail=:status_detail,
               `date`=:date1,message=:message,id=:id,dev_reference=:dev_reference,carrier_code=:carrier_code,amount=:amount,paid_date=:paid_date,installments=:installments,ltp_id=:ltp_id,stoken=:stoken,
               application_code=:application_code,userid=:userid,useremail=:useremail,bin=:bin,holder_name=:holder_name,`type`=:type1,`number`=:number1,origin=:origin,fecha_modificacion=now()
               WHERE id_callback_paymentez=:id_callback_paymentez";
@@ -4521,7 +4521,7 @@ class MainController extends BaseController
                 $tipoA="W";
               }
           }
-          $sql = "INSERT INTO teatro.tsa_registro_gratuito (nombres,apellidos,cedula,correo,celular,fecha_nacimiento,id_funcion,usuario_creacion,id_usuario_cliente,tipo,cantidad)
+          $sql = "INSERT INTO teatro_backup.tsa_registro_gratuito (nombres,apellidos,cedula,correo,celular,fecha_nacimiento,id_funcion,usuario_creacion,id_usuario_cliente,tipo,cantidad)
           VALUES (:nombres,:apellidos,:cedula,:correo,:celular,:fecha_nacimiento,:id_funcion,:id_usuario,:id_usuario,:tipo,:cantidad)";
           $statement = $db->prepare($sql);
           $statement->bindValue(':nombres', $nombres, \PDO::PARAM_STR);
@@ -4652,15 +4652,15 @@ class MainController extends BaseController
             $response->getBody()->write(json_encode($out));
             return $response->withStatus(401);
         }
-        $categorias=  array('LOGIN_DEV_SERVER'=> 'TEATROSA-EC-SERVER', 'KEY_DEV_SERVER'=> '5W1BGgglGnWx9bVYJlatix2d7TY7xj','LOGIN_DEV_CLIENT'=> 'TEATROSA-EC-CLIENT', 'KEY_DEV_CLIENT'=> '4ZBBpjyBcFip7tTJCW4N0M6ImQ284E');
+        $categorias=  array('LOGIN_DEV_SERVER'=> 'TPP3-EC-SERVER', 'KEY_DEV_SERVER'=> 'JdXTDl2d0o0B8ANZ1heJOq7tf62PC6','LOGIN_DEV_CLIENT'=> 'TPP3-EC-CLIENT', 'KEY_DEV_CLIENT'=> 'ZfapAKOk4QFXheRNvndVib9XU3szzg');
         $response->getBody()->write(json_encode($categorias));
         return $response;
     }
 
     public function rembolso($id_transacion)
     {
-          $API_LOGIN_DEV     = "TEATROSA-EC-SERVER";
-          $API_KEY_DEV       = "5W1BGgglGnWx9bVYJlatix2d7TY7xj";
+          $API_LOGIN_DEV     = "TPP3-EC-SERVER";
+          $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6 ";
           $server_application_code = $API_LOGIN_DEV;
           $server_app_key = $API_KEY_DEV ;
           $date = new \DateTime();
@@ -4944,8 +4944,8 @@ class MainController extends BaseController
         $authorization_code="";
         $status_transacion="";
         try {
-            $API_LOGIN_DEV     = "TEATROSA-EC-SERVER";
-            $API_KEY_DEV       = "5W1BGgglGnWx9bVYJlatix2d7TY7xj";
+            $API_LOGIN_DEV     = "TPP3-EC-SERVER";
+            $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6";
             $server_application_code = $API_LOGIN_DEV;
             $server_app_key = $API_KEY_DEV ;
             $date = new \DateTime();
@@ -5062,14 +5062,14 @@ class MainController extends BaseController
             }
               $whole = floor($cantidadT);
             $puntos= $whole-$dolares_canjeados;
-            $sql = "UPDATE teatro.tsa_usuario_cliente SET puntos_acumulados=puntos_acumulados+:puntos WHERE id_usuario_cliente=:id_usuario_cliente";
+            $sql = "UPDATE teatro_backup.tsa_usuario_cliente SET puntos_acumulados=puntos_acumulados+:puntos WHERE id_usuario_cliente=:id_usuario_cliente";
             $statement = $db->prepare($sql);
             $statement->bindValue(':id_usuario_cliente', $id_usuario, \PDO::PARAM_STR);
             $statement->bindValue(':puntos', $puntos, \PDO::PARAM_STR);
             $statement->execute();
 
             $puntos=0;
-            $sql = "INSERT INTO teatro.tsa_amigos_puntos (id_usuario_cliente,id_compra,evento,cantidad,puntos,puntos_ganados,fecha_consumo) VALUES (:id_usuario_cliente,:id_compra,:evento,:cantidad,:puntos,:puntos_ganados,now());";
+            $sql = "INSERT INTO teatro_backup.tsa_amigos_puntos (id_usuario_cliente,id_compra,evento,cantidad,puntos,puntos_ganados,fecha_consumo) VALUES (:id_usuario_cliente,:id_compra,:evento,:cantidad,:puntos,:puntos_ganados,now());";
             $statement = $db->prepare($sql);
             $statement->bindValue(':id_usuario_cliente', $id_usuario, \PDO::PARAM_STR);
             $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
@@ -5350,8 +5350,8 @@ class MainController extends BaseController
         //tipo,id_evento,id_funcion,asiento1-asiento2,id_promocion,total, descuento;
 
         try {
-            $API_LOGIN_DEV     = "TEATROSA-EC-SERVER";
-            $API_KEY_DEV       = "5W1BGgglGnWx9bVYJlatix2d7TY7xj";
+            $API_LOGIN_DEV     = "TPP3-EC-SERVER";
+            $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6";
             $server_application_code = $API_LOGIN_DEV;
             $server_app_key = $API_KEY_DEV ;
             $date = new \DateTime();
@@ -5418,7 +5418,7 @@ class MainController extends BaseController
         try {
             if ($ban) {
               try {
-                  $sql = "INSERT INTO teatro.tsa_compra (id_facturacion,id_usuario_cliente,dolares_canjeados,donacion,sub_total,descuento,iva,total,usuario_creacion,id_transacion,authorization_code,status_transacion,tipo,email)
+                  $sql = "INSERT INTO teatro_backup.tsa_compra (id_facturacion,id_usuario_cliente,dolares_canjeados,donacion,sub_total,descuento,iva,total,usuario_creacion,id_transacion,authorization_code,status_transacion,tipo,email)
                   VALUES (:id_facturacion,:id_usuario_cliente,:dolares_canjeados,:donacion,:sub_total,:descuento,:iva,:total,:usuario_creacion,:id_transacion,:authorization_code,:status_transacion,:tipo,:email)";
                   $statement = $db->prepare($sql);
                   $statement->bindValue(':id_facturacion', $id_facturacion, \PDO::PARAM_STR);
@@ -5469,7 +5469,7 @@ class MainController extends BaseController
                           if ($id_compra!=0) {
                             $puntos_canjeadosT=$totalP*$dolares_canjeados/$sub_total;
                             $puntos_canjeadosTK=number_format($puntos_canjeadosT, 2);
-                            $sql = "INSERT INTO teatro.tsa_ticket (id_funcion,id_usuario_cliente,id_compra,sala,precio,tipo,usuario_creacion,descuento,puntos_canjeados)
+                            $sql = "INSERT INTO teatro_backup.tsa_ticket (id_funcion,id_usuario_cliente,id_compra,sala,precio,tipo,usuario_creacion,descuento,puntos_canjeados)
                             VALUES (:id_funcion,:id_usuario_cliente,:id_compra,:sala,:precio,:tipo,:usuario_creacion,:descuento,:puntos_canjeados)";
                             $statement = $db->prepare($sql);
                             $statement->bindValue(':id_funcion', $id_funcion, \PDO::PARAM_STR);
@@ -5486,7 +5486,7 @@ class MainController extends BaseController
                             if ($id_promocion!=0) {
                               if ($tipo_promocion=="FC" | $tipo_promocion=="CD" | $tipo_promocion=="FP" | $tipo_promocion=="BT" | $tipo_promocion=="CP") {
                                   if ($tipo_promocion=="FC") {
-                                    $sql = "INSERT INTO teatro.tsa_ticket_promocion_factor_compra (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
+                                    $sql = "INSERT INTO teatro_backup.tsa_ticket_promocion_factor_compra (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
                                     VALUES (:id_promocion,:id_ticket,:descuento,:id_usuario_cliente,:usuario_creacion)";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_promocion', $id_promocion, \PDO::PARAM_STR);
@@ -5496,7 +5496,7 @@ class MainController extends BaseController
                                     $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
                                     $statement->execute();
                                   }else if ($tipo_promocion=="CD") {
-                                    $sql = "INSERT INTO teatro.tsa_ticket_promocion_cruzados (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
+                                    $sql = "INSERT INTO teatro_backup.tsa_ticket_promocion_cruzados (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
                                     VALUES (:id_promocion,:id_ticket,:descuento,:id_usuario_cliente,:usuario_creacion)";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_promocion', $id_promocion, \PDO::PARAM_STR);
@@ -5506,7 +5506,7 @@ class MainController extends BaseController
                                     $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
                                     $statement->execute();
                                   }else if ( $tipo_promocion=="FP") {
-                                    $sql = "INSERT INTO teatro.tsa_ticket_promocion_factor_pago (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
+                                    $sql = "INSERT INTO teatro_backup.tsa_ticket_promocion_factor_pago (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
                                     VALUES (:id_promocion,:id_ticket,:descuento,:id_usuario_cliente,:usuario_creacion)";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_promocion', $id_promocion, \PDO::PARAM_STR);
@@ -5516,7 +5516,7 @@ class MainController extends BaseController
                                     $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
                                     $statement->execute();
                                   }else if ( $tipo_promocion=="BT") {
-                                    $sql = "INSERT INTO teatro.tsa_ticket_promocion_tarjeta (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
+                                    $sql = "INSERT INTO teatro_backup.tsa_ticket_promocion_tarjeta (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
                                     VALUES (:id_promocion,:id_ticket,:descuento,:id_usuario_cliente,:usuario_creacion)";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_promocion', $id_promocion, \PDO::PARAM_STR);
@@ -5526,7 +5526,7 @@ class MainController extends BaseController
                                     $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
                                     $statement->execute();
                                   }else {
-                                    $sql = "INSERT INTO teatro.tsa_ticket_promocion_codigo (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
+                                    $sql = "INSERT INTO teatro_backup.tsa_ticket_promocion_codigo (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
                                     VALUES (:id_promocion,:id_ticket,:descuento,:id_usuario_cliente,:usuario_creacion)";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_promocion', $id_promocion, \PDO::PARAM_STR);
@@ -5549,39 +5549,39 @@ class MainController extends BaseController
                           }
                       } catch(\PDOException $th) {
                           $this->rembolso($id_transacion);
-                          $sql = "DELETE FROM teatro.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
+                          $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
                           $statement = $db->prepare($sql);
                           $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                           $statement->execute();
-                          $sql = "DELETE FROM teatro.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
+                          $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
                           $statement = $db->prepare($sql);
                           $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                           $statement->execute();
-                          $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
+                          $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
                           $statement = $db->prepare($sql);
                           $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                           $statement->execute();
-                          $sql = "DELETE FROM teatro.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
+                          $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
                           $statement = $db->prepare($sql);
                           $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                           $statement->execute();
-                          $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
+                          $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
                           $statement = $db->prepare($sql);
                           $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                           $statement->execute();
                           foreach($lista3 as $llave => $valo) {
-                            $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                            $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                             $statement = $db->prepare($sql);
                             $statement->bindValue(':id_ticket', $valo, \PDO::PARAM_STR);
                             $statement->execute();
                           }
-                          $sql = "DELETE FROM teatro.tsa_ticket WHERE id_compra=:id_compra";
+                          $sql = "DELETE FROM teatro_backup.tsa_ticket WHERE id_compra=:id_compra";
                           $statement = $db->prepare($sql);
                           $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                           $statement->execute();
                           foreach($lista as $llave => $valo) {
                             if ($valo[0]=="1") {
-                              $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                              $sql = "UPDATE teatro_backup.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
                               $statement = $db->prepare($sql);
                               $statement->bindValue(':cantidad', $valo[1], \PDO::PARAM_STR);
                               $statement->bindValue(':id_funcion', $valo[2], \PDO::PARAM_STR);
@@ -5589,7 +5589,7 @@ class MainController extends BaseController
                               $statement->execute();
                             }
                             if ($valo[0]=="2") {
-                              $sql = "UPDATE teatro.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
+                              $sql = "UPDATE teatro_backup.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
                               $statement = $db->prepare($sql);
                               $statement->bindValue(':id_distribucion',  $valo[1], \PDO::PARAM_STR);
                               $statement->execute();
@@ -5609,7 +5609,7 @@ class MainController extends BaseController
                               $result = $statement->execute();
                             }
                           }
-                          $sql = "DELETE FROM teatro.tsa_compra WHERE id_compra=:id_compra";
+                          $sql = "DELETE FROM teatro_backup.tsa_compra WHERE id_compra=:id_compra";
                           $statement = $db->prepare($sql);
                           $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                           $statement->execute();
@@ -5629,7 +5629,7 @@ class MainController extends BaseController
                             $precio=$Pcantidad[2];
                             try {
                                 if ($id_ticket!=0) {
-                                  $sql = "INSERT INTO teatro.tsa_ticket_asiento (id_ticket,asiento,precio,usuario_creacion,id_platea)
+                                  $sql = "INSERT INTO teatro_backup.tsa_ticket_asiento (id_ticket,asiento,precio,usuario_creacion,id_platea)
                                   VALUES (:id_ticket,:asiento,:precio,:usuario_creacion,:id_platea)";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
@@ -5639,7 +5639,7 @@ class MainController extends BaseController
                                   $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
                                   $statement->execute();
 
-                                  $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido+:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                                  $sql = "UPDATE teatro_backup.tsa_platea_funcion SET vendido=vendido+:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':cantidad', $cantidad, \PDO::PARAM_STR);
                                   $statement->bindValue(':id_funcion', $id_funcion, \PDO::PARAM_STR);
@@ -5649,48 +5649,48 @@ class MainController extends BaseController
                                   $lista3[]= $id_ticket;
                                 }else{
                                   $this->rembolso($id_transacion);
-                                  $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                   $statement->execute();
-                                  $sql = "DELETE FROM teatro.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                   $statement->execute();
-                                  $sql = "DELETE FROM teatro.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                   $statement->execute();
-                                  $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                   $statement->execute();
-                                  $sql = "DELETE FROM teatro.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                   $statement->execute();
-                                  $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                   $statement->execute();
                                   foreach($lista3 as $llave => $valo) {
-                                    $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                    $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_ticket', $valo, \PDO::PARAM_STR);
                                     $statement->execute();
 
                                   }
-                                  $sql = "DELETE FROM teatro.tsa_ticket WHERE id_compra=:id_compra";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket WHERE id_compra=:id_compra";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                                   $statement->execute();
-                                  $sql = "DELETE FROM teatro.tsa_compra WHERE id_compra=:id_compra";
+                                  $sql = "DELETE FROM teatro_backup.tsa_compra WHERE id_compra=:id_compra";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                                   $statement->execute();
                                   foreach($lista as $llave => $valo) {
                                     if ($valo[0]=="1") {
-                                      $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                                      $sql = "UPDATE teatro_backup.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
                                       $statement = $db->prepare($sql);
                                       $statement->bindValue(':cantidad', $valo[1], \PDO::PARAM_STR);
                                       $statement->bindValue(':id_funcion', $valo[2], \PDO::PARAM_STR);
@@ -5698,7 +5698,7 @@ class MainController extends BaseController
                                       $statement->execute();
                                     }
                                     if ($valo[0]=="2") {
-                                      $sql = "UPDATE teatro.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
+                                      $sql = "UPDATE teatro_backup.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
                                       $statement = $db->prepare($sql);
                                       $statement->bindValue(':id_distribucion',  $valo[1], \PDO::PARAM_STR);
                                       $statement->execute();
@@ -5726,47 +5726,47 @@ class MainController extends BaseController
                                 }
                             } catch(\PDOException $th) {
                                 $this->rembolso($id_transacion);
-                                $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
                                 foreach($lista3 as $llave => $valo) {
-                                  $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $valo, \PDO::PARAM_STR);
                                   $statement->execute();
                                 }
-                                $sql = "DELETE FROM teatro.tsa_ticket WHERE id_compra=:id_compra";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket WHERE id_compra=:id_compra";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_compra WHERE id_compra=:id_compra";
+                                $sql = "DELETE FROM teatro_backup.tsa_compra WHERE id_compra=:id_compra";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                                 $statement->execute();
                                 foreach($lista as $llave => $valo) {
                                   if ($valo[0]=="1") {
-                                    $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                                    $sql = "UPDATE teatro_backup.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':cantidad', $valo[1], \PDO::PARAM_STR);
                                     $statement->bindValue(':id_funcion', $valo[2], \PDO::PARAM_STR);
@@ -5774,7 +5774,7 @@ class MainController extends BaseController
                                     $statement->execute();
                                   }
                                   if ($valo[0]=="2") {
-                                    $sql = "UPDATE teatro.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
+                                    $sql = "UPDATE teatro_backup.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_distribucion',  $valo[1], \PDO::PARAM_STR);
                                     $statement->execute();
@@ -5809,7 +5809,7 @@ class MainController extends BaseController
                           $precio=$Pcantidad[3];
                             try {
                               if ($id_ticket!=0) {
-                                $sql = "INSERT INTO teatro.tsa_ticket_asiento (id_ticket,asiento,precio,usuario_creacion,id_platea)
+                                $sql = "INSERT INTO teatro_backup.tsa_ticket_asiento (id_ticket,asiento,precio,usuario_creacion,id_platea)
                                 VALUES (:id_ticket,:asiento,:precio,:usuario_creacion,:id_platea)";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
@@ -5818,7 +5818,7 @@ class MainController extends BaseController
                                 $statement->bindValue(':id_platea', $id_platea, \PDO::PARAM_STR);
                                 $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "UPDATE teatro.tsa_distribucion SET estado='V' WHERE id_distribucion=:id_distribucion";
+                                $sql = "UPDATE teatro_backup.tsa_distribucion SET estado='V' WHERE id_distribucion=:id_distribucion";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_distribucion', $id_asiento, \PDO::PARAM_STR);
                                 $statement->execute();
@@ -5826,48 +5826,48 @@ class MainController extends BaseController
                                   $lista3[]= $id_ticket;
                               }else{
                                 $this->rembolso($id_transacion);
-                                $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
                                 foreach($lista3 as $llave => $valo) {
-                                  $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $valo, \PDO::PARAM_STR);
                                   $statement->execute();
 
                                 }
-                                $sql = "DELETE FROM teatro.tsa_ticket WHERE id_compra=:id_compra";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket WHERE id_compra=:id_compra";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_compra WHERE id_compra=:id_compra";
+                                $sql = "DELETE FROM teatro_backup.tsa_compra WHERE id_compra=:id_compra";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                                 $statement->execute();
                                 foreach($lista as $llave => $valo) {
                                   if ($valo[0]=="1") {
-                                    $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                                    $sql = "UPDATE teatro_backup.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':cantidad', $valo[1], \PDO::PARAM_STR);
                                     $statement->bindValue(':id_funcion', $valo[2], \PDO::PARAM_STR);
@@ -5875,7 +5875,7 @@ class MainController extends BaseController
                                     $statement->execute();
                                   }
                                   if ($valo[0]=="2") {
-                                    $sql = "UPDATE teatro.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
+                                    $sql = "UPDATE teatro_backup.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_distribucion',  $valo[1], \PDO::PARAM_STR);
                                     $statement->execute();
@@ -5903,48 +5903,48 @@ class MainController extends BaseController
                               }
                             } catch(\PDOException $th) {
                                 $this->rembolso($id_transacion);
-                                $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
                                 foreach($lista3 as $llave => $valo) {
-                                  $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $valo, \PDO::PARAM_STR);
                                   $statement->execute();
 
                                 }
-                                $sql = "DELETE FROM teatro.tsa_ticket WHERE id_compra=:id_compra";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket WHERE id_compra=:id_compra";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_compra WHERE id_compra=:id_compra";
+                                $sql = "DELETE FROM teatro_backup.tsa_compra WHERE id_compra=:id_compra";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                                 $statement->execute();
                                 foreach($lista as $llave => $valo) {
                                   if ($valo[0]=="1") {
-                                    $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                                    $sql = "UPDATE teatro_backup.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':cantidad', $valo[1], \PDO::PARAM_STR);
                                     $statement->bindValue(':id_funcion', $valo[2], \PDO::PARAM_STR);
@@ -5952,7 +5952,7 @@ class MainController extends BaseController
                                     $statement->execute();
                                   }
                                   if ($valo[0]=="2") {
-                                    $sql = "UPDATE teatro.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
+                                    $sql = "UPDATE teatro_backup.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_distribucion',  $valo[1], \PDO::PARAM_STR);
                                     $statement->execute();
@@ -6034,7 +6034,7 @@ class MainController extends BaseController
               }
               $whole = floor($cantidadT);
               $puntos= $whole-$dolares_canjeados;
-              $sql = "INSERT INTO teatro.tsa_amigos_puntos (id_usuario_cliente,id_compra,evento,cantidad,puntos,puntos_ganados,fecha_consumo) VALUES (:id_usuario_cliente,:id_compra,:evento,:cantidad,:puntos,:puntos_ganados,now());";
+              $sql = "INSERT INTO teatro_backup.tsa_amigos_puntos (id_usuario_cliente,id_compra,evento,cantidad,puntos,puntos_ganados,fecha_consumo) VALUES (:id_usuario_cliente,:id_compra,:evento,:cantidad,:puntos,:puntos_ganados,now());";
               $statement = $db->prepare($sql);
               $statement->bindValue(':id_usuario_cliente', $user_id, \PDO::PARAM_STR);
               $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
@@ -6365,8 +6365,8 @@ class MainController extends BaseController
         $authorization_code="";
         $status_transacion="";
         try {
-            $API_LOGIN_DEV     = "TEATROSA-EC-SERVER";
-            $API_KEY_DEV       = "5W1BGgglGnWx9bVYJlatix2d7TY7xj";
+            $API_LOGIN_DEV     = "TPP3-EC-SERVER";
+            $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6";
             $server_application_code = $API_LOGIN_DEV;
             $server_app_key = $API_KEY_DEV ;
             $date = new \DateTime();
@@ -6448,7 +6448,7 @@ class MainController extends BaseController
         try {
             if ($ban) {
               try {
-                  $sql = "INSERT INTO teatro.tsa_compra (id_facturacion,id_usuario_cliente,dolares_canjeados,donacion,sub_total,descuento,iva,total,usuario_creacion,id_transacion,authorization_code,status_transacion,tipo,email)
+                  $sql = "INSERT INTO teatro_backup.tsa_compra (id_facturacion,id_usuario_cliente,dolares_canjeados,donacion,sub_total,descuento,iva,total,usuario_creacion,id_transacion,authorization_code,status_transacion,tipo,email)
                   VALUES (:id_facturacion,:id_usuario_cliente,:dolares_canjeados,:donacion,:sub_total,:descuento,:iva,:total,:usuario_creacion,:id_transacion,:authorization_code,:status_transacion, :tipo,:email)";
                   $statement = $db->prepare($sql);
                   $statement->bindValue(':id_facturacion', $id_facturacion, \PDO::PARAM_STR);
@@ -6499,7 +6499,7 @@ class MainController extends BaseController
                           if ($id_compra!=0) {
                             $puntos_canjeadosT=$totalP*$dolares_canjeados/$sub_total;
                             $puntos_canjeadosTK=number_format($puntos_canjeadosT, 2);
-                            $sql = "INSERT INTO teatro.tsa_ticket (id_funcion,id_usuario_cliente,id_compra,sala,precio,tipo,usuario_creacion,descuento,puntos_canjeados)
+                            $sql = "INSERT INTO teatro_backup.tsa_ticket (id_funcion,id_usuario_cliente,id_compra,sala,precio,tipo,usuario_creacion,descuento,puntos_canjeados)
                             VALUES (:id_funcion,:id_usuario_cliente,:id_compra,:sala,:precio,:tipo,:usuario_creacion,:descuento,:puntos_canjeados)";
                             $statement = $db->prepare($sql);
                             $statement->bindValue(':id_funcion', $id_funcion, \PDO::PARAM_STR);
@@ -6516,7 +6516,7 @@ class MainController extends BaseController
                             if ($id_promocion!=0) {
                               if ($tipo_promocion=="FC" | $tipo_promocion=="CD" | $tipo_promocion=="FP" | $tipo_promocion=="BT" | $tipo_promocion=="CP") {
                                   if ($tipo_promocion=="FC") {
-                                    $sql = "INSERT INTO teatro.tsa_ticket_promocion_factor_compra (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
+                                    $sql = "INSERT INTO teatro_backup.tsa_ticket_promocion_factor_compra (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
                                     VALUES (:id_promocion,:id_ticket,:descuento,:id_usuario_cliente,:usuario_creacion)";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_promocion', $id_promocion, \PDO::PARAM_STR);
@@ -6526,7 +6526,7 @@ class MainController extends BaseController
                                     $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
                                     $statement->execute();
                                   }else if ($tipo_promocion=="CD") {
-                                    $sql = "INSERT INTO teatro.tsa_ticket_promocion_cruzados (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
+                                    $sql = "INSERT INTO teatro_backup.tsa_ticket_promocion_cruzados (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
                                     VALUES (:id_promocion,:id_ticket,:descuento,:id_usuario_cliente,:usuario_creacion)";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_promocion', $id_promocion, \PDO::PARAM_STR);
@@ -6536,7 +6536,7 @@ class MainController extends BaseController
                                     $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
                                     $statement->execute();
                                   }else if ( $tipo_promocion=="FP") {
-                                    $sql = "INSERT INTO teatro.tsa_ticket_promocion_factor_pago (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
+                                    $sql = "INSERT INTO teatro_backup.tsa_ticket_promocion_factor_pago (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
                                     VALUES (:id_promocion,:id_ticket,:descuento,:id_usuario_cliente,:usuario_creacion)";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_promocion', $id_promocion, \PDO::PARAM_STR);
@@ -6546,7 +6546,7 @@ class MainController extends BaseController
                                     $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
                                     $statement->execute();
                                   }else if ( $tipo_promocion=="BT") {
-                                    $sql = "INSERT INTO teatro.tsa_ticket_promocion_tarjeta (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
+                                    $sql = "INSERT INTO teatro_backup.tsa_ticket_promocion_tarjeta (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
                                     VALUES (:id_promocion,:id_ticket,:descuento,:id_usuario_cliente,:usuario_creacion)";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_promocion', $id_promocion, \PDO::PARAM_STR);
@@ -6556,7 +6556,7 @@ class MainController extends BaseController
                                     $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
                                     $statement->execute();
                                   }else {
-                                    $sql = "INSERT INTO teatro.tsa_ticket_promocion_codigo (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
+                                    $sql = "INSERT INTO teatro_backup.tsa_ticket_promocion_codigo (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
                                     VALUES (:id_promocion,:id_ticket,:descuento,:id_usuario_cliente,:usuario_creacion)";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_promocion', $id_promocion, \PDO::PARAM_STR);
@@ -6579,40 +6579,40 @@ class MainController extends BaseController
                           }
                       } catch(\PDOException $th) {
                           $this->rembolso($id_transacion);
-                          $sql = "DELETE FROM teatro.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
+                          $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
                           $statement = $db->prepare($sql);
                           $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                           $statement->execute();
-                          $sql = "DELETE FROM teatro.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
+                          $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
                           $statement = $db->prepare($sql);
                           $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                           $statement->execute();
-                          $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
+                          $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
                           $statement = $db->prepare($sql);
                           $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                           $statement->execute();
-                          $sql = "DELETE FROM teatro.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
+                          $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
                           $statement = $db->prepare($sql);
                           $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                           $statement->execute();
-                          $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
+                          $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
                           $statement = $db->prepare($sql);
                           $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                           $statement->execute();
                           foreach($lista3 as $llave => $valo) {
-                            $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                            $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                             $statement = $db->prepare($sql);
                             $statement->bindValue(':id_ticket', $valo, \PDO::PARAM_STR);
                             $statement->execute();
 
                           }
-                          $sql = "DELETE FROM teatro.tsa_ticket WHERE id_compra=:id_compra";
+                          $sql = "DELETE FROM teatro_backup.tsa_ticket WHERE id_compra=:id_compra";
                           $statement = $db->prepare($sql);
                           $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                           $statement->execute();
                           foreach($lista as $llave => $valo) {
                             if ($valo[0]=="1") {
-                              $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                              $sql = "UPDATE teatro_backup.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
                               $statement = $db->prepare($sql);
                               $statement->bindValue(':cantidad', $valo[1], \PDO::PARAM_STR);
                               $statement->bindValue(':id_funcion', $valo[2], \PDO::PARAM_STR);
@@ -6620,7 +6620,7 @@ class MainController extends BaseController
                               $statement->execute();
                             }
                             if ($valo[0]=="2") {
-                              $sql = "UPDATE teatro.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
+                              $sql = "UPDATE teatro_backup.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
                               $statement = $db->prepare($sql);
                               $statement->bindValue(':id_distribucion',  $valo[1], \PDO::PARAM_STR);
                               $statement->execute();
@@ -6640,7 +6640,7 @@ class MainController extends BaseController
                               $result = $statement->execute();
                             }
                           }
-                          $sql = "DELETE FROM teatro.tsa_compra WHERE id_compra=:id_compra";
+                          $sql = "DELETE FROM teatro_backup.tsa_compra WHERE id_compra=:id_compra";
                           $statement = $db->prepare($sql);
                           $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                           $statement->execute();
@@ -6661,7 +6661,7 @@ class MainController extends BaseController
                             $precio=$Pcantidad[2];
                             try {
                                 if ($id_ticket!=0) {
-                                  $sql = "INSERT INTO teatro.tsa_ticket_asiento (id_ticket,asiento,precio,usuario_creacion,id_platea)
+                                  $sql = "INSERT INTO teatro_backup.tsa_ticket_asiento (id_ticket,asiento,precio,usuario_creacion,id_platea)
                                   VALUES (:id_ticket,:asiento,:precio,:usuario_creacion,:id_platea)";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
@@ -6671,7 +6671,7 @@ class MainController extends BaseController
                                   $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
                                   $statement->execute();
 
-                                  $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido+:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                                  $sql = "UPDATE teatro_backup.tsa_platea_funcion SET vendido=vendido+:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':cantidad', $cantidad, \PDO::PARAM_STR);
                                   $statement->bindValue(':id_funcion', $id_funcion, \PDO::PARAM_STR);
@@ -6681,49 +6681,49 @@ class MainController extends BaseController
                                   $lista3[]= $id_ticket;
                                 }else{
                                   $this->rembolso($id_transacion);
-                                  $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                   $statement->execute();
-                                  $sql = "DELETE FROM teatro.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                   $statement->execute();
-                                  $sql = "DELETE FROM teatro.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                   $statement->execute();
-                                  $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                   $statement->execute();
-                                  $sql = "DELETE FROM teatro.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                   $statement->execute();
-                                  $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                   $statement->execute();
                                   foreach($lista3 as $llave => $valo) {
-                                    $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                    $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_ticket', $valo, \PDO::PARAM_STR);
                                     $statement->execute();
 
 
                                   }
-                                  $sql = "DELETE FROM teatro.tsa_ticket WHERE id_compra=:id_compra";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket WHERE id_compra=:id_compra";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                                   $statement->execute();
-                                  $sql = "DELETE FROM teatro.tsa_compra WHERE id_compra=:id_compra";
+                                  $sql = "DELETE FROM teatro_backup.tsa_compra WHERE id_compra=:id_compra";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                                   $statement->execute();
                                   foreach($lista as $llave => $valo) {
                                     if ($valo[0]=="1") {
-                                      $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                                      $sql = "UPDATE teatro_backup.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
                                       $statement = $db->prepare($sql);
                                       $statement->bindValue(':cantidad', $valo[1], \PDO::PARAM_STR);
                                       $statement->bindValue(':id_funcion', $valo[2], \PDO::PARAM_STR);
@@ -6731,7 +6731,7 @@ class MainController extends BaseController
                                       $statement->execute();
                                     }
                                     if ($valo[0]=="2") {
-                                      $sql = "UPDATE teatro.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
+                                      $sql = "UPDATE teatro_backup.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
                                       $statement = $db->prepare($sql);
                                       $statement->bindValue(':id_distribucion',  $valo[1], \PDO::PARAM_STR);
                                       $statement->execute();
@@ -6759,49 +6759,49 @@ class MainController extends BaseController
                                 }
                             } catch(\PDOException $th) {
                                 $this->rembolso($id_transacion);
-                                $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
                                 foreach($lista3 as $llave => $valo) {
-                                  $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $valo, \PDO::PARAM_STR);
                                   $statement->execute();
 
 
                                 }
-                                $sql = "DELETE FROM teatro.tsa_ticket WHERE id_compra=:id_compra";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket WHERE id_compra=:id_compra";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_compra WHERE id_compra=:id_compra";
+                                $sql = "DELETE FROM teatro_backup.tsa_compra WHERE id_compra=:id_compra";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                                 $statement->execute();
                                 foreach($lista as $llave => $valo) {
                                   if ($valo[0]=="1") {
-                                    $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                                    $sql = "UPDATE teatro_backup.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':cantidad', $valo[1], \PDO::PARAM_STR);
                                     $statement->bindValue(':id_funcion', $valo[2], \PDO::PARAM_STR);
@@ -6809,7 +6809,7 @@ class MainController extends BaseController
                                     $statement->execute();
                                   }
                                   if ($valo[0]=="2") {
-                                    $sql = "UPDATE teatro.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
+                                    $sql = "UPDATE teatro_backup.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_distribucion',  $valo[1], \PDO::PARAM_STR);
                                     $statement->execute();
@@ -6844,7 +6844,7 @@ class MainController extends BaseController
                           $precio=$Pcantidad[3];
                             try {
                               if ($id_ticket!=0) {
-                                $sql = "INSERT INTO teatro.tsa_ticket_asiento (id_ticket,asiento,precio,usuario_creacion,id_platea)
+                                $sql = "INSERT INTO teatro_backup.tsa_ticket_asiento (id_ticket,asiento,precio,usuario_creacion,id_platea)
                                 VALUES (:id_ticket,:asiento,:precio,:usuario_creacion,:id_platea)";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
@@ -6853,7 +6853,7 @@ class MainController extends BaseController
                                 $statement->bindValue(':id_platea', $id_platea, \PDO::PARAM_STR);
                                 $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "UPDATE teatro.tsa_distribucion SET estado='V' WHERE id_distribucion=:id_distribucion";
+                                $sql = "UPDATE teatro_backup.tsa_distribucion SET estado='V' WHERE id_distribucion=:id_distribucion";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_distribucion', $id_asiento, \PDO::PARAM_STR);
                                 $statement->execute();
@@ -6861,48 +6861,48 @@ class MainController extends BaseController
                                   $lista3[]= $id_ticket;
                               }else{
                                 $this->rembolso($id_transacion);
-                                $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
                                 foreach($lista3 as $llave => $valo) {
-                                  $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $valo, \PDO::PARAM_STR);
                                   $statement->execute();
 
                                 }
-                                $sql = "DELETE FROM teatro.tsa_ticket WHERE id_compra=:id_compra";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket WHERE id_compra=:id_compra";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_compra WHERE id_compra=:id_compra";
+                                $sql = "DELETE FROM teatro_backup.tsa_compra WHERE id_compra=:id_compra";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                                 $statement->execute();
                                 foreach($lista as $llave => $valo) {
                                   if ($valo[0]=="1") {
-                                    $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                                    $sql = "UPDATE teatro_backup.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':cantidad', $valo[1], \PDO::PARAM_STR);
                                     $statement->bindValue(':id_funcion', $valo[2], \PDO::PARAM_STR);
@@ -6910,7 +6910,7 @@ class MainController extends BaseController
                                     $statement->execute();
                                   }
                                   if ($valo[0]=="2") {
-                                    $sql = "UPDATE teatro.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
+                                    $sql = "UPDATE teatro_backup.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_distribucion',  $valo[1], \PDO::PARAM_STR);
                                     $statement->execute();
@@ -6938,50 +6938,50 @@ class MainController extends BaseController
                               }
                             } catch(\PDOException $th) {
                                 $this->rembolso($id_transacion);
-                                $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
                                 $statement->execute();
                                 foreach($lista3 as $llave => $valo) {
-                                  $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                  $sql = "DELETE FROM teatro_backup.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
                                   $statement = $db->prepare($sql);
                                   $statement->bindValue(':id_ticket', $valo, \PDO::PARAM_STR);
                                   $statement->execute();
 
 
                                 }
-                                $sql = "DELETE FROM teatro.tsa_ticket WHERE id_compra=:id_compra";
+                                $sql = "DELETE FROM teatro_backup.tsa_ticket WHERE id_compra=:id_compra";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                                 $statement->execute();
-                                $sql = "DELETE FROM teatro.tsa_compra WHERE id_compra=:id_compra";
+                                $sql = "DELETE FROM teatro_backup.tsa_compra WHERE id_compra=:id_compra";
                                 $statement = $db->prepare($sql);
                                 $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
                                 $statement->execute();
 
                                 foreach($lista as $llave => $valo) {
                                   if ($valo[0]=="1") {
-                                    $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                                    $sql = "UPDATE teatro_backup.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':cantidad', $valo[1], \PDO::PARAM_STR);
                                     $statement->bindValue(':id_funcion', $valo[2], \PDO::PARAM_STR);
@@ -6989,7 +6989,7 @@ class MainController extends BaseController
                                     $statement->execute();
                                   }
                                   if ($valo[0]=="2") {
-                                    $sql = "UPDATE teatro.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
+                                    $sql = "UPDATE teatro_backup.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
                                     $statement = $db->prepare($sql);
                                     $statement->bindValue(':id_distribucion',  $valo[1], \PDO::PARAM_STR);
                                     $statement->execute();
@@ -7067,7 +7067,7 @@ class MainController extends BaseController
               }
               $whole = floor($cantidadT);
               $puntos= $whole-$dolares_canjeados;
-              $sql = "INSERT INTO teatro.tsa_amigos_puntos (id_usuario_cliente,id_compra,evento,cantidad,puntos,puntos_ganados,fecha_consumo) VALUES (:id_usuario_cliente,:id_compra,:evento,:cantidad,:puntos,:puntos_ganados,now());";
+              $sql = "INSERT INTO teatro_backup.tsa_amigos_puntos (id_usuario_cliente,id_compra,evento,cantidad,puntos,puntos_ganados,fecha_consumo) VALUES (:id_usuario_cliente,:id_compra,:evento,:cantidad,:puntos,:puntos_ganados,now());";
               $statement = $db->prepare($sql);
               $statement->bindValue(':id_usuario_cliente', $user_id, \PDO::PARAM_STR);
               $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
@@ -7968,7 +7968,7 @@ class MainController extends BaseController
             $correo = trim($body['correo']);
             $asunto = trim($body['asunto']);
             $mensaje = trim($body['mensaje']);
-            $sql = "INSERT INTO teatro.tsa_contactanos_web (nombre,correo,asunto,mensaje) VALUES (:nombres,:correo,:asunto,:mensaje)";
+            $sql = "INSERT INTO teatro_backup.tsa_contactanos_web (nombre,correo,asunto,mensaje) VALUES (:nombres,:correo,:asunto,:mensaje)";
             $statement = $db->prepare($sql);
             $statement->bindValue(':nombres', $nombres, \PDO::PARAM_STR);
             $statement->bindValue(':correo', $correo, \PDO::PARAM_STR);
@@ -8036,7 +8036,7 @@ class MainController extends BaseController
           $fecha_termino = trim($body['fecha_termino']);
           $total = trim($body['total']);
           $mensaje = trim($body['mensaje']);
-          $sql = "INSERT INTO teatro.tsa_contactanos_alquiler (nombre,apellido,celular,tipo_evento,correo,fecha_inicio,fecha_termino,total_personas,mensaje)
+          $sql = "INSERT INTO teatro_backup.tsa_contactanos_alquiler (nombre,apellido,celular,tipo_evento,correo,fecha_inicio,fecha_termino,total_personas,mensaje)
           VALUES (:nombres,:apellidos,:celular,:tipo_evento,:correo,:fecha_inicio,:fecha_termino,:total,:mensaje)";
           $statement = $db->prepare($sql);
           $statement->bindValue(':nombres', $nombres, \PDO::PARAM_STR);
