@@ -1,7 +1,24 @@
 <?php
 include ("../../conect.php");
 include ("../../autenticacion.php");
-
+$re = $client->getPerfilRol($_SESSION["id"],"4");
+$resultado = "".$re;
+$usuarios= explode(',',$resultado);
+$crear="hide";
+$exportar="no-descargar";
+if($resultado==""){
+    ?>
+    <a ng-click="reload()">
+    <?php
+}
+foreach($usuarios as $llave => $valores1) {
+    if($valores1==="1"){
+        $crear="";
+    }
+    if($valores1==="6"){
+        $exportar="";
+    }
+}
 ?>
 
 <div>
@@ -12,12 +29,12 @@ include ("../../autenticacion.php");
                     <h3><i class="fa fa-table"></i> Tabla de <strong>Perfiles (Permisos de Administrador)</strong> </h3>
                 </div>
                 <div class="panel-content pagination2 table-responsive">
-                    <div class="m-b-20">
+                    <div class="m-b-20 <?php echo $crear; ?>">
                         <div class="btn-group">
                             <button class="crearPerfil btn btn-sm btn-dark" ><i class="fa fa-plus"></i> Agregar Perfil</button>
                         </div>
                     </div>
-                    <table class="table filter-footer perfil_data table-dynamic perfil " data-table-name="Perfiles" id="table-editable" style="table-layout: fixed;">
+                    <table class="table filter-footer perfil_data <?php echo $exportar; ?> table-dynamic perfil " data-table-name="Perfiles" id="table-editable" style="table-layout: fixed;">
                         <thead>
                             <tr>
                                 <th>Id</th>

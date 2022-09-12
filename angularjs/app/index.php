@@ -28,9 +28,11 @@ if ($_SESSION["lockscreen"] == "SI") {
 $re = $client->getAllPerfilRol($_SESSION["id"]);
 $resultado = "".$re;
 $usuarios= explode(',',$resultado);
+//MODULO USUARIOS
 $usuariosUAD="hide";
 $usuariosUCL="hide";
 $usuariosUEV="hide";
+//MODULO MANTENIMIENTO
 $Tperfiles="hide";
 $Tcategoria="hide";
 $Tclasificacion="hide";
@@ -42,14 +44,18 @@ $Tproductora="hide";
 $Tpromocion="hide";
 $TdistribucionP="hide";
 $TdistribucionE="hide";
+//MODULO IMAGENES
 $TimagenSala="hide";
 $TimagenDistribucion="hide";
 $TimagenBanner="hide";
 $Tlogo="hide";
+//MODULO EVENTOS
 $Tventa="hide";
 $Tgratuito="hide";
 $Tinformativo="hide";
 $Tbloqueos="hide";
+$TventaDestacado="hide";
+//MODULO PROCESOS
 $TditribucionSala="hide";
 $TeliminarCortesia="hide";
 $TprocesosPromocion="hide";
@@ -59,6 +65,23 @@ $TprocesosAmigosP="hide";
 $TprocesosAmigosI="hide";
 $TprocesosContactos="hide";
 $TprocesosFundacion="hide";
+$TprocesosPromocionF="hide";
+//MODULO CORREO
+$CReinicioCorreo="hide";
+$CBienvenido="hide";
+$CCompraBoleto="hide";
+$CDonacion="hide";
+$CCumpleanos="hide";
+$CRegalo="hide";
+$CBoletoC="hide";
+$CEliminarC="hide";
+$CRegistroG="hide";
+$CAdministracionD="hide";
+$CAdministracionE="hide";
+//MODULO REPORTES
+$REventoVentas="hide";
+$REventoGratuito="hide";
+$RAmigosTeatro="hide";
 //MODULO WEB
 $TwebImagen="hide";
 $TwebOtrasImagen="hide";
@@ -77,9 +100,12 @@ $TwebOtrasP="hide";
 $TwebOtrasR="hide";
 $TwebOtrasA="hide";
 $TwebOtrasC="hide";
+$TwebContacto="hide";
+$TwebAlquiler="hide";
 //MODULO FACTURACION
 $TfacturacionCaja="hide";
 $TfacturacionReporte="hide";
+$TVentasReporte="hide";
 
 $modulo1=true;
 $modulo2=false;
@@ -91,6 +117,7 @@ $modulo7=false;
 $modulo8=true;
 $modulo9=true;
 foreach($usuarios as $llave => $valores1) {
+    //MODULO USUARIOS
     if($valores1==="1"){
         $usuariosUAD="";
         $modulo1=true;
@@ -107,6 +134,7 @@ foreach($usuarios as $llave => $valores1) {
         $Tperfiles="";
         $modulo1=true;
     }
+    //MODULO MANTENIMIENTO
     if($valores1==="5"){
         $Tcategoria="";
         $modulo2=true;
@@ -147,6 +175,7 @@ foreach($usuarios as $llave => $valores1) {
         $TdistribucionE="";
         $modulo2=true;
     }
+    //MODULO IMAGENES
     if($valores1==="15"){
         $TimagenSala="";
         $modulo3=true;
@@ -163,6 +192,7 @@ foreach($usuarios as $llave => $valores1) {
         $Tlogo="";
         $modulo3=true;
     }
+     //MODULO EVENTOS
     if($valores1==="19"){
         $Tventa="";
         $modulo4=true;
@@ -179,7 +209,11 @@ foreach($usuarios as $llave => $valores1) {
         $Tbloqueos="";
         $modulo4=true;
     }
-
+    if($valores1==="27"){
+        $TventaDestacado="";
+        $modulo4=true;
+    }
+    //MODULO PROCESOS
     if($valores1==="23"){
         $TditribucionSala="";
         $modulo5=true;
@@ -204,6 +238,10 @@ foreach($usuarios as $llave => $valores1) {
         $TprocesosAmigosB="";
         $modulo5=true;
     }
+    if($valores1==="43"){
+        $TprocesosAmigosB="";
+        $modulo5=true;
+    }
     if($valores1==="29"){
         $TprocesosContactos="";
         $modulo5=true;
@@ -212,12 +250,56 @@ foreach($usuarios as $llave => $valores1) {
         $TprocesosFundacion="";
         $modulo5=true;
     }
-    if($valores1==="43"){
-        $TprocesosAmigosB="";
+    if($valores1==="52"){
+        $TprocesosPromocionF="";
         $modulo5=true;
     }
-    
-    //web
+     //MODULO CORREOS
+     if($valores1==="56"){
+        $CReinicioCorreo="";
+        $modulo8=true;
+    }
+    if($valores1==="57"){
+        $CBienvenido="";
+        $modulo8=true;
+    }
+    if($valores1==="58"){
+        $CCompraBoleto="";
+        $modulo8=true;
+    }
+    if($valores1==="59"){
+        $CDonacion="";
+        $modulo8=true;
+    }
+    if($valores1==="60"){
+        $CCumpleanos="";
+        $modulo8=true;
+    }
+    if($valores1==="61"){
+        $CRegalo="";
+        $modulo8=true;
+    }
+    if($valores1==="62"){
+        $CBoletoC="";
+        $modulo8=true;
+    }
+    if($valores1==="63"){
+        $CEliminarC="";
+        $modulo8=true;
+    }
+    if($valores1==="64"){
+        $CRegistroG="";
+        $modulo8=true;
+    }
+    if($valores1==="65"){
+        $CAdministracionD="";
+        $modulo8=true;
+    }
+    if($valores1==="66"){
+        $CAdministracionD="";
+        $modulo8=true;
+    }
+     //MODULO WEB
     if($valores1==="31"){
         $TwebImagen="";
         $modulo6=true;
@@ -286,8 +368,15 @@ foreach($usuarios as $llave => $valores1) {
         $TwebOtrasP="";
         $modulo6=true;
     }
-
-    //
+    if($valores1==="53"){
+        $TwebContacto="";
+        $modulo6=true;
+    }
+    if($valores1==="54"){
+        $TwebContacto="";
+        $modulo6=true;
+    }
+    //MODULO FACTURACION
     if($valores1==="40"){
         $TfacturacionCaja="";
         $modulo7=true;
@@ -295,6 +384,23 @@ foreach($usuarios as $llave => $valores1) {
     if($valores1==="41"){
         $TfacturacionReporte="";
         $modulo7=true;
+    }
+    if($valores1==="55"){
+        $TVentasReporte="";
+        $modulo7=true;
+    }
+    //MODULO REPORTE
+    if($valores1==="67"){
+        $REventoVentas="";
+        $modulo9=true;
+    }
+    if($valores1==="68"){
+        $REventoGratuito="";
+        $modulo9=true;
+    }
+    if($valores1==="69"){
+        $RAmigosTeatro="";
+        $modulo9=true;
     }
 }   
 ?>
@@ -412,8 +518,8 @@ foreach($usuarios as $llave => $valores1) {
                         <li class="nav-parent">
                             <a href=""><i class="fa fa-table"></i><span>Permisos</span><span class="fa arrow"></span></a>
                             <ul class="children collapse">
-                                <li  ng-class="{ active  : isActive('/perfiles')}"><a href="#perfiles"> Perfiles</a></li>
-                                <li  ng-class="{ active  : isActive('/usuarios')}"><a href="#usuarios"> Usuarios Administradores</a></li>
+                                <li class="<?php echo $Tperfiles; ?> " ng-class="{ active  : isActive('/perfiles')}"><a href="#perfiles"> Perfiles</a></li>
+                                <li class="<?php echo $usuariosUAD; ?> " ng-class="{ active  : isActive('/usuarios')}"><a href="#usuarios"> Usuarios Administradores</a></li>
                                 <li class="<?php echo $usuariosUCL; ?> " ng-class="{ active  : isActive('/usuarios-clientes')}"><a href="#usuarios-clientes"> Usuarios Clientes</a></li>
                                 <li class="<?php echo $usuariosUEV; ?> " ng-class="{ active  : isActive('/usuarios-eventos')}"><a href="#usuarios-eventos"> Usuarios Productor</a></li>
                             </ul>
@@ -470,7 +576,7 @@ foreach($usuarios as $llave => $valores1) {
                                 <li class="<?php echo $TprocesosAmigosB; ?> " ng-class="{ active  : isActive('/amigos')}"><a href="#amigos"> Amigos del Teatro (APP)</a></li>
                                 <li class="<?php echo $TprocesosContactos; ?> " ng-class="{ active  : isActive('/contactos')}"><a href="#contactos"> Contactos</a></li>
                                 <li class="<?php echo $TprocesosFundacion; ?> " ng-class="{ active  : isActive('/fundacion')}"><a href="#fundacion"> Fundación</a></li>
-                                <li class="<?php echo $TprocesosFundacion; ?> " ng-class="{ active  : isActive('/otras-promo')}"><a href="#otras-promo"> Promoción Fidelidad</a></li>
+                                <li class="<?php echo $TprocesosPromocionF; ?> " ng-class="{ active  : isActive('/otras-promo')}"><a href="#otras-promo"> Promoción Fidelidad</a></li>
                             </ul>
                         </li>
                         <?php } ?>
@@ -478,16 +584,16 @@ foreach($usuarios as $llave => $valores1) {
                         <li class="nav-parent">
                             <a href=""><i class="fa fa-table"></i><span>Correos</span><span class="fa arrow"></span></a>
                             <ul class="children collapse">
-                                <li ng-class="{ active  : isActive('/correo-reinicio')}"><a href="#correo-reinicio"> Reinicio Contraseña</a></li>
-                                <li ng-class="{ active  : isActive('/correo-bienvenido')}"><a href="#correo-bienvenido"> Bienvenido</a></li>
-                                <li ng-class="{ active  : isActive('/correo-compra')}"><a href="#correo-compra"> Compra de Boleto</a></li>
-                                <li ng-class="{ active  : isActive('/correo-donacion')}"><a href="#correo-donacion"> Donación</a></li>
-                                <li ng-class="{ active  : isActive('/correo-cumpleanos')}"><a href="#correo-cumpleanos"> Cumpleaños</a></li>
-                                <li ng-class="{ active  : isActive('/correo-regalo')}"><a href="#correo-regalo"> Regalo Para ti</a></li>
-                                <li ng-class="{ active  : isActive('/correo-cortesia')}"><a href="#correo-cortesia"> Boleto de Cortesía</a></li>
-                                <li ng-class="{ active  : isActive('/correo-eliminar')}"><a href="#correo-eliminar"> Eliminar Cuenta</a></li>
-                                <li ng-class="{ active  : isActive('/correo-gratuito')}"><a href="#correo-gratuito"> Registro Gratuito</a></li>
-                                <li ng-class="{ active  : isActive('/correo-admin')}"><a href="#correo-admin"> Administración Correos</a></li>
+                                <li class="<?php echo $CReinicioCorreo; ?> " ng-class="{ active  : isActive('/correo-reinicio')}"><a href="#correo-reinicio"> Reinicio Contraseña</a></li>
+                                <li class="<?php echo $CBienvenido; ?> " ng-class="{ active  : isActive('/correo-bienvenido')}"><a href="#correo-bienvenido"> Bienvenido</a></li>
+                                <li class="<?php echo $CCompraBoleto; ?> " ng-class="{ active  : isActive('/correo-compra')}"><a href="#correo-compra"> Compra de Boleto</a></li>
+                                <li class="<?php echo $CDonacion; ?> " ng-class="{ active  : isActive('/correo-donacion')}"><a href="#correo-donacion"> Donación</a></li>
+                                <li class="<?php echo $CCumpleanos; ?> " ng-class="{ active  : isActive('/correo-cumpleanos')}"><a href="#correo-cumpleanos"> Cumpleaños</a></li>
+                                <li class="<?php echo $CRegalo; ?> " ng-class="{ active  : isActive('/correo-regalo')}"><a href="#correo-regalo"> Regalo Para ti</a></li>
+                                <li class="<?php echo $CBoletoC; ?> " ng-class="{ active  : isActive('/correo-cortesia')}"><a href="#correo-cortesia"> Boleto de Cortesía</a></li>
+                                <li class="<?php echo $CEliminarC; ?> " ng-class="{ active  : isActive('/correo-eliminar')}"><a href="#correo-eliminar"> Eliminar Cuenta</a></li>
+                                <li class="<?php echo $CRegistroG; ?> " ng-class="{ active  : isActive('/correo-gratuito')}"><a href="#correo-gratuito"> Registro Gratuito</a></li>
+                                <li class="<?php echo $CAdministracionD; ?> " ng-class="{ active  : isActive('/correo-admin')}"><a href="#correo-admin"> Administración Correos</a></li>
                             </ul>
                         </li>
                         <?php } ?>
@@ -495,11 +601,11 @@ foreach($usuarios as $llave => $valores1) {
                         <li class="nav-parent">
                             <a href=""><i class="fa fa-table"></i><span>Reportes</span><span class="fa arrow"></span></a>
                             <ul class="children collapse">
-                                <li ng-class="{ active  : isActive('/reporte-eventos')}"><a href="#reporte-eventos"> Reporte Eventos</a></li>
-                                <li ng-class="{ active  : isActive('/estadistica-tanque')}"><a href="#estadistica-tanque"> Reporte 2</a></li>
-                                <li ng-class="{ active  : isActive('/reporte-eventos-venta')}"><a href="#reporte-eventos-venta"> Reporte Evento Ventas</a></li>
-                                <li ng-class="{ active  : isActive('/reporte-eventos-gratuito')}"><a href="#reporte-eventos-gratuito"> Reporte Evento Gratuito</a></li>
-                                <li ng-class="{ active  : isActive('/reporte-amigos-teatro')}"><a href="#reporte-amigos-teatro"> Reporte Amigos Teatro</a></li>
+                                <!--li ng-class="{ active  : isActive('/reporte-eventos')}"><a href="#reporte-eventos"> Reporte Eventos</a></li-->
+                                <!--li ng-class="{ active  : isActive('/estadistica-tanque')}"><a href="#estadistica-tanque"> Reporte 2</a></li-->
+                                <li lass="<?php echo $REventoVentas; ?> " ng-class="{ active  : isActive('/reporte-eventos-venta')}"><a href="#reporte-eventos-venta"> Reporte Evento Ventas</a></li>
+                                <li lass="<?php echo $REventoGratuito; ?> " ng-class="{ active  : isActive('/reporte-eventos-gratuito')}"><a href="#reporte-eventos-gratuito"> Reporte Evento Gratuito</a></li>
+                                <li lass="<?php echo $RAmigosTeatro; ?> " ng-class="{ active  : isActive('/reporte-amigos-teatro')}"><a href="#reporte-amigos-teatro"> Reporte Amigos Teatro</a></li>
                             </ul>
                         </li>
                         <?php } ?>
@@ -516,7 +622,7 @@ foreach($usuarios as $llave => $valores1) {
                                 <li class="<?php echo $TwebPublicidad; ?> " ng-class="{ active  : isActive('/publicidadWeb')}"><a href="#publicidadWeb"> Publicidad</a></li>
                                 <li class="<?php echo $TwebBanner; ?> " ng-class="{ active  : isActive('/bannerPrincipal')}"><a href="#bannerPrincipal"> Banner Principales</a></li>
                                 <li class="<?php echo $TwebOtrasP; ?> " ng-class="{ active  : isActive('/otras_web')}"><a href="#otras_web"> Otras</a></li>
-                                <li class="<?php echo $Twebcontactanos; ?> " ng-class="{ active  : isActive('/contactanos')}"><a href="#contactanos"> Contáctanos</a></li>
+                                <li class="<?php echo $TwebOtrasP; ?> " ng-class="{ active  : isActive('/contactanos')}"><a href="#contactanos"> Contáctanos</a></li>
                             </ul>
                         </li>
                         <?php } ?>
@@ -526,9 +632,9 @@ foreach($usuarios as $llave => $valores1) {
                             <ul class="children collapse">
                                 <li class="<?php echo $TfacturacionCaja; ?> "  ng-class="{ active  : isActive('/caja')}"><a href="#caja"> Caja</a></li>
                                 <li class="<?php echo $TfacturacionReporte; ?> " ng-class="{ active  : isActive('/reportes-caja')}"><a href="#reportes-caja"> Reporte Caja</a></li>
-                                <li class="" ng-class="{ active  : isActive('/reportes-venta')}"><a href="#reportes-venta"> Reporte Ventas Facturadas</a></li>
-                                <li class="hide" ng-class="{ active  : isActive('/reportes-cierres')}"><a href="#reportes-cierres"> Reporte Cierres de Caja</a></li>
-                                <li class="hide" ng-class="{ active  : isActive('/generarxml')}"><a href="#generarxml"> Generar Xml</a></li>
+                                <li class="<?php echo $TVentasReporte; ?> "  class="" ng-class="{ active  : isActive('/reportes-venta')}"><a href="#reportes-venta"> Reporte Ventas Facturadas</a></li>
+                                <!--li class="hide" ng-class="{ active  : isActive('/reportes-cierres')}"><a href="#reportes-cierres"> Reporte Cierres de Caja</a></li>
+                                <li class="hide" ng-class="{ active  : isActive('/generarxml')}"><a href="#generarxml"> Generar Xml</a></li-->
                             </ul>
                         </li>
                         <?php } ?>

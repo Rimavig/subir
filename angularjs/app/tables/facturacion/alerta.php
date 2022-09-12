@@ -125,6 +125,10 @@ if (isset($_POST["tipo"])) {
         $id = $_POST['id'];
         $re = $client->getGeneral("correoRF",$id);
         $resultado = "".$re;
+    }else if ( $tipo=="correoR1"){
+        $id = $_POST['id'];
+        $re = $client->getGeneral("correoRF",$id);
+        $resultado = "".$re;
     }
 }
 if($tipo=="insertCompra"){
@@ -133,7 +137,7 @@ if($tipo=="insertCompra"){
         $text="";
         foreach($usuarios as $llave => $valores) {
             if($valores !=""){
-                $text=$text."window.open('http://104.198.222.134/plantilla/pdf/ticket".$valores.".pdf','_blank');";   
+                $text=$text."window.open('https://teatrosanchezaguilar.org/plantilla/pdf/ticket".$valores.".pdf','_blank');";   
             }
         }   
         ?>
@@ -233,18 +237,9 @@ if($tipo=="insertCompra"){
             $id=$_POST["var1"];    
             ?>
             <script type="text/javascript"> 
-
                 $('.page-spinner-loader').removeClass('hide');
                 $('#tablaTaquilla').load('./tables/facturacion/caja-venta.php', {var1:<?php echo $id;?>},function() { 
-                    $('.tablaCajas').addClass('hide');   
-                    $('.page-spinner-loader').addClass('hide');
-                    $('.UsuarioCaja').removeClass('hide');
-                    $('.CompraT').removeClass('hide');
-                    $('.tablaTaquilla').removeClass('hide');
-                    $('.tablaReserva').removeClass('hide');
-                    $('.tablaReservaP').removeClass('hide');
-                    $('.tablePagos').removeClass('hide');
-                    $('.clientes').addClass('hide');
+                    
                     setTimeout(function(){
                         inputSelect();
                     },200);
@@ -254,7 +249,18 @@ if($tipo=="insertCompra"){
                     tableP.ajax.reload();  
                     var table1 = $('#table-pagos').DataTable();
                     table1.ajax.reload();   
+                    $('#UsuarioCaja').load('./tables/facturacion/caja-usuario_vacia.php',function() {    
+                        $('.UsuarioCaja').removeClass('hide');
+                    }); 
                     $('#totalCaja').load('./tables/facturacion/total.php',function() {   
+                        $('.tablePagos').removeClass('hide');
+                        $('.tablaCajas').addClass('hide');   
+                        $('.CompraT').removeClass('hide');
+                        $('.tablaTaquilla').removeClass('hide');
+                        $('.tablaReserva').removeClass('hide');
+                        $('.tablaReservaP').removeClass('hide');
+                        $('.clientes').addClass('hide');
+                        $('.page-spinner-loader').addClass('hide');
                     }); 
                     $('#CajaId').load('./tables/facturacion/CajaId.php',{var1:<?php echo $id;?>}, function() {   
                     }); 
@@ -639,6 +645,24 @@ if($tipo=="insertCompra"){
                 });
             </script>
             <?php
+        }else if ( $tipo=="correoR1"){
+            ?>
+            <script type="text/javascript"> 
+                var n = noty({
+                    text        : '<div class="alert alert-success "><p><strong>Se envió correo correctamente</p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
+                });
+                $(".correoR1").prop("disabled",false);
+            </script>
+            <?php
         }
     }
 }else{
@@ -965,7 +989,7 @@ if($tipo=="insertCompra"){
                  console.log(<?php echo $resultado;?>);
             </script>
             <?php
-        }else if ( $tipo=="correoR"){
+        }else if ( $tipo=="correoR" | $tipo=="correoR1"){
             ?>
             <script type="text/javascript"> 
                  var n = noty({
@@ -981,6 +1005,7 @@ if($tipo=="insertCompra"){
                     timeout: 3000,
                  });
                 $(".correoR").prop("disabled",false);
+                $(".correoR1").prop("disabled",false);
                  console.log(<?php echo $resultado;?>);
             </script>
             <?php

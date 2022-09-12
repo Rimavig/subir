@@ -28,7 +28,7 @@ foreach($usuarios as $llave => $valores1) {
                     <h3><i class="fa fa-table"></i> Tabla de <strong>Venta de Taquilla</strong> </h3>
                 </div>
                 <div class="panel-content pagination2 table-responsive">
-                    <table class="table filter-footer cajaT_data table-dynamic table-cajaT " data-table-name="Venta de Taquilla" id="table-taquilla" style="table-layout: fixed;">
+                    <table class="table filter-footer cajaT_data <?php echo $exportar; ?>  table-dynamic table-cajaT " data-table-name="Venta de Taquilla" id="table-taquilla" style="table-layout: fixed;">
                         <thead>
                             <tr>
                                 <th>Id</th>

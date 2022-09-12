@@ -1,7 +1,7 @@
 <?php
 include ("../../conect.php");
 include ("../../autenticacion.php");
-$re = $client->getPerfilRol($_SESSION["id"],"2");
+$re = $client->getPerfilRol($_SESSION["id"],"41");
 $resultado = "".$re;
 $usuarios= explode(',',$resultado);
 $crear="hide";
@@ -16,9 +16,6 @@ if (isset($_POST["var1"])) {
     $var1 = $_POST['var1'];
 }
 foreach($usuarios as $llave => $valores1) {
-    if($valores1==="1"){
-        $crear="";
-    }
     if($valores1==="6"){
         $exportar="";
     }
@@ -30,7 +27,7 @@ foreach($usuarios as $llave => $valores1) {
             <h3><i class="fa fa-table"></i> Tabla de <strong>Movimiento de Caja</strong> </h3>
         </div>
         <div class="panel-content pagination2 table-responsive">
-            <table class="table filter-footer cajaTMV_data table-dynamic table-cajaMV " data-table-name="Movimiento de Caja" data-table-id="<?php echo $var1; ?>" id="table-movimiento" style="table-layout: fixed;">
+            <table class="table filter-footer cajaTMV_data <?php echo $exportar; ?>  table-dynamic table-cajaMV " data-table-name="Movimiento de Caja" data-table-id="<?php echo $var1; ?>" id="table-movimiento" style="table-layout: fixed;">
                 <thead>
                     <tr>
                         <th>id_caja_movimiento</th>

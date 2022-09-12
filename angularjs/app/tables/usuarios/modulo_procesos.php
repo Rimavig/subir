@@ -1,7 +1,7 @@
 <?php
 include ("../../conect.php");
 include ("../../autenticacion.php");
-$lista=array("PS","CT","PP","PPG","PAB","PAP","PAI","PC","PF");
+$lista=array("PS","CT","PP","PPG","PAB","PAP","PAI","PC","PF","PPF");
 foreach($lista as $llave => $valores) {
     ${"crear".$valores}="";
     ${"editar".$valores}="";
@@ -10,6 +10,11 @@ foreach($lista as $llave => $valores) {
     ${"exportar".$valores}="";
     ${"bloquear".$valores}="";
     ${"cortesia".$valores}="";
+    ${"correo".$valores}="";
+    ${"ticket".$valores}="";
+    ${"puntos".$valores}="";
+    ${"regalo".$valores}="";
+    ${"cumpleanos".$valores}="";
 }
 $escon="";
 if (isset($_POST["var1"])) {
@@ -48,7 +53,9 @@ if (isset($_POST["var1"])) {
             if($usuario[0]==="30"){
                 $tipo="PF";
             }
-            
+            if($usuario[0]==="52"){
+                $tipo="PPF";
+            }
             if($tipo!=""){
                 $accion =explode(',',$usuario[1]);
                 foreach($accion as $llave => $valores1) {
@@ -82,6 +89,21 @@ if (isset($_POST["var1"])) {
                     if($valores1==="15"){
                         ${"facturacion".$tipo}="checked";
                     }
+                    if($valores1==="20"){
+                        ${"correo".$tipo}="checked";
+                    }
+                    if($valores1==="21"){
+                        ${"ticket".$tipo}="checked";
+                    }
+                    if($valores1==="28"){
+                        ${"puntos".$tipo}="checked";
+                    }
+                    if($valores1==="29"){
+                        ${"cumpleanos".$tipo}="checked";
+                    }
+                    if($valores1==="30"){
+                        ${"regalo".$tipo}="checked";
+                    }
                 } 
             }
                
@@ -110,7 +132,10 @@ if (isset($_POST["var1"])) {
                 <div class="input-group">
                     <div class="icheck-list">
                         <label><input type="checkbox" id="exportarCT" <?php echo $exportarCT; ?>  data-checkbox="icheckbox_flat-blue"> Exportar</label>
+                        <label><input type="checkbox" id="editarCT" <?php echo $editarCT; ?>  data-checkbox="icheckbox_flat-blue"> Editar</label>
                         <label> <input type="checkbox" id="eliminarCT" <?php echo $eliminarCT; ?>  data-checkbox="icheckbox_flat-blue"> Eliminar</label>
+                        <label> <input type="checkbox" id="correoCT" <?php echo $correoCT; ?>  data-checkbox="icheckbox_flat-blue"> Reenviar Correo</label>
+                        <label> <input type="checkbox" id="ticketCT" <?php echo $ticketCT; ?>  data-checkbox="icheckbox_flat-blue"> Ver Ticket</label>
                     </div>
                 </div>
             </div>       
@@ -169,6 +194,18 @@ if (isset($_POST["var1"])) {
         </div>
         <div  class="col-md-3 col-sm-3 col-xs-6" style ="margin-bottom: 30px!important;">
             <div class="form-group">
+                <p><label><input type="checkbox" class="TprocesosPromocionF" id="TprocesosPromocionF" data-checkbox="icheckbox_minimal-red"><strong>PROMOCIÓN FIDELIDAD</strong></p>
+                <div class="input-group">
+                    <div class="icheck-list">
+                        <label><input type="checkbox" id="puntosPPF" <?php echo $puntosPPF; ?>  data-checkbox="icheckbox_flat-blue"> Editar Puntos</label>
+                        <label><input type="checkbox" id="cumpleanosPPF" <?php echo $cumpleanosPPF; ?>  data-checkbox="icheckbox_flat-blue"> Editar Descuento Cumpleaños</label>
+                        <label><input type="checkbox" id="regaloPPF" <?php echo $regaloPPF; ?>  data-checkbox="icheckbox_flat-blue"> Editar Descuento Regalo </label>
+                    </div>
+                </div>
+            </div>       
+        </div>
+        <div  class="col-md-3 col-sm-3 col-xs-6" style ="margin-bottom: 30px!important;">
+            <div class="form-group">
                 <p><label><input type="checkbox" class="TprocesosAmigosI" id="TprocesosAmigosI" data-checkbox="icheckbox_minimal-red"><strong>AMIGOS-INFORMACIÓN</strong></p>
                 <div class="input-group">
                     <div class="icheck-list">
@@ -197,5 +234,6 @@ if (isset($_POST["var1"])) {
                 </div>
             </div>       
         </div>
+        
     </div>      
 </div>

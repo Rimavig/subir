@@ -2,7 +2,7 @@
 include ("../../conect.php");
 include ("../../autenticacion.php");
 header("Content-type: application/json");
-$re = $client->getPerfilRol($_SESSION["id"],"2");
+$re = $client->getPerfilRol($_SESSION["id"],"69");
 $resultado = "".$re;
 $usuarios1= explode(',',$resultado);
 $editar="";
@@ -15,12 +15,13 @@ foreach($usuarios1 as $llave => $valores1) {
         $editar='<a class="editarA btn btn-sm btn-dark" style="margin: 5px 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
     }
 }
+
 $re = $client->getAllUsuarioCliente();
 $resultado= "".$re;
 $usuarios =explode(';;',$resultado);
 $datat=NULL;
 $data=[];
-$text=$editar." ".$eliminar." ".$estado." ".$reset." ".$facturacion;       
+$text=$editar;       
 foreach($usuarios as $llave => $valores) {
     $usuario =explode(',,,',$valores);
     $estado="";

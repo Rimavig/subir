@@ -654,13 +654,13 @@ angular.module('newApp')
             }
           //  $(this).prop("disabled",false);
         });
-        $(document).on('click', '.editarE', function (e) {
+        $(document).on('click', '.correoE', function (e) {
             e.preventDefault();
             e.stopImmediatePropagation();
             $(this).prop("disabled",true); 
             var id=$(this).parents('tr').find('.hide_column')[0].innerHTML;
             $('.page-spinner-loader').removeClass('hide');
-            $('#alerta').load('./tables/correos/alerta.php', {tipo:"editarE", id:id},function() {    
+            $('#alerta').load('./tables/correos/alerta.php', {tipo:"correoE", id:id},function() {    
                 $('.page-spinner-loader').addClass('hide');
             });
             $(this).prop("disabled",false);
@@ -691,8 +691,15 @@ angular.module('newApp')
             $(this).dataTable().fnDestroy();
         });
         $(document).off('click','.guardarCorreo');
-        $(document).off('click','.correoPrueba');
-
+        $(document).off('click','.eliminarD');
+        $(document).off('click','.editarD');
+        $(document).off('click','.crear_destinatario');
+        $(document).off('click','.editar_destinatario');
+        $(document).off('click','.crearDestino');
+        $(document).off('click','.eliminarE');
+        $(document).off('click','.editarE');
+        $(document).off('click','.correoE');
+        $(document).off('click','.enviarT');
        
       });
   }]);

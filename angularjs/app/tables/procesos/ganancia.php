@@ -4,51 +4,44 @@ include ("../../conect.php");
 include ("../../autenticacion.php");
 include ("../../directorio.php");
 
-$re = $client->getAllPerfilRol($_SESSION["id"]);
+$re = $client->getPerfilRol($_SESSION["id"],"52");
 $resultado = "".$re;
 $usuarios= explode(',',$resultado);
-
-$TprocesosAmigosB="hide";
-$TprocesosAmigosP="hide";
-$TprocesosAmigosI="hide";
-$modulo5=true;
-$band=true;
+$puntos="hide";
+$regalo="hide";
+$cumpleanos="hide";
+if($resultado==""){
+    ?>
+    <a ng-click="reload()">
+    <?php
+}
 $txt='active="isActive" ng-init="isActive = true"';
 $txt1='';
 $txt2='';
 $txt3='';
-foreach($usuarios as $llave => $valores1) { 
+$band=true;
+foreach($usuarios as $llave => $valores1) {
     if($valores1==="28"){
-        $TprocesosAmigosB="";
-        $modulo5=false;
+        $puntos="";
         if($band){
             $txt1=$txt;
             $band=false;
         }
     }
-    if($valores1==="42"){
-        $TprocesosAmigosP="";
-        $modulo5=false;
+    if($valores1==="30"){
+        $regalo="";
         if($band){
             $txt2=$txt;
             $band=false;
         }
     }
-    
-    if($valores1==="43"){
-        $TprocesosAmigosI="";
-        $modulo5=false;
+    if($valores1==="29"){
+        $cumpleanos="";
         if($band){
             $txt3=$txt;
             $band=false;
         }
     }
-
-}   
-if($modulo5){
-    ?>
-    <a ng-click="reload()">
-    <?php
 }
 ?>
 <div>
@@ -60,7 +53,7 @@ if($modulo5){
                 </div>
                 <div class="panel-content pagination2 table-responsive">
                 <tabset class="tab-fade-in" >
-                        <tab class="<?php echo $TprocesosAmigosB; ?>"  <?php echo $txt1; ?>> 
+                        <tab class="<?php echo $puntos; ?>"  <?php echo $txt1; ?>> 
                             <tab-heading>
                                Amigos del Teatro
                             </tab-heading>
@@ -68,14 +61,14 @@ if($modulo5){
                                
                             </div>
                         </tab>
-                        <tab class="<?php echo $TprocesosAmigosP; ?>"  <?php echo $txt2; ?>>
+                        <tab class="<?php echo $cumpleanos; ?>"  <?php echo $txt2; ?>>
                             <tab-heading>
                                Cumpleaños 
                             </tab-heading>
                             <div class="adminCumple " id="adminCumple">
                             </div>
                         </tab>
-                        <tab class="<?php echo $TprocesosAmigosI; ?>"  <?php echo $txt3; ?>>
+                        <tab class="<?php echo $regalo; ?>"  <?php echo $txt3; ?>>
                             <tab-heading>
                                 Regalo para ti
                             </tab-heading>

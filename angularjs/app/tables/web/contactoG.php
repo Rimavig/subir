@@ -8,7 +8,7 @@ $re = $client->getContacto("G");
 $resultado= "".$re;
 $instalaciones =explode(';;;',$resultado);
 
-$re = $client->getPerfilRol($_SESSION["id"],"49");
+$re = $client->getPerfilRol($_SESSION["id"],"53");
 $resultado = "".$re;
 $usuarios= explode(',',$resultado);
 $crear="hide";
@@ -21,9 +21,6 @@ if($resultado==""){
     <?php
 }
 foreach($usuarios as $llave => $valores1) {
-    if($valores1==="1"){
-        $crear="";
-    }
     if($valores1==="2"){
         $editar="";
     }
@@ -77,7 +74,8 @@ foreach($usuarios as $llave => $valores1) {
                 </div>
             </td>
             <td class="text-right">
-                <a class="estadoG btn btn-sm btn-warning" style="margin: 5px 0px;" href="javascript:;"><i class="icon-lock"></i></a>
+                <a class="estadoG btn btn-sm btn-warning <?php echo $editar; ?>" style="margin: 5px 0px;" href="javascript:;"><i class="icon-lock"></i></a>
+                <a class="eliminarG btn btn-sm btn-danger <?php echo $eliminar; ?>" style="margin: 5px;  "  href="javascript:;"><i class="icon-trash"></i></a>
             </td>
         </tr>
         <?php

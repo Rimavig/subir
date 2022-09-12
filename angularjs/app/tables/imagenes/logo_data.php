@@ -46,9 +46,6 @@ if (isset($_GET["id"])) {
         if($valores1==="5"){
             $estado='<a class="estado btn btn-sm btn-warning" style="margin: 5px 0px;" href="javascript:;"><i class="icon-lock"></i></a>';
         }
-        if($valores1==="4"){
-            $reset='<a class="clave btn btn-sm btn-blue" style="margin: 5px 0px;" href="javascript:;"><i class="icon-key"></i></a>';
-        }
     }
 }
 $datat=NULL;

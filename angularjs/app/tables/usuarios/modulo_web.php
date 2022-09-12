@@ -1,7 +1,7 @@
 <?php
 include ("../../conect.php");
 include ("../../autenticacion.php");
-$lista=array("WI","WOI","WOB","WTQ","WTI","WTN","WAE","WAEV","WFQ","WFP","WIF","WPB","WB","WOP","WOR","WOA","WOC");
+$lista=array("WI","WOI","WOB","WTQ","WTI","WTN","WAE","WAEV","WFQ","WFP","WIF","WPB","WB","WOP","WOR","WOA","WOC","WCC","WCA");
 foreach($lista as $llave => $valores) {
     ${"crear".$valores}="";
     ${"editar".$valores}="";
@@ -71,6 +71,12 @@ if (isset($_POST["var1"])) {
             }
             if($usuario[0]==="51"){
                 $tipo="WOC";
+            }
+            if($usuario[0]==="53"){
+                $tipo="WCC";
+            }
+            if($usuario[0]==="54"){
+                $tipo="WCA";
             }
             if($tipo!=""){
                 $accion =explode(',',$usuario[1]);
@@ -310,6 +316,28 @@ if (isset($_POST["var1"])) {
                         <label><input type="checkbox" id="crearWOC" <?php echo $crearWOC; ?> data-checkbox="icheckbox_flat-blue"> Crear</label>
                         <label><input type="checkbox" id="editarWOC" <?php echo $editarWOC; ?>  data-checkbox="icheckbox_flat-blue"> Editar</label>
                         <label> <input type="checkbox" id="eliminarWOC" <?php echo $eliminarWOC; ?>  data-checkbox="icheckbox_flat-blue"> Eliminar</label>
+                    </div>
+                </div>
+            </div>       
+        </div>
+        <div  class="col-md-3 col-sm-3 col-xs-6" style ="margin-bottom: 30px!important;">
+            <div class="form-group">
+                <p><label><input type="checkbox" class="TwebContacto" id="TwebContacto" data-checkbox="icheckbox_minimal-red"><strong>CONTÁCTANOS-CONTACTO</strong></p>
+                <div class="input-group">
+                    <div class="icheck-list">
+                        <label><input type="checkbox" id="editarWCC" <?php echo $editarWCC; ?>  data-checkbox="icheckbox_flat-blue"> Estado (ON/OFF)</label>
+                        <label> <input type="checkbox" id="eliminarWCC" <?php echo $eliminarWCC; ?>  data-checkbox="icheckbox_flat-blue"> Eliminar</label>
+                    </div>
+                </div>
+            </div>       
+        </div>
+        <div  class="col-md-3 col-sm-3 col-xs-6" style ="margin-bottom: 30px!important;">
+            <div class="form-group">
+                <p><label><input type="checkbox" class="TwebAlquiler" id="TwebAlquiler" data-checkbox="icheckbox_minimal-red"><strong>CONTÁCTANOS-ALQUILER</strong></p>
+                <div class="input-group">
+                    <div class="icheck-list">
+                        <label><input type="checkbox" id="editarWCA" <?php echo $editarWCA; ?>  data-checkbox="icheckbox_flat-blue"> Estado (ON/OFF)</label>
+                        <label> <input type="checkbox" id="eliminarWCA" <?php echo $eliminarWCA; ?>  data-checkbox="icheckbox_flat-blue"> Eliminar</label>
                     </div>
                 </div>
             </div>       

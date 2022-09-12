@@ -4,7 +4,7 @@ include ("../../autenticacion.php");
 if (isset($_POST["var1"])) {
     $var1 = $_POST['var1'];
 }
-$re = $client->getPerfilRol($_SESSION["id"],"19");
+$re = $client->getPerfilRol($_SESSION["id"],"67");
 $resultado = "".$re;
 $usuarios= explode(',',$resultado);
 $crear="hide";
@@ -15,9 +15,6 @@ if($resultado==""){
     <?php
 }
 foreach($usuarios as $llave => $valores1) {
-    if($valores1==="1"){
-        $crear="";
-    }
     if($valores1==="6"){
         $exportar="";
     }
@@ -30,7 +27,7 @@ foreach($usuarios as $llave => $valores1) {
         </div>
         <div class="panel-content pagination2 table-responsive">
             <input type="text" name="FCid" id="FCid" class="esconder"  value="<?php echo $var1; ?>" disabled>
-            <table class="table" data-table-name="Tickets Asientos" id="table-editable4" >
+            <table class="table <?php echo $exportar; ?>" data-table-name="Tickets Asientos" id="table-editable4" >
                 <thead>
                     <tr>
                         <th>idTicket_asiento</th>

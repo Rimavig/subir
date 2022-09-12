@@ -1973,6 +1973,7 @@ angular.module('newApp')
         $(document).on('change','.Ctaquilla' ,function(e) {
             $(this).parents().find('#Ctodos').prop("checked", false);
         });
+
     });
 
       $scope.$on('$destroy', function () {

@@ -5,17 +5,23 @@ include ("../../directorio.php");
 $tipo="Logo";
 $nombreT="la imagen";
 $tipo2="logo";
-$re = $client->getPerfilRol($_SESSION["id"],"1");
+$re = $client->getPerfilRol($_SESSION["id"],"18");
 $resultado = "".$re;
-$usuarios1= explode(',',$resultado);
-$editar="";
-$eliminar="";
-$estado="";
-$reset="";
+$usuarios= explode(',',$resultado);
+$crear="hide";
+$exportar="no-descargar";
 if($resultado==""){
     ?>
     <a ng-click="reload()">
     <?php
+}
+foreach($usuarios as $llave => $valores1) {
+    if($valores1==="1"){
+        $crear="";
+    }
+    if($valores1==="6"){
+        $exportar="";
+    }
 }
 ?>
 

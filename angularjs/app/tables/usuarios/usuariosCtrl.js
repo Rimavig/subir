@@ -805,6 +805,16 @@ angular.module('newApp')
             }
           //  $(this).prop("disabled",false);
         });
+        $(document).on('click', '.correoR', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            var id=$(this).parents('tr').find('.hide_column')[0].innerHTML;
+            $('.page-spinner-loader').removeClass('hide');
+            $('#alerta').load('./tables/reportes/alerta.php', {tipo:"UclienteV", id:id},function() {    
+                $('.page-spinner-loader').addClass('hide');
+            });
+        });
     //PERFIL USUARIOS EVENTOS    
         //boton principal
         $(document).on('click', '.editarE', function (e) {

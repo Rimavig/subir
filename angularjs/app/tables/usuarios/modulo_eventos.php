@@ -1,7 +1,7 @@
 <?php
 include ("../../conect.php");
 include ("../../autenticacion.php");
-$lista=array("EV","EG","EI","EB");
+$lista=array("EV","EG","EI","EB","EVD");
 foreach($lista as $llave => $valores) {
     ${"crear".$valores}="";
     ${"editar".$valores}="";
@@ -37,6 +37,9 @@ if (isset($_POST["var1"])) {
             }
             if($usuario[0]==="22"){
                 $tipo="EB";
+            }
+            if($usuario[0]==="27"){
+                $tipo="EVD";
             }
             if($tipo!=""){
                 $accion =explode(',',$usuario[1]);
@@ -86,6 +89,7 @@ if (isset($_POST["var1"])) {
                     if($valores1==="15"){
                         ${"facturacion".$tipo}="checked";
                     }
+                    
                 }  
             }
                
@@ -158,6 +162,16 @@ if (isset($_POST["var1"])) {
                     <div class="icheck-list">
                         <label><input type="checkbox" id="exportarEB" <?php echo $exportarEB; ?> data-checkbox="icheckbox_flat-blue"> Exportar</label>
                         <label> <input type="checkbox" id="estadoEB" <?php echo $estadoEB; ?> data-checkbox="icheckbox_flat-blue"> Estado (ON/OFF)</label>
+                    </div>
+                </div>
+            </div>       
+        </div>
+        <div  class="col-md-3 col-sm-3 col-xs-6" style ="margin-bottom: 30px!important;">
+            <div class="form-group">
+                <p><label><input type="checkbox" class="TventaDestacado" id="TventaDestacado" data-checkbox="icheckbox_minimal-red"><strong>EVENTO DESTACADO</strong></p>
+                <div class="input-group">
+                    <div class="icheck-list">
+                        <label><input type="checkbox" id="editarEVD" <?php echo $editarEVD; ?> data-checkbox="icheckbox_flat-blue"> Editar</label>
                     </div>
                 </div>
             </div>       

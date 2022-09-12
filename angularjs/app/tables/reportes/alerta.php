@@ -12,6 +12,16 @@ if (isset($_POST["tipo"])) {
         $re = $client->getGeneral("correoR",$id);
         $resultado = "".$re;
     }
+    if ( $tipo=="cortesia"){
+        $id = $_POST['id'];
+        $re = $client->getGeneral("cortesia",$id);
+        $resultado = "".$re;
+    }
+    if ( $tipo=="UclienteV"){
+        $id = $_POST['id'];
+        $re = $client->getGeneral("UclienteV",$id);
+        $resultado = "".$re;
+    }
 }
 if (isset($_POST["estado"])) {
     $id=$_POST["id"];
@@ -21,7 +31,7 @@ $status="false";
 if($resultado=="true"){
     if(isset($_POST["tipo"])){
         $tipo=$_POST["tipo"];
-        if ( $tipo=="correoR"){
+        if ( $tipo=="correoR" | $tipo=="cortesia"  | $tipo=="UclienteV" ){
             ?>
             <script type="text/javascript"> 
             var n = noty({
@@ -46,7 +56,7 @@ if($resultado=="true"){
 }else{
     if (isset($_POST["tipo"])){
         $tipo=$_POST["tipo"];
-        if ( $tipo=="correoR"){
+        if ( $tipo=="correoR" | $tipo=="cortesia"  | $tipo=="UclienteV")  {
             ?>
             <script type="text/javascript"> 
                 var n = noty({

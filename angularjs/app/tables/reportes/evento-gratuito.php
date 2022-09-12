@@ -7,20 +7,19 @@ $usuarios =explode(';;',$resultado);
 $tipo="Evento Gratuito";
 $tipo2="gratuito";
 $nombreT="el evento gratuito";
+
+$re = $client->getPerfilRol($_SESSION["id"],"68");
+$resultado = "".$re;
+$usuarios= explode(',',$resultado);
+
+$exportar="no-descargar";
 if($resultado==""){
     ?>
     <a ng-click="reload()">
     <?php
 }
-$re = $client->getPerfilRol($_SESSION["id"],"20");
-$resultado = "".$re;
-$usuarios= explode(',',$resultado);
-$crear="hide";
-$exportar="no-descargar";
 foreach($usuarios as $llave => $valores1) {
-    if($valores1==="1"){
-        $crear="";
-    }
+
     if($valores1==="6"){
         $exportar="";
     }
@@ -34,7 +33,7 @@ foreach($usuarios as $llave => $valores1) {
                     <h3><i class="fa fa-table"></i> Tabla de <strong><?php echo $tipo; ?></strong> </h3>
                 </div>
                 <div class="panel-content pagination2 table-responsive">
-                    <table class="table filter-footer gratuito_dataR table-dynamic table-tools2  " data-table-name="Eventos Gratuitos" id="table-editable" style="table-layout: fixed;">
+                    <table class="table filter-footer gratuito_dataR <?php echo $exportar; ?> table-dynamic table-tools2  " data-table-name="Eventos Gratuitos" id="table-editable" style="table-layout: fixed;">
                         <thead>
                             <tr>
                                 <th>Id</th>

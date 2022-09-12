@@ -6,7 +6,7 @@ $re = $client->getAllGeneral("destinatarios");
 $resultado= "".$re;
 $preguntas =explode(';;',$resultado);
 
-$re = $client->getPerfilRol($_SESSION["id"],"42");
+$re = $client->getPerfilRol($_SESSION["id"],"65");
 $resultado = "".$re;
 $usuarios= explode(',',$resultado);
 $crear="hide";

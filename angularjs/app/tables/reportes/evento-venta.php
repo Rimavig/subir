@@ -1,10 +1,10 @@
 <?php
 include ("../../conect.php");
 include ("../../autenticacion.php");
-$re = $client->getPerfilRol($_SESSION["id"],"19");
+$re = $client->getPerfilRol($_SESSION["id"],"67");
 $resultado = "".$re;
 $usuarios= explode(',',$resultado);
-$crear="hide";
+
 $exportar="no-descargar";
 if($resultado==""){
     ?>
@@ -12,9 +12,7 @@ if($resultado==""){
     <?php
 }
 foreach($usuarios as $llave => $valores1) {
-    if($valores1==="1"){
-        $crear="";
-    }
+
     if($valores1==="6"){
         $exportar="";
     }

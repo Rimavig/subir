@@ -5,6 +5,39 @@ $var1="";
 $var2="disabled";
 $var3="";
 $var4="hide";
+$re = $client->getPerfilRol($_SESSION["id"],"55");
+$resultado = "".$re;
+$usuarios1= explode(',',$resultado);
+$editar="hide";
+$actualizarF="hide";
+$eliminarF="hide";
+$devolucion="hide";
+$anularC="hide";
+$notaC="hide";
+$ticket="hide";
+foreach($usuarios1 as $llave => $valores1) {
+    if($valores1==="2"){
+        $editar="";
+    }
+    if($valores1==="22"){
+        $actualizarF="";
+    }
+    if($valores1==="23"){
+        $eliminarF="";
+    }
+    if($valores1==="24"){
+        $devolucion="";
+    }
+    if($valores1==="25"){
+        $anularC="";
+    }
+    if($valores1==="26"){
+        $notaC="";
+    }
+    if($valores1==="21"){
+        $ticket="";
+    }
+}
 if (isset($_POST["var2"])) {
     $var3="hide";
     $var4="";
@@ -39,6 +72,7 @@ if (isset($_POST["var1"])) {
     }
 
 }
+
 ?>
 
 <div class="col-lg-12 portlets">
@@ -159,7 +193,7 @@ if (isset($_POST["var1"])) {
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
-                        <a class="editarFCP btn btn-sm btn-dark <?php echo  $var4; ?>" style="margin: 5px;  "  href="javascript:;"><i class="icon-note"></i></a>
+                        <a class="editarFCP btn btn-sm btn-dark <?php echo  $var4." ".$editar;?>" style="margin: 5px;  "  href="javascript:;"><i class="icon-note"></i></a>
                     </div>
                 </div>
                 
@@ -200,7 +234,7 @@ if (isset($_POST["var1"])) {
                         <td> <?php if (isset($precio[4])) {echo $precio[4]; }  ?> </td>
                         <td> <?php if (isset($precio[5])) {echo $precio[5]; }  ?> </td>
                         <td> <?php if (isset($precio[6])) {echo $precio[6]; }  ?> </td>
-                        <td> <a class="btn btn-sm btn-blue" style="margin: 0px;" href="http://104.198.222.134/plantilla/pdf/ticket<?php echo $precio[0];?>.pdf" target="_blank"><i class="fa fa-check-square"></i></a> </td>
+                        <td> <a class="btn btn-sm btn-blue  <?php echo  $ticket; ?>" style="margin: 0px;" href="https://teatrosanchezaguilar.org/plantilla/pdf/ticket<?php echo $precio[0];?>.pdf" target="_blank"><i class="fa fa-check-square"></i></a> </td>
                     </tr>
                     <?php
                         }
@@ -303,11 +337,11 @@ if (isset($_POST["var1"])) {
 </div>    
 <div class="modal-footer text-center">
     <button type="reset" class="atrasRCompra btn btn-embossed btn-default <?php echo  $var3; ?>" >Atras</button>
-    <button type="reset" class="facturar btn btn-embossed btn-warning <?php echo  $var4; ?>" >Actualizar Factura</button>
-    <button type="reset" class="deleteCompra btn btn-embossed btn-danger <?php echo  $var4; ?>" >Eliminar Compra</button>
-    <button type="reset" class="devolucion btn btn-embossed btn-blue <?php echo  $var4; ?>" >Devolución Paymentez</button>
-    <button type="reset" class="anularFacura btn btn-embossed btn-blue <?php echo  $var4; ?>" >Anular Compra</button>
-    <button type="reset" class="notaCredito btn btn-embossed btn-success <?php echo  $var4; ?>" >Crear Nota Crédito</button>
+    <button type="reset" class="facturar btn btn-embossed btn-warning <?php echo  $var4." ".$actualizarF; ?>" >Actualizar Factura</button>
+    <button type="reset" class="deleteCompra btn btn-embossed btn-danger <?php echo  $var4." ".$eliminarF; ?>" >Eliminar Compra</button>
+    <button type="reset" class="devolucion btn btn-embossed btn-blue <?php echo  $var4." ".$devolucion; ?>" >Devolución Paymentez</button>
+    <button type="reset" class="anularFacura btn btn-embossed btn-blue <?php echo  $var4." ".$anularC; ?>" >Anular Compra</button>
+    <button type="reset" class="notaCredito btn btn-embossed btn-success <?php echo  $var4." ".$notaC; ?>" >Crear Nota Crédito</button>
     <button type="reset" class="salirRCompra btn btn-embossed btn-danger">Salir</button>
 </div>
 <div class="modal fade  Cpromocion" data-keyboard="false" data-backdrop="static" id="Cpromocion" aria-hidden="true">

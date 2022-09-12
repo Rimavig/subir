@@ -2,25 +2,27 @@
 include ("../../conect.php");
 include ("../../autenticacion.php");
 header("Content-type: application/json");
-$re = $client->getPerfilRol($_SESSION["id"],"19");
+$re = $client->getPerfilRol($_SESSION["id"],"67");
 $resultado = "".$re;
 $usuarios1= explode(',',$resultado);
 $editar="";
 $eliminar="";
 $estado="";
 $reset="";
-if (isset($_GET["var1"])) {
-    $var1 = $_GET['var1'];
-    $re = $client->getAllTickets($var1,"R");
-    $resultado= "".$re;
-    $funciones =explode(';;',$resultado);
-}
+
 foreach($usuarios1 as $llave => $valores1) {
     if($valores1==="2"){
         $editar='<a class="editarVC btn btn-sm btn-dark" style="margin: 5px 0px;  "  href="javascript:;"><i class="icon-note"></i></a>
         <a class="editarTA btn btn-sm btn-success" style="margin: 5px 0px;  "  href="javascript:;"><i class="fa fa-ticket"></i></a>';
     }
 }
+if (isset($_GET["var1"])) {
+    $var1 = $_GET['var1'];
+    $re = $client->getAllTickets($var1,"R");
+    $resultado= "".$re;
+    $funciones =explode(';;',$resultado);
+}
+
 $datat=NULL;
 $data=[];
 $text=$editar." ".$eliminar." ".$estado;   
@@ -47,7 +49,7 @@ foreach($funciones as $llave => $valores) {
         if ($funcion[2]==="CORTESIA" ) {
             $fact="CORTESIA";
         } else{
-            $fact=' <a class=" btn-sm " style="margin: 0px;" href="http://www.tsa.arhena.com.ec/archivos/factura/'.$funcion[2].'.pdf" target="_blank">'.$funcion[2].'</a>';
+            $fact=' <a class=" btn-sm " style="margin: 0px;" href="http://www.tsa.arhena.com.ec/produccion/archivos/factura/'.$funcion[2].'.pdf" target="_blank">'.$funcion[2].'</a>';
         }
         $est1='<div class="form-group">
                 <label class="switch switch-green">

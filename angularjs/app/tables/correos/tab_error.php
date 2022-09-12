@@ -6,10 +6,10 @@ $re = $client->getAllGeneral("error");
 $resultado= "".$re;
 $preguntas =explode(';;',$resultado);
 
-$re = $client->getPerfilRol($_SESSION["id"],"42");
+$re = $client->getPerfilRol($_SESSION["id"],"66");
 $resultado = "".$re;
 $usuarios= explode(',',$resultado);
-$crear="hide";
+$correo="hide";
 $editar="hide";
 $eliminar="hide";
 $exportar="no-descargar";
@@ -19,8 +19,8 @@ if($resultado==""){
     <?php
 }
 foreach($usuarios as $llave => $valores1) {
-    if($valores1==="1"){
-        $crear="";
+    if($valores1==="20"){
+        $correo="";
     }
     if($valores1==="2"){
         $editar="";
@@ -30,7 +30,7 @@ foreach($usuarios as $llave => $valores1) {
     }
 }
 ?>
-<div class="btn-group  <?php echo $crear; ?>">
+<div class="btn-group  <?php echo $correo; ?>">
     <button class="enviarT btn btn-sm btn-dark "  href="javascript:;"> Enviar Todos</button>
 </div>
 <table class="table" data-table-name="Error de Correo" id="table-editable" >
@@ -55,7 +55,8 @@ foreach($usuarios as $llave => $valores1) {
             <td> <?php if (isset($pregunt[2])) {echo $pregunt[2]; }  ?> </td>
             <td> <?php if (isset($pregunt[3])) {echo $pregunt[3]; }  ?> </td>
             <td class="text-right">
-                <a class="editarE btn btn-sm btn-dark <?php echo $editar; ?>" style="margin: 5px;  "  href="javascript:;"><i class="icon-key"></i></a>
+                <a class="editarE btn btn-sm btn-dark <?php echo $editar; ?>" style="margin: 5px;  "  href="javascript:;"><i class="icon-note"></i></a>
+                <a class="correoE btn btn-sm btn-blue <?php echo $correo; ?>" style="margin: 5px;  "  href="javascript:;"><i class="icon-envelope"></i></a>
                 <a class="eliminarE btn btn-sm btn-danger <?php echo $eliminar; ?>" style="margin: 5px;  "  href="javascript:;"><i class="icon-trash"></i></a>
             </td>
         </tr>

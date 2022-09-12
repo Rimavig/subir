@@ -31,15 +31,15 @@ if (isset($_POST["tipo"])) {
         }
     }else if ( $tipo=="correoPrueba"){
         $id = $_POST["id"];
-        $re = $client1->sendMail($id,"rvivanco@espol.edu.ec","1" ,"Correo de Prueba","12345");
+        $re = $client1->sendMail($id,"teatrosanchezaguilar@gmail.com","1" ,"Correo de Prueba","12345");
         $resultado = "".$re;
     }else if ( $tipo=="eliminarE"){
         $id = $_POST["id"];
         $re = $client->updateGeneral("eliminarE",$id,"B","",$_SESSION["usuario"]);
         $resultado = "".$re;
-    }else if ( $tipo=="editarE"){
+    }else if ( $tipo=="correoE"){
         $id = $_POST["id"];
-        $re = $client->updateGeneral("editarE",$id,"E","",$_SESSION["usuario"]);
+        $re = $client->updateGeneral("correoE",$id,"E","",$_SESSION["usuario"]);
         $resultado = "".$re;
     }else if ( $tipo=="enviarT"){
         $re = $client->updateGeneral("enviarT","","","",$_SESSION["usuario"]);
@@ -54,7 +54,7 @@ if (isset($_POST["tipo"])) {
         $re = $client->updateGeneral("eliminarD",$id,"","",$_SESSION["usuario"]);
         $resultado = "".$re;
     }else if ( $tipo=="editar_destinatario"){
-        $id = $_POST["id "];
+        $id = $_POST["id"];
         $idPlantilla = $_POST["idPlantilla"];
         $correo = $_POST["correo"];
         $re = $client->updateGeneral("editar_destinatario",$id,$correo, $idPlantilla,$_SESSION["usuario"]);
@@ -102,7 +102,7 @@ if($resultado=="true"){
             </script>
             <?php
 
-        }else if ( $tipo=="eliminarE" | $tipo=="editarE"| $tipo=="enviarT" ){
+        }else if ( $tipo=="eliminarE" | $tipo=="correoE"| $tipo=="enviarT" ){
             ?>
             <script type="text/javascript"> 
             var n = noty({
@@ -225,7 +225,7 @@ if($resultado=="true"){
                 $(".guardarVisionF").prop("disabled",false);
             </script>
             <?php
-        }else if ( $tipo=="eliminarE" | $tipo=="editarE"| $tipo=="enviarT" ){
+        }else if ( $tipo=="eliminarE" | $tipo=="correoE"| $tipo=="enviarT" ){
             ?>
             <script type="text/javascript"> 
                 var n = noty({

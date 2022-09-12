@@ -47,7 +47,7 @@ foreach($texto as $llave => $valores) {
                             <div class="form-group">
                                 <label for="field-1" class="control-label">Celular</label>
                                 <div class="form-group prepend-icon">
-                                    <input type="text" name="celular" class="form-control"  id="celular"  value="<?php echo $telefono; ?>" placeholder="0989679545" minlength="10" equired>
+                                    <input type="text" name="celular" class="form-control"  id="celular"  value="<?php echo $celular; ?>" placeholder="0989679545" minlength="10" equired>
                                     <i class="icon-screen-smartphone"></i>
                                 </div>
                             </div>

@@ -8,6 +8,11 @@ $re = $client->getPerfilRol($_SESSION["id"],"19");
 $resultado = "".$re;
 $usuarios= explode(',',$resultado);
 $crear="hide";
+$informacion="hide";
+$descripcion="hide";
+$multimedia="hide";
+$funciones="hide";
+$precios="hide";
 $exportar="no-descargar";
 if($resultado==""){
     ?>
@@ -20,6 +25,21 @@ foreach($usuarios as $llave => $valores1) {
     }
     if($valores1==="6"){
         $exportar="";
+    }
+    if($valores1==="7"){
+        $informacion="";
+    }
+    if($valores1==="8"){
+        $descripcion="";
+    }
+    if($valores1==="9"){
+        $multimedia="";
+    }
+    if($valores1==="10"){
+        $funciones="";
+    }
+    if($valores1==="11"){
+        $precios="";
     }
 }
 ?>

@@ -3,13 +3,32 @@ include ("../../conect.php");
 include ("../../autenticacion.php");
 header("Content-type: application/json");
 
-$re = $client->getAllCajaTaquilla($_SESSION["id"]);
-$resultado= "".$re;
-$usuarios =explode(';;',$resultado);
+$re = $client->getPerfilRol($_SESSION["id"],"41");
+$resultado = "".$re;
+$usuarios1= explode(',',$resultado);
+$editar="";
+$estado=false;
 
+foreach($usuarios1 as $llave => $valores1) {
+    if($valores1==="2"){
+        $editar='<a class="editarMT btn btn-sm btn-dark" style="margin: 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
+    }
+    if($valores1==="27"){
+        $estado=true;
+    }
+}
+if($estado){
+    $re = $client->getAllCajaTaquilla("T");
+    $resultado= "".$re;
+    $usuarios =explode(';;',$resultado);
+}else{
+    $re = $client->getAllCajaTaquilla($_SESSION["id"]);
+    $resultado= "".$re;
+    $usuarios =explode(';;',$resultado);
+}
 $datat=NULL;
 $data=[];
-$text=' <a class="editarMT btn btn-sm btn-dark" style="margin: 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
+$text=$editar;  
 
 foreach($usuarios as $llave => $valores) {
     $usuario =explode(',',$valores);

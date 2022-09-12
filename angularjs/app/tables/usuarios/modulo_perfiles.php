@@ -13,6 +13,7 @@ foreach($lista as $llave => $valores) {
     ${"exportar".$valores}="";
     ${"reset".$valores}="";
     ${"facturacion".$valores}="";
+    ${"correo".$valores}="";
 }
 
 if (isset($_POST["var1"])) {
@@ -59,6 +60,9 @@ if (isset($_POST["var1"])) {
                     }
                     if($valores1==="15"){
                         ${"facturacion".$tipo}="checked";
+                    }
+                    if($valores1==="20"){
+                        ${"correo".$tipo}="checked";
                     }
                 }    
             }
@@ -110,6 +114,7 @@ if (isset($_POST["var1"])) {
                         <label> <input type="checkbox" id="eliminarUCL" <?php echo $eliminarUCL; ?>  data-checkbox="icheckbox_flat-blue"> Eliminar</label>
                         <label> <input type="checkbox" id="resetUCL" <?php echo $resetUCL; ?>  data-checkbox="icheckbox_flat-blue"> Resetear Clave</label>
                         <label> <input type="checkbox" id="estadoUCL" <?php echo $estadoUCL; ?>  data-checkbox="icheckbox_flat-blue"> Estado (ON/OFF)</label>
+                        <label> <input type="checkbox" id="correoUCL" <?php echo $correoUCL; ?>  data-checkbox="icheckbox_flat-blue">Reenviar Verificación</label>
                         <label> <input type="checkbox" id="facturacionUCL" <?php echo $facturacionUCL; ?>  data-checkbox="icheckbox_flat-blue"> Facturación</label>
                     </div>
                 </div>

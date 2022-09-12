@@ -6,6 +6,7 @@ angular.module('newApp')
     $scope.reload = function()
     {
     location.reload(); 
+
     }
     $scope.$on('$viewContentLoaded', function () {
         setTimeout(function(){
@@ -19,28 +20,23 @@ angular.module('newApp')
             $(this).prop("disabled",true); 
             var estado=$(this).parents('tr').find('.hide_column')[0];
             $('.page-spinner-loader').removeClass('hide');
+            
             $('#funcionesR').load('./tables/reportes/tab_funciones.php', {var1:estado.innerHTML},function() {    
                 $('.page-spinner-loader').addClass('hide');
                 $('.editarEvento').addClass('hide');
                 $('.funcionesR').removeClass('hide');
-                $("#table-editable3").dataTable({ "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
-                    }, 
-                    "ajax": "tables/reportes/tab_funciones_data.php?var1="+estado.innerHTML,
-                    "ordering": false,
-                    "autoWidth": false,
-                    "scrollX": false,
-                    "destroy":true,
-                    "dom": "<'row'<'col-xs-6 col-sm-4 col-md-6 tabla-estilo 'l><'col-xs-6 col-sm-5 col-md-5 tabla-estilo'f><'col-xs-6 col-sm-5 col-md-6 tabla-estilo1'B>r>t<'row'<'col-xs-12 col-sm-6 col-md-6 tabla-estilo'i><'spcol-md-6an6'p>>",
-                    "buttons" :[
+                if ($("#table-editable3").hasClass('no-descargar')) {
+                    esconder=[];
+                } else{
+                    esconder=[
                         {
                             "extend": 'excelHtml5',
-                            "title": "Venta Funciones" || "Your custom name",
+                            "title": $(this).data('table-name') || "Your custom name",
                             "className": 'btn btn-default'
                         },
                         {
                             "extend": 'pdfHtml5',
-                            "title": "Venta Funciones" || "Your custom name",
+                            "title": $(this).data('table-name') || "Your custom name",
                             "className": 'btn btn-default'
                         },
                         {
@@ -51,7 +47,19 @@ angular.module('newApp')
                                 table.ajax.reload();
                             }
                         }                                       
-                    ],
+                    ]
+                }
+                $("#table-editable3").dataTable({ "language": {
+                    
+                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                    }, 
+                    "ajax": "tables/reportes/tab_funciones_data.php?var1="+estado.innerHTML,
+                    "ordering": false,
+                    "autoWidth": false,
+                    "scrollX": false,
+                    "destroy":true,
+                    "dom": "<'row'<'col-xs-6 col-sm-4 col-md-6 tabla-estilo 'l><'col-xs-6 col-sm-5 col-md-5 tabla-estilo'f><'col-xs-6 col-sm-5 col-md-6 tabla-estilo1'B>r>t<'row'<'col-xs-12 col-sm-6 col-md-6 tabla-estilo'i><'spcol-md-6an6'p>>",
+                    "buttons" :esconder,
                     "aoColumnDefs": [
                         {
                             "targets": [ 0 ],
@@ -71,24 +79,18 @@ angular.module('newApp')
                 $('.page-spinner-loader').addClass('hide');
                 $('.editarEvento').addClass('hide');
                 $('.funcionesR').removeClass('hide');
-                $("#table-editable3").dataTable({ "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
-                    }, 
-                    "ajax": "tables/reportes/tab_registro_data.php?var1="+estado.innerHTML,
-                    "ordering": false,
-                    "autoWidth": false,
-                    "scrollX": false,
-                    "destroy":true,
-                    "dom": "<'row'<'col-xs-6 col-sm-4 col-md-6 tabla-estilo 'l><'col-xs-6 col-sm-5 col-md-5 tabla-estilo'f><'col-xs-6 col-sm-5 col-md-6 tabla-estilo1'B>r>t<'row'<'col-xs-12 col-sm-6 col-md-6 tabla-estilo'i><'spcol-md-6an6'p>>",
-                    "buttons" :[
+                if ($("#table-editable3").hasClass('no-descargar')) {
+                    esconder=[];
+                } else{
+                    esconder=[
                         {
                             "extend": 'excelHtml5',
-                            "title": "Venta Funciones" || "Your custom name",
+                            "title": $(this).data('table-name') || "Your custom name",
                             "className": 'btn btn-default'
                         },
                         {
                             "extend": 'pdfHtml5',
-                            "title": "Venta Funciones" || "Your custom name",
+                            "title": $(this).data('table-name') || "Your custom name",
                             "className": 'btn btn-default'
                         },
                         {
@@ -99,7 +101,18 @@ angular.module('newApp')
                                 table.ajax.reload();
                             }
                         }                                       
-                    ],
+                    ]
+                }
+                $("#table-editable3").dataTable({ "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                    }, 
+                    "ajax": "tables/reportes/tab_registro_data.php?var1="+estado.innerHTML,
+                    "ordering": false,
+                    "autoWidth": false,
+                    "scrollX": false,
+                    "destroy":true,
+                    "dom": "<'row'<'col-xs-6 col-sm-4 col-md-6 tabla-estilo 'l><'col-xs-6 col-sm-5 col-md-5 tabla-estilo'f><'col-xs-6 col-sm-5 col-md-6 tabla-estilo1'B>r>t<'row'<'col-xs-12 col-sm-6 col-md-6 tabla-estilo'i><'spcol-md-6an6'p>>",
+                    "buttons" :esconder,
                     "aoColumnDefs": [
                         {
                             "targets": [ 0 ],
@@ -119,25 +132,18 @@ angular.module('newApp')
                 $('.page-spinner-loader').addClass('hide');
                 $('.editarEvento').addClass('hide');
                 $('.funcionesR').removeClass('hide');
-                $("#table-editable3").dataTable({ "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
-                    }, 
-                    "ajax": "tables/reportes/tab_amigos_data.php?var1="+estado.innerHTML,
-                    "ordering": true,
-                    "autoWidth": false,
-                    "scrollX": false,
-                    "destroy":true,
-                    "order": [[ 5, "desc" ]],
-                    "dom": "<'row'<'col-xs-6 col-sm-4 col-md-6 tabla-estilo 'l><'col-xs-6 col-sm-5 col-md-5 tabla-estilo'f><'col-xs-6 col-sm-5 col-md-6 tabla-estilo1'B>r>t<'row'<'col-xs-12 col-sm-6 col-md-6 tabla-estilo'i><'spcol-md-6an6'p>>",
-                    "buttons" :[
+                if ($("#table-editable3").hasClass('no-descargar')) {
+                    esconder=[];
+                } else{
+                    esconder=[
                         {
                             "extend": 'excelHtml5',
-                            "title": "Venta Funciones" || "Your custom name",
+                            "title": $(this).data('table-name') || "Your custom name",
                             "className": 'btn btn-default'
                         },
                         {
                             "extend": 'pdfHtml5',
-                            "title": "Venta Funciones" || "Your custom name",
+                            "title": $(this).data('table-name') || "Your custom name",
                             "className": 'btn btn-default'
                         },
                         {
@@ -148,7 +154,19 @@ angular.module('newApp')
                                 table.ajax.reload();
                             }
                         }                                       
-                    ],
+                    ]
+                }
+                $("#table-editable3").dataTable({ "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                    }, 
+                    "ajax": "tables/reportes/tab_amigos_data.php?var1="+estado.innerHTML,
+                    "ordering": true,
+                    "autoWidth": false,
+                    "scrollX": false,
+                    "destroy":true,
+                    "order": [[ 5, "desc" ]],
+                    "dom": "<'row'<'col-xs-6 col-sm-4 col-md-6 tabla-estilo 'l><'col-xs-6 col-sm-5 col-md-5 tabla-estilo'f><'col-xs-6 col-sm-5 col-md-6 tabla-estilo1'B>r>t<'row'<'col-xs-12 col-sm-6 col-md-6 tabla-estilo'i><'spcol-md-6an6'p>>",
+                    "buttons" :esconder,
                     "aoColumnDefs": [
                         {
                             "targets": [ 0 ],
@@ -169,6 +187,30 @@ angular.module('newApp')
                 $('.page-spinner-loader').addClass('hide');
                 $('.funcionesR').addClass('hide');
                 $('.ticketsR').removeClass('hide');
+                if ($("#table-editable2").hasClass('no-descargar')) {
+                    esconder=[];
+                } else{
+                    esconder=[
+                        {
+                            "extend": 'excelHtml5',
+                            "title": $(this).data('table-name') || "Your custom name",
+                            "className": 'btn btn-default'
+                        },
+                        {
+                            "extend": 'pdfHtml5',
+                            "title": $(this).data('table-name') || "Your custom name",
+                            "className": 'btn btn-default'
+                        },
+                        {
+                            text: '<i class="fa fa-refresh"></i>',
+                            "className": 'btn btn-default',
+                            action: function () {
+                                var table = $('#table-editable2').DataTable();
+                                table.ajax.reload();
+                            }
+                        }                                       
+                    ]
+                }
                 $("#table-editable2").dataTable({ "language": {
                     "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                     }, 
@@ -178,27 +220,7 @@ angular.module('newApp')
                     "scrollX": false,
                     "destroy":true,
                     "dom": "<'row'<'col-xs-6 col-sm-4 col-md-6 tabla-estilo 'l><'col-xs-6 col-sm-5 col-md-5 tabla-estilo'f><'col-xs-6 col-sm-5 col-md-6 tabla-estilo1'B>r>t<'row'<'col-xs-12 col-sm-6 col-md-6 tabla-estilo'i><'spcol-md-6an6'p>>",
-                    "buttons" :[
-                        {
-                            "extend": 'excelHtml5',
-                            "title": "Venta Tickets Funciones" || "Your custom name",
-                            "className": 'btn btn-default'
-                        },
-                        {
-                            "extend": 'pdfHtml5',
-                            "title": "Venta Tickets Funciones" || "Your custom name",
-                            "className": 'btn btn-default'
-                        },
-                        {
-                            text: '<i class="fa fa-refresh"></i>',
-                            "className": 'btn btn-default',
-                            action: function () {
-                                var table = $('#table-editable2').DataTable();
-                                table.ajax.reload();
-
-                            }
-                        }                                       
-                    ],
+                    "buttons" :esconder,
                     "aoColumnDefs": [
                         {
                             "targets": [ 0,1 ],
@@ -218,24 +240,18 @@ angular.module('newApp')
                 $('.page-spinner-loader').addClass('hide');
                 $('.funcionesR').addClass('hide');
                 $('.ticketsR').removeClass('hide');
-                $("#table-editable2").dataTable({ "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
-                    }, 
-                    "ajax": "tables/reportes/tab_ticketsR_data.php?var1="+estado.innerHTML,
-                    "ordering": true,
-                    "autoWidth": false,
-                    "scrollX": false,
-                    "destroy":true,
-                    "dom": "<'row'<'col-xs-6 col-sm-4 col-md-6 tabla-estilo 'l><'col-xs-6 col-sm-5 col-md-5 tabla-estilo'f><'col-xs-6 col-sm-5 col-md-6 tabla-estilo1'B>r>t<'row'<'col-xs-12 col-sm-6 col-md-6 tabla-estilo'i><'spcol-md-6an6'p>>",
-                    "buttons" :[
+                if ($("#table-editable2").hasClass('no-descargar')) {
+                    esconder=[];
+                } else{
+                    esconder=[
                         {
                             "extend": 'excelHtml5',
-                            "title": "Venta Tickets Funciones" || "Your custom name",
+                            "title": $(this).data('table-name') || "Your custom name",
                             "className": 'btn btn-default'
                         },
                         {
                             "extend": 'pdfHtml5',
-                            "title": "Venta Tickets Funciones" || "Your custom name",
+                            "title": $(this).data('table-name') || "Your custom name",
                             "className": 'btn btn-default'
                         },
                         {
@@ -246,7 +262,18 @@ angular.module('newApp')
                                 table.ajax.reload();
                             }
                         }                                       
-                    ],
+                    ]
+                }
+                $("#table-editable2").dataTable({ "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                    }, 
+                    "ajax": "tables/reportes/tab_ticketsR_data.php?var1="+estado.innerHTML,
+                    "ordering": true,
+                    "autoWidth": false,
+                    "scrollX": false,
+                    "destroy":true,
+                    "dom": "<'row'<'col-xs-6 col-sm-4 col-md-6 tabla-estilo 'l><'col-xs-6 col-sm-5 col-md-5 tabla-estilo'f><'col-xs-6 col-sm-5 col-md-6 tabla-estilo1'B>r>t<'row'<'col-xs-12 col-sm-6 col-md-6 tabla-estilo'i><'spcol-md-6an6'p>>",
+                    "buttons" :esconder,
                     "aoColumnDefs": [
                         {
                             "targets": [ 0 ],
@@ -268,24 +295,18 @@ angular.module('newApp')
                 $('.infoCompraMV').removeClass('hide');   
                 $('.taquillaMV').addClass('hide');
                 $('.taquillaG').addClass('hide');
-                $("#table-editable4").dataTable({ "language": {
-                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
-                    }, 
-                    "ajax": "tables/reportes/tab_tickets_asiento_data.php?var1="+estado.innerHTML,
-                    "ordering": true,
-                    "autoWidth": false,
-                    "scrollX": false,
-                    "destroy":true,
-                    "dom": "<'row'<'col-xs-6 col-sm-4 col-md-6 tabla-estilo 'l><'col-xs-6 col-sm-5 col-md-5 tabla-estilo'f><'col-xs-6 col-sm-5 col-md-6 tabla-estilo1'B>r>t<'row'<'col-xs-12 col-sm-6 col-md-6 tabla-estilo'i><'spcol-md-6an6'p>>",
-                    "buttons" :[
+                if ($("#table-editable4").hasClass('no-descargar')) {
+                    esconder=[];
+                } else{
+                    esconder=[
                         {
                             "extend": 'excelHtml5',
-                            "title": "Venta Tickets Funciones" || "Your custom name",
+                            "title": $(this).data('table-name') || "Your custom name",
                             "className": 'btn btn-default'
                         },
                         {
                             "extend": 'pdfHtml5',
-                            "title": "Venta Tickets Funciones" || "Your custom name",
+                            "title": $(this).data('table-name') || "Your custom name",
                             "className": 'btn btn-default'
                         },
                         {
@@ -296,7 +317,18 @@ angular.module('newApp')
                                 table.ajax.reload();
                             }
                         }                                       
-                    ],
+                    ]
+                }
+                $("#table-editable4").dataTable({ "language": {
+                    "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                    }, 
+                    "ajax": "tables/reportes/tab_tickets_asiento_data.php?var1="+estado.innerHTML,
+                    "ordering": true,
+                    "autoWidth": false,
+                    "scrollX": false,
+                    "destroy":true,
+                    "dom": "<'row'<'col-xs-6 col-sm-4 col-md-6 tabla-estilo 'l><'col-xs-6 col-sm-5 col-md-5 tabla-estilo'f><'col-xs-6 col-sm-5 col-md-6 tabla-estilo1'B>r>t<'row'<'col-xs-12 col-sm-6 col-md-6 tabla-estilo'i><'spcol-md-6an6'p>>",
+                    "buttons" :esconder,
                     "aoColumnDefs": [
                         {
                             "targets": [ 0 ],
@@ -444,7 +476,7 @@ angular.module('newApp')
             e.stopImmediatePropagation();
             var image = document.getElementById('imagen1');
             var id=$(this).parents('tr').find('.hide_column')[0].innerHTML;
-            image.src = "http://104.198.222.134/plantilla/qr/qrcodeG"+id+".png";
+            image.src = "https://teatrosanchezaguilar.org/plantilla/qr/qrcodeG"+id+".png";
             $('#verMapa').modal('show'); // abrir
         });
         $(document).on('click', '.correoR', function (e) {

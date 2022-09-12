@@ -3,7 +3,6 @@
 include ("../../conect.php");
 include ("../../autenticacion.php");
 include ("../../directorio.php");
-
 ?>
 <div>
     <div class="row " >

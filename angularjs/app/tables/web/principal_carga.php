@@ -84,7 +84,7 @@ foreach($usuarios as $llave => $valores1) {
 
             <td class="text-right">
                 <a class="editarBannerP btn btn-sm btn-dark <?php echo $editar; ?>" style="margin: 5px;  "  href="javascript:;"><i class="icon-note"></i></a>
-                <a class="estadoBannerP btn btn-sm btn-warning" style="margin: 5px 0px;" href="javascript:;"><i class="icon-lock"></i></a>
+                <a class="estadoBannerP btn btn-sm btn-warning  <?php echo $editar; ?>" style="margin: 5px 0px;" href="javascript:;"><i class="icon-lock"></i></a>
                 <a class="eliminarBannerP btn btn-sm btn-danger <?php echo $eliminar; ?>" style="margin: 5px;  "  href="javascript:;"><i class="icon-trash"></i></a>
             </td>
         </tr>

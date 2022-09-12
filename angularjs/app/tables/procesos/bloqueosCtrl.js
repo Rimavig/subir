@@ -874,6 +874,16 @@ angular.module('newApp')
             var table = $('#table-editable').DataTable();
             table.ajax.reload();
         });
+        $(document).on('click', '.correoR', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            var id=$(this).parents('tr').find('.hide_column')[0].innerHTML;
+            $('.page-spinner-loader').removeClass('hide');
+            $('#alerta').load('./tables/reportes/alerta.php', {tipo:"cortesia", id:id},function() {    
+                $('.page-spinner-loader').addClass('hide');
+            });
+        });
       });
 
       $scope.$on('$destroy', function () {
@@ -882,6 +892,7 @@ angular.module('newApp')
         $(tables).each(function () {
             $(this).dataTable().fnDestroy();
         });
+        $(document).off('click','.correoR');
         $(document).off('change','.evento');
         $(document).off('change','.funciones');
         $(document).off('change','#mensaje3');

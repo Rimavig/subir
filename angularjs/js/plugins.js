@@ -402,7 +402,8 @@ angular.module('newApp').factory('pluginsService', [function () {
                                 table =$(this).dataTable({
                             "bPaginate" : true,
                             "destroy":true,
-                            "autoWidth": false,
+                            "autoWidth": true,
+                           
                             "searching": true,
                             "select":true,
                             "language": {
@@ -430,6 +431,7 @@ angular.module('newApp').factory('pluginsService', [function () {
                         "bPaginate" : true,
                         "destroy":true,
                         "autoWidth": true,
+                       
                         "searching": true,
                         "select":true,
                         "language": {
@@ -473,6 +475,7 @@ angular.module('newApp').factory('pluginsService', [function () {
                         "bPaginate" : true,
                         "destroy":true,
                         "autoWidth": true,
+                       
                         "searching": false,
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
@@ -500,7 +503,8 @@ angular.module('newApp').factory('pluginsService', [function () {
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                             },
-                        "autoWidth": false,
+                        "autoWidth": true,
+                       
                         "ajax": carga,
 
                         "order": [[ 6, "desc" ]],
@@ -530,7 +534,8 @@ angular.module('newApp').factory('pluginsService', [function () {
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                             },
-                        "autoWidth": false,
+                        "autoWidth": true,
+                       
                         "ajax": carga,
 
                         "order": [[ 6, "desc" ]],
@@ -559,7 +564,8 @@ angular.module('newApp').factory('pluginsService', [function () {
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                             },
-                        "autoWidth": false,
+                        "autoWidth": true,
+                       
                         "ajax": carga,
                        
                         "order": [[ 5, "desc" ]],
@@ -589,7 +595,8 @@ angular.module('newApp').factory('pluginsService', [function () {
                             "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                             },
                         "ajax": carga,
-                        "autoWidth": false,
+                        "autoWidth": true,
+                       
                         "order": [[ 7, "desc" ]],
                         "aoColumnDefs": [
                             {
@@ -613,12 +620,13 @@ angular.module('newApp').factory('pluginsService', [function () {
                         "bPaginate" : true,
                         "destroy":true,
                         "searching": true,
+                        
                         "select":true,
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                             },
                         "ajax": carga,
-                        "autoWidth": false,
+                        "autoWidth": true,
                         "order": [[ 3, "desc" ]],
                         "aoColumnDefs": [
                             {
@@ -644,6 +652,8 @@ angular.module('newApp').factory('pluginsService', [function () {
                         "destroy":true,
                         "searching": true,
                         "select":true,
+                        "autoWidth": true,
+                       
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                             },
@@ -677,7 +687,8 @@ angular.module('newApp').factory('pluginsService', [function () {
                         table =$(this).dataTable({
                             "bPaginate" : true,
                             "destroy":true,
-                            "autoWidth": false,
+                            "autoWidth": true,
+                           
                             "searching": true,
                             "select":true,
                             "language": {
@@ -709,7 +720,8 @@ angular.module('newApp').factory('pluginsService', [function () {
                         table =$(this).dataTable({
                             "bPaginate" : true,
                             "destroy":true,
-                            "autoWidth": false,
+                            "autoWidth": true,
+                           
                             "searching": true,
                             "select":true,
                             "language": {
@@ -740,7 +752,8 @@ angular.module('newApp').factory('pluginsService', [function () {
                         table =$(this).dataTable({
                             "bPaginate" : true,
                             "destroy":true,
-                            "autoWidth": false,
+                            "autoWidth": true,
+                           
                             "searching": true,
                             "select":true,
                             "language": {
@@ -770,7 +783,8 @@ angular.module('newApp').factory('pluginsService', [function () {
                         table =$(this).dataTable({
                             "bPaginate" : true,
                             "destroy":true,
-                            "autoWidth": false,
+                            "autoWidth": true,
+                           
                             "searching": true,
                             "select":true,
                             "language": {
@@ -801,6 +815,7 @@ angular.module('newApp').factory('pluginsService', [function () {
                             "bPaginate" : true,
                             "destroy":true,
                             "searching": true,
+                            
                             "select":true,
                             "language": {
                                 "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
@@ -808,7 +823,8 @@ angular.module('newApp').factory('pluginsService', [function () {
                             "ajax": carga,
                            
                             "order": [[ 6, "desc" ]],
-                            "autoWidth": false,
+                            "autoWidth": true,
+                           
                             "aoColumnDefs": [
                                 {
                                     "targets": [ 0],
@@ -835,7 +851,8 @@ angular.module('newApp').factory('pluginsService', [function () {
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                             },
-                        "autoWidth": false,
+                        "autoWidth": true,
+                       
                         "ajax": carga,
                         "aoColumnDefs": [
                             {
@@ -939,7 +956,8 @@ angular.module('newApp').factory('pluginsService', [function () {
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                             },
-                        "autoWidth": false,
+                        "autoWidth": true,
+                       
                         "ajax": carga,
                         "order": [[ 4, "desc" ]],
                         "aoColumnDefs": [

@@ -6,13 +6,28 @@ header("Content-type: application/json");
 $re = $client->getAllPerfil();
 $resultado= "".$re;
 $usuarios =explode(';;',$resultado);
+$re = $client->getPerfilRol($_SESSION["id"],"4");
+$resultado = "".$re;
+$usuarios1= explode(',',$resultado);
+$editar="";
+$eliminar="";
+$estado="";
 
+foreach($usuarios1 as $llave => $valores1) {
+    if($valores1==="2"){
+        $editar='<a class="editarPerfil btn btn-sm btn-dark" style="margin: 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
+    }
+    if($valores1==="3"){
+        $eliminar='<a class="deletePerfil btn btn-sm btn-danger" style="margin: 0px;  " href="javascript:;"><i class="icon-trash"></i></a>';
+    }
+    if($valores1==="5"){
+        $estado='<a class="estadoPerfil btn btn-sm btn-warning" style="margin: 0px;" href="javascript:;"><i class="icon-lock"></i></a>';
+    }
+}
 
 $datat=NULL;
 $data=[];
-$text='  <a class="editarPerfil btn btn-sm btn-dark" style="margin: 0px;  "  href="javascript:;"><i class="icon-note"></i></a>
-<a class="deletePerfil  btn btn-sm btn-danger" style="margin: 0px;  " href="javascript:;"><i class="icon-trash"></i></a>
-<a class="estadoPerfil  btn btn-sm btn-warning" style="margin: 0px;" href="javascript:;"><i class="icon-lock"></i></a>';      
+$text=$editar." ".$eliminar." ".$estado;    
 foreach($usuarios as $llave => $valores) {
     $usuario =explode(',,,',$valores);
     $estado="";

@@ -92,6 +92,50 @@ angular.module('newApp')
                 $(this).parents().find(padre).iCheck('uncheck');
                 $(this).parents().find('#admin').iCheck('uncheck');
             });
+            $(document).on('ifUnchecked','#correo'+tipo ,function(e) {
+                $(this).parents().find(padre).iCheck('uncheck');
+                $(this).parents().find('#admin').iCheck('uncheck');
+            });
+            $(document).on('ifUnchecked','#ticket'+tipo ,function(e) {
+                $(this).parents().find(padre).iCheck('uncheck');
+                $(this).parents().find('#admin').iCheck('uncheck');
+            });
+            $(document).on('ifUnchecked','#actualizarF'+tipo ,function(e) {
+                $(this).parents().find(padre).iCheck('uncheck');
+                $(this).parents().find('#admin').iCheck('uncheck');
+            });
+            $(document).on('ifUnchecked','#eliminarC'+tipo ,function(e) {
+                $(this).parents().find(padre).iCheck('uncheck');
+                $(this).parents().find('#admin').iCheck('uncheck');
+            });
+            $(document).on('ifUnchecked','#devolucion'+tipo ,function(e) {
+                $(this).parents().find(padre).iCheck('uncheck');
+                $(this).parents().find('#admin').iCheck('uncheck');
+            });
+            $(document).on('ifUnchecked','#anularC'+tipo ,function(e) {
+                $(this).parents().find(padre).iCheck('uncheck');
+                $(this).parents().find('#admin').iCheck('uncheck');
+            });
+            $(document).on('ifUnchecked','#notaCredito'+tipo ,function(e) {
+                $(this).parents().find(padre).iCheck('uncheck');
+                $(this).parents().find('#admin').iCheck('uncheck');
+            });
+            $(document).on('ifUnchecked','#adminG'+tipo ,function(e) {
+                $(this).parents().find(padre).iCheck('uncheck');
+                $(this).parents().find('#admin').iCheck('uncheck');
+            });
+            $(document).on('ifUnchecked','#puntos'+tipo ,function(e) {
+                $(this).parents().find(padre).iCheck('uncheck');
+                $(this).parents().find('#puntos').iCheck('uncheck');
+            });
+            $(document).on('ifUnchecked','#cumpleanos'+tipo ,function(e) {
+                $(this).parents().find(padre).iCheck('uncheck');
+                $(this).parents().find('#cumpleanos').iCheck('uncheck');
+            });
+            $(document).on('ifUnchecked','#regalo'+tipo ,function(e) {
+                $(this).parents().find(padre).iCheck('uncheck');
+                $(this).parents().find('#regalo').iCheck('uncheck');
+            });
             $(document).on('ifChecked',padre ,function(e) {
                 $(this).parents().find('#exportar'+tipo).iCheck('check');
                 $(this).parents().find('#crear'+tipo).iCheck('check');
@@ -111,65 +155,108 @@ angular.module('newApp')
                 $(this).parents().find('#B1'+tipo).iCheck('check');
                 $(this).parents().find('#B2'+tipo).iCheck('check');
                 $(this).parents().find('#recepcion'+tipo).iCheck('check');
+                $(this).parents().find('#correo'+tipo).iCheck('check');
+                $(this).parents().find('#ticket'+tipo).iCheck('check');
+                $(this).parents().find('#actualizarF'+tipo).iCheck('check');
+                $(this).parents().find('#eliminarC'+tipo).iCheck('check');
+                $(this).parents().find('#devolucion'+tipo).iCheck('check');
+                $(this).parents().find('#anularC'+tipo).iCheck('check');
+                $(this).parents().find('#notaCredito'+tipo).iCheck('check');
+                $(this).parents().find('#adminG'+tipo).iCheck('check');
+                $(this).parents().find('#puntos'+tipo).iCheck('check');
+                $(this).parents().find('#cumpleanos'+tipo).iCheck('check');
+                $(this).parents().find('#regalo'+tipo).iCheck('check');
+
                 $(this).parents().find('.esconder'+tipo).removeClass('hide');
             });
-            $(document).on('change','#admin' ,function(e) {
-                if(this.checked) {
-                    $(this).parents().find('#Tperfiles').iCheck('check');
-                    $(this).parents().find('#usuariosUAD').iCheck('check');
-                    $(this).parents().find('#usuariosUCL').iCheck('check');
-                    $(this).parents().find('#usuariosUEV').iCheck('check');
-                    $(this).parents().find('#Tcategoria').iCheck('check');
-                    $(this).parents().find('#Tclasificacion').iCheck('check');
-                    $(this).parents().find('#Tespectaculo').iCheck('check');
-                    $(this).parents().find('#Tprocedencia').iCheck('check');
-                    $(this).parents().find('#TtipoEvento').iCheck('check');
-                    $(this).parents().find('#Tproductora').iCheck('check');
-                    $(this).parents().find('#Tpromocion').iCheck('check');
-                    $(this).parents().find('#TdistribucionP').iCheck('check');
-                    $(this).parents().find('#TdistribucionE').iCheck('check');
-                    $(this).parents().find('#Tsala').iCheck('check');
-                    $(this).parents().find('#TimagenSala').iCheck('check');
-                    $(this).parents().find('#TimagenDistribucion').iCheck('check');
-                    $(this).parents().find('#TimagenBanner').iCheck('check');
-                    $(this).parents().find('#Tlogo').iCheck('check');
-                    $(this).parents().find('#Tgratuito').iCheck('check');
-                    $(this).parents().find('#Tinformativo').iCheck('check');
-                    $(this).parents().find('#Tventa').iCheck('check');
-                    $(this).parents().find('#Tbloqueos').iCheck('check');
-                    $(this).parents().find('#TditribucionSala').iCheck('check');
-                    $(this).parents().find('#TeliminarCortesia').iCheck('check');
-                    $(this).parents().find('#TprocesosPromocion').iCheck('check');
-                    $(this).parents().find('#TprocesosPromocionG').iCheck('check');
-                    $(this).parents().find('#TprocesosAmigosB').iCheck('check');
-                    $(this).parents().find('#TprocesosAmigosP').iCheck('check');
-                    $(this).parents().find('#TprocesosAmigosI').iCheck('check');
-                    $(this).parents().find('#TprocesosContactos').iCheck('check');
-                    $(this).parents().find('#TprocesosFundacion').iCheck('check');
-                    $(this).parents().find('#TwebImagen').iCheck('check');
-                    $(this).parents().find('#TwebOtrasImagen').iCheck('check');
-                    $(this).parents().find('#TwebOtrasBanner').iCheck('check');
-                    $(this).parents().find('#TwebTeatroQuienes').iCheck('check');
-                    $(this).parents().find('#TwebTeatroInstalaciones').iCheck('check');
-                    $(this).parents().find('#TwebTeatroNoticias').iCheck('check');
-                    $(this).parents().find('#TwebAlquilerEspacios').iCheck('check');
-                    $(this).parents().find('#TwebAlquilerEventos').iCheck('check');
-                    $(this).parents().find('#TwebFundacionQ').iCheck('check');
-                    $(this).parents().find('#TwebFundacionP').iCheck('check');
-                    $(this).parents().find('#TwebInformacion').iCheck('check');
-                    $(this).parents().find('#TwebPublicidad').iCheck('check');
-                    $(this).parents().find('#TwebBanner').iCheck('check');
-                    $(this).parents().find('#TwebOtrasP').iCheck('check');
-                    $(this).parents().find('#TwebOtrasR').iCheck('check');
-                    $(this).parents().find('#TwebOtrasA').iCheck('check');
-                    $(this).parents().find('#TwebOtrasC').iCheck('check');
-                    $(this).parents().find('#TfacturacionCaja').iCheck('check');
-                    $(this).parents().find('#TfacturacionReporte').iCheck('check');
-                    $(this).iCheck('check');
-                }
-            });
+            
         }
-        
+        $(document).on('change','#admin' ,function(e) {
+                
+            if(this.checked) {
+                $('.page-spinner-loader').removeClass('hide');
+                $(this).parents().find('#Tperfiles').iCheck('check');
+                $(this).parents().find('#usuariosUAD').iCheck('check');
+                $(this).parents().find('#usuariosUCL').iCheck('check');
+                $(this).parents().find('#usuariosUEV').iCheck('check');
+                $(this).parents().find('#Tcategoria').iCheck('check');
+
+                $(this).parents().find('#Tclasificacion').iCheck('check');
+                $(this).parents().find('#Tespectaculo').iCheck('check');
+                $(this).parents().find('#Tprocedencia').iCheck('check');
+                $(this).parents().find('#TtipoEvento').iCheck('check');
+                $(this).parents().find('#Tproductora').iCheck('check');
+                $(this).parents().find('#Tpromocion').iCheck('check');
+                $(this).parents().find('#TdistribucionP').iCheck('check');
+                $(this).parents().find('#TdistribucionE').iCheck('check');
+                $(this).parents().find('#Tsala').iCheck('check');
+
+                $(this).parents().find('#TimagenSala').iCheck('check');
+                $(this).parents().find('#TimagenDistribucion').iCheck('check');
+                $(this).parents().find('#TimagenBanner').iCheck('check');
+                $(this).parents().find('#Tlogo').iCheck('check');
+
+                $(this).parents().find('#Tgratuito').iCheck('check');
+                $(this).parents().find('#Tinformativo').iCheck('check');
+                $(this).parents().find('#Tventa').iCheck('check');
+                $(this).parents().find('#Tbloqueos').iCheck('check');
+                $(this).parents().find('#TventaDestacado').iCheck('check');
+
+                $(this).parents().find('#TditribucionSala').iCheck('check');
+                $(this).parents().find('#TeliminarCortesia').iCheck('check');
+                $(this).parents().find('#TprocesosPromocion').iCheck('check');
+                $(this).parents().find('#TprocesosPromocionG').iCheck('check');
+                $(this).parents().find('#TprocesosAmigosB').iCheck('check');
+                $(this).parents().find('#TprocesosAmigosP').iCheck('check');
+                $(this).parents().find('#TprocesosAmigosI').iCheck('check');
+                $(this).parents().find('#TprocesosContactos').iCheck('check');
+                $(this).parents().find('#TprocesosFundacion').iCheck('check');
+                $(this).parents().find('#TprocesosPromocionF').iCheck('check');
+
+                $(this).parents().find('#TwebImagen').iCheck('check');
+                $(this).parents().find('#TwebOtrasImagen').iCheck('check');
+                $(this).parents().find('#TwebOtrasBanner').iCheck('check');
+                $(this).parents().find('#TwebTeatroQuienes').iCheck('check');
+                $(this).parents().find('#TwebTeatroInstalaciones').iCheck('check');
+                $(this).parents().find('#TwebTeatroNoticias').iCheck('check');
+                $(this).parents().find('#TwebAlquilerEspacios').iCheck('check');
+                $(this).parents().find('#TwebAlquilerEventos').iCheck('check');
+                $(this).parents().find('#TwebFundacionQ').iCheck('check');
+                $(this).parents().find('#TwebFundacionP').iCheck('check');
+                $(this).parents().find('#TwebInformacion').iCheck('check');
+                $(this).parents().find('#TwebPublicidad').iCheck('check');
+                $(this).parents().find('#TwebBanner').iCheck('check');
+                $(this).parents().find('#TwebOtrasP').iCheck('check');
+                $(this).parents().find('#TwebOtrasR').iCheck('check');
+                $(this).parents().find('#TwebOtrasA').iCheck('check');
+                $(this).parents().find('#TwebOtrasC').iCheck('check');
+                $(this).parents().find('#TwebContacto').iCheck('check');
+                $(this).parents().find('#TwebAlquiler').iCheck('check');
+
+                $(this).parents().find('#TfacturacionCaja').iCheck('check');
+                $(this).parents().find('#TfacturacionReporte').iCheck('check');
+                $(this).parents().find('#TVentasReporte').iCheck('check');
+                
+                $(this).parents().find('#REventoVentas').iCheck('check');
+                $(this).parents().find('#REventoGratuito').iCheck('check');
+                $(this).parents().find('#RAmigosTeatro').iCheck('check');
+
+                $(this).parents().find('#CReinicioCorreo').iCheck('check');
+                $(this).parents().find('#CBienvenido').iCheck('check');
+                $(this).parents().find('#CCompraBoleto').iCheck('check');
+                $(this).parents().find('#CDonacion').iCheck('check');
+                $(this).parents().find('#CCumpleanos').iCheck('check');
+                $(this).parents().find('#CRegalo').iCheck('check');
+                $(this).parents().find('#CBoletoC').iCheck('check');
+                $(this).parents().find('#CEliminarC').iCheck('check');
+                $(this).parents().find('#CRegistroG').iCheck('check');
+                $(this).parents().find('#CAdministracionD').iCheck('check');
+                $(this).parents().find('#CAdministracionE').iCheck('check');
+
+                $(this).iCheck('check');
+                $('.page-spinner-loader').addClass('hide');
+            }
+        });
         // ELIMINA EL PRINCIPAL DE CADA MODULO 
         //MODULO PERMISOS 
         seleccionar('#Tperfiles','P');
@@ -197,6 +284,7 @@ angular.module('newApp')
         seleccionar('#Tgratuito','EG');
         seleccionar('#Tinformativo','EI');
         seleccionar('#Tbloqueos','EB');
+        seleccionar('#TventaDestacado','EVD');
         //MODULO PROCESOS
         seleccionar('#TditribucionSala','PS');
         seleccionar('#TeliminarCortesia','CT');
@@ -207,6 +295,7 @@ angular.module('newApp')
         seleccionar('#TprocesosAmigosI','PAI');
         seleccionar('#TprocesosContactos','PC');
         seleccionar('#TprocesosFundacion','PF');
+        seleccionar('#TprocesosPromocionF','PPF');
         //MODULO WEB
         seleccionar('#TwebImagen','WI');
         seleccionar('#TwebOtrasImagen','WOI');
@@ -225,9 +314,30 @@ angular.module('newApp')
         seleccionar('#TwebOtrasR','WOR');
         seleccionar('#TwebOtrasA','WOA');
         seleccionar('#TwebOtrasC','WOC');
+        seleccionar('#TwebContacto','WCC');
+        seleccionar('#TwebAlquiler','WCA');
         //MODULO FACTURACION
         seleccionar('#TfacturacionCaja','FC');
         seleccionar('#TfacturacionReporte','FR');
+        seleccionar('#TVentasReporte','FVR');
+        //MODULO CORREOS modulo8
+        seleccionar('#CReinicioCorreo','CRC');
+        seleccionar('#CBienvenido','CB');
+        seleccionar('#CCompraBoleto','CCB');
+        seleccionar('#CDonacion','CD');
+        seleccionar('#CCumpleanos','CC');
+        seleccionar('#CRegalo','CR');
+        seleccionar('#CBoletoC','CBC');
+        seleccionar('#CEliminarC','CEC');
+        seleccionar('#CRegistroG','CRG');
+        seleccionar('#CAdministracionD','CAD');
+        seleccionar('#CAdministracionE','CDE');
+
+        //MODULO REPORTES
+        seleccionar('#REventoVentas','REV');
+        seleccionar('#REventoGratuito','REG');
+        seleccionar('#RAmigosTeatro','RAT');
+
         function verificar(padre,tipo) {
             var band1=true;
             var comando=padre+":";
@@ -303,6 +413,50 @@ angular.module('newApp')
                 comando=comando +" 19,";
                 band1=false;
             }
+            if  ($('#correo'+tipo).prop("checked")){
+                comando=comando +" 20,";
+                band1=false;
+            }
+            if  ($('#ticket'+tipo).prop("checked")){
+                comando=comando +" 21,";
+                band1=false;
+            }
+            if  ($('#actualizarF'+tipo).prop("checked")){
+                comando=comando +" 22,";
+                band1=false;
+            }
+            if  ($('#eliminarC'+tipo).prop("checked")){
+                comando=comando +" 23,";
+                band1=false;
+            }
+            if  ($('#devolucion'+tipo).prop("checked")){
+                comando=comando +" 24,";
+                band1=false;
+            }
+            if  ($('#anularC'+tipo).prop("checked")){
+                comando=comando +" 25,";
+                band1=false;
+            }
+            if  ($('#notaCredito'+tipo).prop("checked")){
+                comando=comando +" 26,";
+                band1=false;
+            }
+            if  ($('#adminG'+tipo).prop("checked")){
+                comando=comando +" 27,";
+                band1=false;
+            }
+            if  ($('#puntos'+tipo).prop("checked")){
+                comando=comando +" 28,";
+                band1=false;
+            }
+            if  ($('#cumpleanos'+tipo).prop("checked")){
+                comando=comando +" 29,";
+                band1=false;
+            }
+            if  ($('#regalo'+tipo).prop("checked")){
+                comando=comando +" 30,";
+                band1=false;
+            }
             if(band1){
                 comando="";
             }else{
@@ -351,6 +505,7 @@ angular.module('newApp')
             permisos=permisos +verificar('#Tgratuito','EG');
             permisos=permisos +verificar('#Tinformativo','EI');
             permisos=permisos +verificar('#Tbloqueos','EB');
+            permisos=permisos +verificar('#TventaDestacado','EVD');
             //MODULO PROCESOS
             permisos=permisos +verificar('#TditribucionSala','PS');
             permisos=permisos +verificar('#TeliminarCortesia','CT');
@@ -361,6 +516,7 @@ angular.module('newApp')
             permisos=permisos +verificar('#TprocesosAmigosI','PAI');
             permisos=permisos +verificar('#TprocesosContactos','PC');
             permisos=permisos +verificar('#TprocesosFundacion','PF');
+            permisos=permisos +verificar('#TprocesosPromocionF','PPF');
             //MODULO WEB
             permisos=permisos +verificar('#TwebImagen','WI');
             permisos=permisos +verificar('#TwebOtrasImagen','WOI');
@@ -379,9 +535,29 @@ angular.module('newApp')
             permisos=permisos +verificar('#TwebOtrasR','WOR');
             permisos=permisos +verificar('#TwebOtrasA','WOA');
             permisos=permisos +verificar('#TwebOtrasC','WOC');
+            permisos=permisos +verificar('#TwebContacto','WCC');
+            permisos=permisos +verificar('#TwebAlquiler','WCA');
             //MODULO FACTURACION
             permisos=permisos +verificar('#TfacturacionCaja','FC');
             permisos=permisos +verificar('#TfacturacionReporte','FR');
+            permisos=permisos +verificar('#TVentasReporte','FVR');
+            //MODULO CORREOS
+            permisos=permisos +verificar('#CReinicioCorreo','CRC');
+            permisos=permisos +verificar('#CBienvenido','CB');
+            permisos=permisos +verificar('#CCompraBoleto','CCB');
+            permisos=permisos +verificar('#CDonacion','CD');
+            permisos=permisos +verificar('#CCumpleanos','CC');
+            permisos=permisos +verificar('#CRegalo','CR');
+            permisos=permisos +verificar('#CBoletoC','CBC');
+            permisos=permisos +verificar('#CEliminarC','CEC');
+            permisos=permisos +verificar('#CRegistroG','CRG');
+            permisos=permisos +verificar('#CAdministracionD','CAD');
+            permisos=permisos +verificar('#CAdministracionE','CDE');
+            //MODULO REPORTES
+            permisos=permisos +verificar('#REventoVentas','REV');
+            permisos=permisos +verificar('#REventoGratuito','REG');
+            permisos=permisos +verificar('#RAmigosTeatro','RAT');
+
             console.log(permisos);
             var band=true;
             if(nombres.length<3){
@@ -432,6 +608,10 @@ angular.module('newApp')
                 $('.page-spinner-loader').addClass('hide');
                 handleiCheck();
             });
+            $('.correos').load('./tables/usuarios/modulo_correo.php',function() {    
+                $('.page-spinner-loader').addClass('hide');
+                handleiCheck();
+            });
             $('.imagenes').load('./tables/usuarios/modulo_imagenes.php',function() {    
                 $('.page-spinner-loader').addClass('hide');
                 handleiCheck();
@@ -445,6 +625,10 @@ angular.module('newApp')
                 handleiCheck();
             });
             $('.web').load('./tables/usuarios/modulo_web.php',function() {    
+                $('.page-spinner-loader').addClass('hide');
+                handleiCheck();
+            });
+            $('.reportes').load('./tables/usuarios/modulo_reportes.php', function() {    
                 $('.page-spinner-loader').addClass('hide');
                 handleiCheck();
             });
@@ -482,6 +666,14 @@ angular.module('newApp')
                 handleiCheck();
             });
             $('.eventos').load('./tables/usuarios/modulo_eventos.php', {var1:estado.innerHTML},function() {    
+                $('.page-spinner-loader').addClass('hide');
+                handleiCheck();
+            });
+            $('.correos').load('./tables/usuarios/modulo_correo.php', {var1:estado.innerHTML},function() {    
+                $('.page-spinner-loader').addClass('hide');
+                handleiCheck();
+            });
+            $('.reportes').load('./tables/usuarios/modulo_reportes.php', {var1:estado.innerHTML},function() {    
                 $('.page-spinner-loader').addClass('hide');
                 handleiCheck();
             });
@@ -540,6 +732,7 @@ angular.module('newApp')
             permisos=permisos +verificar('#Tgratuito','EG');
             permisos=permisos +verificar('#Tinformativo','EI');
             permisos=permisos +verificar('#Tbloqueos','EB');
+            permisos=permisos +verificar('#TventaDestacado','EVD');
             //MODULO PROCESOS
             permisos=permisos +verificar('#TditribucionSala','PS');
             permisos=permisos +verificar('#TeliminarCortesia','CT');
@@ -550,6 +743,7 @@ angular.module('newApp')
             permisos=permisos +verificar('#TprocesosAmigosI','PAI');
             permisos=permisos +verificar('#TprocesosContactos','PC');
             permisos=permisos +verificar('#TprocesosFundacion','PF');
+            permisos=permisos +verificar('#TprocesosPromocionF','PPF');
             //MODULO WEB
             permisos=permisos +verificar('#TwebImagen','WI');
             permisos=permisos +verificar('#TwebOtrasImagen','WOI');
@@ -568,11 +762,29 @@ angular.module('newApp')
             permisos=permisos +verificar('#TwebOtrasR','WOR');
             permisos=permisos +verificar('#TwebOtrasA','WOA');
             permisos=permisos +verificar('#TwebOtrasC','WOC');
+            permisos=permisos +verificar('#TwebContacto','WCC');
+            permisos=permisos +verificar('#TwebAlquiler','WCA');
             //MODULO FACTURACION
             permisos=permisos +verificar('#TfacturacionCaja','FC');
             permisos=permisos +verificar('#TfacturacionReporte','FR');
+            permisos=permisos +verificar('#TVentasReporte','FVR');
+            //MODULO CORREOS
+            permisos=permisos +verificar('#CReinicioCorreo','CRC');
+            permisos=permisos +verificar('#CBienvenido','CB');
+            permisos=permisos +verificar('#CCompraBoleto','CCB');
+            permisos=permisos +verificar('#CDonacion','CD');
+            permisos=permisos +verificar('#CCumpleanos','CC');
+            permisos=permisos +verificar('#CRegalo','CR');
+            permisos=permisos +verificar('#CBoletoC','CBC');
+            permisos=permisos +verificar('#CEliminarC','CEC');
+            permisos=permisos +verificar('#CRegistroG','CRG');
+            permisos=permisos +verificar('#CAdministracionD','CAD');
+            permisos=permisos +verificar('#CAdministracionE','CDE');
+            //MODULO REPORTES
+            permisos=permisos +verificar('#REventoVentas','REV');
+            permisos=permisos +verificar('#REventoGratuito','REG');
+            permisos=permisos +verificar('#RAmigosTeatro','RAT');
 
-            console.log(permisos);
             var band=true;
             if(nombres.length<3){
                 var n = noty({
@@ -669,6 +881,7 @@ angular.module('newApp')
         $(tables).each(function () {
             $(this).dataTable().fnDestroy();
         });
+        $(document).off('change','#admin');
         $(document).off('click','.crear_perfil');
         $(document).off('click','.crearPerfil');
         $(document).off('click','.editarPerfil');

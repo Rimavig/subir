@@ -2030,6 +2030,18 @@ angular.module('newApp')
             
     
         });
+        $(document).on('click', '.correoR1', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            var id=$(this).parents('tr').find('.hide_column')[1].innerHTML;
+            $('.page-spinner-loader').removeClass('hide');
+            $('#alerta').load('./tables/facturacion/alerta.php', {tipo:"correoR1", id:id},function() {    
+                $('.page-spinner-loader').addClass('hide');
+            });
+            
+    
+        });
     });
 
       $scope.$on('$destroy', function () {
@@ -2044,6 +2056,8 @@ angular.module('newApp')
         $(tables).each(function () {
             $(this).dataTable().fnDestroy();
         });
+        $(document).off('click','.correoR1');
+        $(document).off('click','.correoR');
         $(document).off('click','.editar_facturacion2');
         $(document).off('click','.editarFCP');
         $(document).off('click','.deleteCompra');

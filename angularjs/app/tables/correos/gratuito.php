@@ -23,6 +23,19 @@ foreach($texto as $llave => $valores) {
         $instagram=$datos1[1];
     }
 } 
+$re = $client->getPerfilRol($_SESSION["id"],"64");
+$resultado = "".$re;
+$usuarios= explode(',',$resultado);
+$editar="hide";
+$correo="hide";
+foreach($usuarios as $llave => $valores1) {
+    if($valores1==="2"){
+        $editar="";
+    }
+    if($valores1==="20"){
+        $correo="";
+    }
+}
 ?>
 
 <div>
@@ -48,7 +61,7 @@ foreach($texto as $llave => $valores) {
                                     <img id="imagenCorreo" data-src="" src='<?php  echo $imagenCorreo.$imagen.".png?nocache=".time(); ?>' class="img-responsive" alt="NO IMAGEN">
                                 </div>
                                 <div class="fileinput-preview fileinput-exists thumbnail imagenCorreo"></div>
-                                <div  style="margin-top: 5px!important; text-align:center;">
+                                <div class="<?php echo $editar; ?>" style="margin-top: 5px!important; text-align:center;">
                                     <span class="btn btn-default btn-file">
                                     <span class="fileinput-new">Editar Imagen</span>
                                     <span class="fileinput-exists">Cambiar</span>
@@ -133,7 +146,7 @@ foreach($texto as $llave => $valores) {
                     </div>
                     <div class="modal-footer text-center">
                         <button type="submit" class="btn btn-embossed btn-danger guardarCorreo <?php echo $editar; ?>" ><i class="fa fa-save"></i> Guardar</button>
-                        <button type="submit" class="btn btn-embossed btn-default correoPrueba <?php echo $editar; ?>" ><i class="fa fa-mail-forward"></i> Correo De Prueba</button>
+                        <button type="submit" class="btn btn-embossed btn-default correoPrueba <?php echo $correo; ?>" ><i class="fa fa-mail-forward"></i> Correo De Prueba</button>
                     </div>
                 </div>
             </div>

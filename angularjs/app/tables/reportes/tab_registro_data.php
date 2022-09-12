@@ -2,24 +2,27 @@
 include ("../../conect.php");
 include ("../../autenticacion.php");
 header("Content-type: application/json");
-$re = $client->getPerfilRol($_SESSION["id"],"19");
+
+$re = $client->getPerfilRol($_SESSION["id"],"68");
 $resultado = "".$re;
 $usuarios1= explode(',',$resultado);
 $editar="";
 $eliminar="";
 $estado="";
 $reset="";
+
+foreach($usuarios1 as $llave => $valores1) {
+    if($valores1==="2"){
+        $editar='<a class="editarRegistro btn btn-sm btn-dark" style="margin: 5px 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
+    }
+}
 if (isset($_GET["var1"])) {
     $var1 = $_GET['var1'];
     $re = $client->getAllFuncion($var1,"R");
     $resultado= "".$re;
     $funciones =explode(';;',$resultado);
 }
-foreach($usuarios1 as $llave => $valores1) {
-    if($valores1==="2"){
-        $editar='<a class="editarRegistro btn btn-sm btn-dark" style="margin: 5px 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
-    }
-}
+
 $datat=NULL;
 $data=[];
 $text=$editar." ".$eliminar." ".$estado;   

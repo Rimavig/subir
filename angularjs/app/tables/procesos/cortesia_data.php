@@ -9,12 +9,22 @@ $usuarios1= explode(',',$resultado);
 $editar="";
 $eliminar="";
 $estado="";
-$reset="";
+$ticket=false;
+$facturacion="";
+$correo="";
 
 foreach($usuarios1 as $llave => $valores1) {
+    if($valores1==="2"){
+        $editar='<a class="editar btn btn-sm btn-dark" style="margin: 5px ;  "  href="javascript:;"><i class="icon-note"></i></a>';
+    }
     if($valores1==="3"){
-        $eliminar=' <a class="editar btn btn-sm btn-dark" style="margin: 5px;"  href="javascript:;"><i class="icon-note"></i></a>
-        <a class="delete btn btn-sm btn-danger" style="margin: 5px;"  href="javascript:;"><i class="icon-trash"></i></a> ';
+        $eliminar='<a class="delete btn btn-sm btn-danger" style="margin: 5px ;  " href="javascript:;"><i class="icon-trash"></i></a>';
+    }
+    if($valores1==="20"){
+        $correo='<a class="correoR btn btn-sm btn-success" style="margin: 5px ;" href="javascript:;"><i class="icon-envelope"></i></a>';
+    }
+    if($valores1==="21"){
+        $ticket=true;
     }
 }
 $re = $client->getAllCortesia();
@@ -22,7 +32,7 @@ $resultado= "".$re;
 $usuarios =explode(';;',$resultado);
 $datat=NULL;
 $data=[];
-$text=$eliminar; 
+$text=$editar." ".$eliminar." ".$estado." ".$facturacion." ".$correo;    
 foreach($usuarios as $llave => $valores) {
     $usuario =explode(',,,',$valores);
     $estado="";
@@ -32,7 +42,11 @@ foreach($usuarios as $llave => $valores) {
             $estado="checked";
             $estadoT="ON";
         } 
-        $est2='<a class="btn btn-sm btn-blue" style="margin: 0px;" href="http://104.198.222.134/plantilla/pdf/ticket'.$usuario[0].'.pdf" target="_blank"><i class="fa fa-check-square"></i></a>';
+        if($ticket){
+            $est2='<a class="btn btn-sm btn-blue" style="margin: 5px;" href="https://teatrosanchezaguilar.org/plantilla/pdf/ticket'.$usuario[0].'.pdf" target="_blank"><i class="fa fa-check-square"></i></a>';
+        }else{
+            $est2="";
+        }
         $est1='<div class="form-group">
                 <label class="switch switch-green">
                     <input type="checkbox" class="switch-input" id="box" '.$estado.' disabled>

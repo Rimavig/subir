@@ -717,6 +717,7 @@ angular.module('newApp')
                 });
             }     
         });
+
       });
 
       $scope.$on('$destroy', function () {
@@ -741,6 +742,5 @@ angular.module('newApp')
         $(document).off('click','.adminAmigos');
         $(document).off('click','.adminCumple');
         $(document).off('click','.adminRegalo');
-        
       });
   }]);

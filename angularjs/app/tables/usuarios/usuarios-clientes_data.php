@@ -10,6 +10,7 @@ $eliminar="";
 $estado="";
 $reset="";
 $facturacion="";
+$correo="";
 foreach($usuarios1 as $llave => $valores1) {
     if($valores1==="2"){
         $editar='<a class="editarC btn btn-sm btn-dark" style="margin: 5px 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
@@ -26,13 +27,16 @@ foreach($usuarios1 as $llave => $valores1) {
     if($valores1==="15"){
         $facturacion='<a class="facturacion btn btn-sm btn-info" style="margin: 5px 0px;" href="javascript:;"><i class="icon-credit-card"></i></a>';
     }
+    if($valores1==="20"){
+        $correo='<a class="correoR btn btn-sm btn-success" style="margin: 5px 0px;" href="javascript:;"><i class="icon-envelope"></i></a>';
+    }
 }
 $re = $client->getAllUsuarioCliente();
 $resultado= "".$re;
 $usuarios =explode(';;',$resultado);
 $datat=NULL;
 $data=[];
-$text=$editar." ".$eliminar." ".$estado." ".$reset." ".$facturacion;       
+$text=$editar." ".$eliminar." ".$estado." ".$reset." ".$facturacion." ".$correo;       
 foreach($usuarios as $llave => $valores) {
     $usuario =explode(',,,',$valores);
     $estado="";

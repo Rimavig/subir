@@ -2,7 +2,7 @@
 include ("../../conect.php");
 include ("../../autenticacion.php");
 header("Content-type: application/json");
-$re = $client->getPerfilRol($_SESSION["id"],"20");
+$re = $client->getPerfilRol($_SESSION["id"],"68");
 $resultado = "".$re;
 $usuarios1= explode(',',$resultado);
 $editar="";

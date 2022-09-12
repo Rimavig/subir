@@ -1,10 +1,10 @@
 <?php
 include ("../../conect.php");
 include ("../../autenticacion.php");
-$re = $client->getPerfilRol($_SESSION["id"],"2");
+$re = $client->getPerfilRol($_SESSION["id"],"69");
 $resultado = "".$re;
 $usuarios= explode(',',$resultado);
-$crear="hide";
+
 $exportar="no-descargar";
 if($resultado==""){
     ?>
@@ -12,9 +12,7 @@ if($resultado==""){
     <?php
 }
 foreach($usuarios as $llave => $valores1) {
-    if($valores1==="1"){
-        $crear="";
-    }
+
     if($valores1==="6"){
         $exportar="";
     }
@@ -28,7 +26,7 @@ foreach($usuarios as $llave => $valores1) {
                     <h3><i class="fa fa-table"></i> Reporte <strong> Amigos del Teatro</strong> </h3>
                 </div>
                 <div class="panel-content pagination2 table-responsive">
-                    <table class="table filter-footer clientes_dataR <?php echo $exportar; ?> table-dynamic table-tools1R " data-table-name="Usuarios" id="table-editable" style="table-layout: fixed;">
+                    <table class="table filter-footer  clientes_dataR <?php echo $exportar; ?> table-dynamic table-tools1R " data-table-name="Usuarios" id="table-editable" style="table-layout: fixed;">
                         <thead>
                             <tr>
                                 <th>Id</th>

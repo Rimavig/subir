@@ -2,13 +2,15 @@
 include ("../../conect.php");
 include ("../../autenticacion.php");
 header("Content-type: application/json");
-$re = $client->getPerfilRol($_SESSION["id"],"19");
+$re = $client->getPerfilRol($_SESSION["id"],"68");
 $resultado = "".$re;
 $usuarios1= explode(',',$resultado);
 $editar="";
 $eliminar="";
 $estado="";
-$reset="";
+$ver="";
+$correo="";
+
 if (isset($_GET["var1"])) {
     $var1 = $_GET['var1'];
     $re = $client->getAllTickets($var1,"G");
@@ -22,10 +24,10 @@ foreach($usuarios1 as $llave => $valores1) {
     if($valores1==="5"){
         $estado='<a class="estadoR btn btn-sm btn-warning" style="margin: 5px 0px;" href="javascript:;"><i class="icon-lock"></i></a>';
     }
-    if($valores1==="5"){
+    if($valores1==="21"){
         $ver='<a class="verR btn btn-sm btn-blue" style="margin: 5px 0px;" href="javascript:;"><i class="glyphicon glyphicon-qrcode"></i></a>';
     }
-    if($valores1==="5"){
+    if($valores1==="20"){
         $correo='<a class="correoR btn btn-sm btn-success" style="margin: 5px 0px;" href="javascript:;"><i class="icon-envelope"></i></a>';
     }
 }

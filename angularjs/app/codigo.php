@@ -56,7 +56,7 @@ include ("conect.php");
                                 $celular = $_POST['usuario'];
                                 $codigo = $_POST['codigo'];
                                 $password=$_POST['password'];
-                                $re = $client->validadCodigo($celular,$codigo,$password);
+                                $re = $client->validadCodigo($celular,$codigo,$password, "");
                                 $resultado = "";
                                 $resultado = "".$re;
                             }
