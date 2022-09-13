@@ -107,15 +107,15 @@ $TfacturacionCaja="hide";
 $TfacturacionReporte="hide";
 $TVentasReporte="hide";
 
-$modulo1=true;
+$modulo1=false;
 $modulo2=false;
 $modulo3=false;
 $modulo4=false;
 $modulo5=false;
 $modulo6=false;
 $modulo7=false;
-$modulo8=true;
-$modulo9=true;
+$modulo8=false;
+$modulo9=false;
 foreach($usuarios as $llave => $valores1) {
     //MODULO USUARIOS
     if($valores1==="1"){
@@ -606,6 +606,8 @@ foreach($usuarios as $llave => $valores1) {
                                 <li lass="<?php echo $REventoVentas; ?> " ng-class="{ active  : isActive('/reporte-eventos-venta')}"><a href="#reporte-eventos-venta"> Reporte Evento Ventas</a></li>
                                 <li lass="<?php echo $REventoGratuito; ?> " ng-class="{ active  : isActive('/reporte-eventos-gratuito')}"><a href="#reporte-eventos-gratuito"> Reporte Evento Gratuito</a></li>
                                 <li lass="<?php echo $RAmigosTeatro; ?> " ng-class="{ active  : isActive('/reporte-amigos-teatro')}"><a href="#reporte-amigos-teatro"> Reporte Amigos Teatro</a></li>
+                                <li lass="<?php echo $RAmigosTeatro; ?> " ng-class="{ active  : isActive('/reporte-paymentez')}"><a href="#reporte-paymentez"> Reporte Paymentez</a></li>
+                                <li lass="<?php echo $RAmigosTeatro; ?> " ng-class="{ active  : isActive('/reporte-pagos')}"><a href="#reporte-pagos"> Reporte Pagos</a></li>
                             </ul>
                         </li>
                         <?php } ?>

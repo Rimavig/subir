@@ -345,6 +345,14 @@ var MakeApp = angular
             templateUrl: 'tables/reportes/usuarios-clientes.php',
             controller: 'reportesCtrl'
         })
+        .when('/reporte-paymentez', {
+            templateUrl: 'tables/reportes/reporte_paymentez.php',
+            controller: 'reportesCtrl'
+        })
+        .when('/reporte-pagos', {
+            templateUrl: 'tables/reportes/reporte_pagos.php',
+            controller: 'reportesCtrl'
+        })
         //correos 
         .when('/correo-reinicio', {
             templateUrl: 'tables/correos/reinicio.php',

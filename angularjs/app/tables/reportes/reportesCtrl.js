@@ -9,9 +9,7 @@ angular.module('newApp')
 
     }
     $scope.$on('$viewContentLoaded', function () {
-        setTimeout(function(){
-            inputSelect();
-        },200);
+
         //PERFIL CATEGORIA   
         //boton principal
         $(document).on('click', '.editar', function (e) {

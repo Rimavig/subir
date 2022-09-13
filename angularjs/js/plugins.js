@@ -373,6 +373,10 @@ angular.module('newApp').factory('pluginsService', [function () {
                         carga="tables/facturacion/caja_movimiento_data.php?var1="+txt;
                     }else if ($(this).hasClass('reportesV_data')) {
                         carga="tables/facturacion/reportes_venta_data.php";
+                    }else if ($(this).hasClass('paymentez_data')) {
+                        carga="tables/reportes/reporte_paymentez_data.php";
+                    }else if ($(this).hasClass('paymentez_pago_data')) {
+                        carga="tables/reportes/reporte_pagos_data.php";
                     }
                     if ($(this).hasClass('no-descargar')) {
                         esconder=[];
@@ -503,7 +507,7 @@ angular.module('newApp').factory('pluginsService', [function () {
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                             },
-                        "autoWidth": true,
+                        "autoWidth": false,
                        
                         "ajax": carga,
 
@@ -534,7 +538,7 @@ angular.module('newApp').factory('pluginsService', [function () {
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                             },
-                        "autoWidth": true,
+                        "autoWidth": false,
                        
                         "ajax": carga,
 
@@ -564,7 +568,7 @@ angular.module('newApp').factory('pluginsService', [function () {
                         "language": {
                             "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                             },
-                        "autoWidth": true,
+                        "autoWidth": false,
                        
                         "ajax": carga,
                        
@@ -595,7 +599,7 @@ angular.module('newApp').factory('pluginsService', [function () {
                             "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
                             },
                         "ajax": carga,
-                        "autoWidth": true,
+                        "autoWidth": false,
                        
                         "order": [[ 7, "desc" ]],
                         "aoColumnDefs": [
@@ -614,7 +618,70 @@ angular.module('newApp').factory('pluginsService', [function () {
                         "buttons" : esconder
                         });
                     
+                        
                     }
+                    //tabla de PAYMENTEZ
+                    if ($(this).hasClass('table-paymentez')) {
+                        table =$(this).dataTable({
+                        "bPaginate" : true,
+                        "destroy":true,
+                        "searching": true,
+                        "select":true,
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                            },
+                        "ajax": carga,
+                        "autoWidth": false,
+                       
+                        "order": [[ 1, "desc" ]],
+                        "aoColumnDefs": [
+                            {
+                                "targets": [ 0 ],
+                                    "className": "hide_column"
+                                }, 
+                                { "sWidth": "20%", "className": "text-center", "aTargets": [ 4]},
+                                { "sWidth": "10%", "className": "text-center", "aTargets": [ 1,2,3,7]},
+                                { "sWidth": "8%", "className":  "text-center", "aTargets": [ 5,6]  },
+                                { "sWidth": "4%", "className": "text-center",  "aTargets": 8 }
+                        ],
+                        "lengthMenu": [[10, 25, 50, 75, 100,-1],[10,25,50,75,100,"All"]],
+                        "pageLength": 10,
+                        "dom": "<'row'<'col-xs-6 col-sm-4 col-md-6 tabla-estilo 'l><'col-xs-6 col-sm-5 col-md-5 tabla-estilo'f><'col-xs-6 col-sm-5 col-md-6 tabla-estilo1'B>r>t<'row'<'col-xs-12 col-sm-6 col-md-6 tabla-estilo'i><'spcol-md-6an6'p>>",
+                        "buttons" : esconder
+                        });
+                    }
+                        //tabla de PAYMENTEZ
+                    if ($(this).hasClass('table-paymentez2')) {
+                        table =$(this).dataTable({
+                        "bPaginate" : true,
+                        "destroy":true,
+                        "searching": true,
+                        "select":true,
+                        "language": {
+                            "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                            },
+                        "ajax": carga,
+                        "autoWidth": false,
+                       
+                        "order": [[ 2, "desc" ]],
+                        "aoColumnDefs": [
+                            {
+                                "targets": [ 0 ],
+                                    "className": "hide_column"
+                                }, 
+                                { "sWidth": "20%", "className": "text-center", "aTargets": [ 5]},
+                                { "sWidth": "10%", "className": "text-center", "aTargets": [ 1,2,3,4]},
+                                { "sWidth": "8%", "className":  "text-center", "aTargets": [ 6,7]  },
+                                { "sWidth": "4%", "className": "text-center",  "aTargets": 8 }
+                        ],
+                        "lengthMenu": [[10, 25, 50, 75, 100,-1],[10,25,50,75,100,"All"]],
+                        "pageLength": 10,
+                        "dom": "<'row'<'col-xs-6 col-sm-4 col-md-6 tabla-estilo 'l><'col-xs-6 col-sm-5 col-md-5 tabla-estilo'f><'col-xs-6 col-sm-5 col-md-6 tabla-estilo1'B>r>t<'row'<'col-xs-12 col-sm-6 col-md-6 tabla-estilo'i><'spcol-md-6an6'p>>",
+                        "buttons" : esconder
+                        });
+                    
+                    }
+                    
                     if ($(this).hasClass('table-tools1R')) {
                         table =$(this).dataTable({
                         "bPaginate" : true,
