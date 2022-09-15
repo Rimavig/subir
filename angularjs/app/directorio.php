@@ -4,7 +4,7 @@
   //$path_imagen1='C:\xampp\htdocs\imagenes/';
   $path_1='/var/www/html/';
   //$path_1='C:\xampp\htdocs';
-  $path_imagen2='../../../assets/global/images/';
+  //$path_imagen2='../../../assets/global/images/';
   $quienes_somosI='/imagenes/banner/teatro-about.png';
   $misionI='/imagenes/banner/mision.png';
   $visionI='/imagenes/banner/vision.png';
@@ -25,6 +25,7 @@
   $Bpreguntas='/imagenes/banner/preguntas.png';
   $Bnoticias='/imagenes/banner/noticias.png';
   $Bteatro='/imagenes/banner/teatro.png';
+  $Bcafe='/imagenes/banner/cafe.png';
   $Bpromociones='/imagenes/banner/promociones.png';
   $imagenP='/imagenes/banner/principal.png';
   $bannerWlogo='/imagenes/banner/bannerW.png';

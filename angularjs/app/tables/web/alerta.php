@@ -110,7 +110,7 @@ if (isset($_POST["tipo"])) {
         $tipo = "objetivos";
         $objetivo = $_POST['objetivo'];
         $orden = $_POST['orden'];
-        $re = $client->updateInformacionTabla($id,$titulo,$objetivo,$orden ,$tipo ,$_SESSION["usuario"]);
+        $re = $client->updateInformacionTabla($id,$titulo,$objetivo,$orden ,$_SESSION["usuario"]);
         $resultado = "".$re;
     }else if ( $tipo=="eliminarTabla"){
         $id =  $_POST['id'];
@@ -121,7 +121,7 @@ if (isset($_POST["tipo"])) {
         $titulo = $_POST['nombre'];
         $objetivo = $_POST['descripcion'];
         $orden = $_POST['orden'];
-        $re = $client->insertInformacionTabla($titulo,$objetivo,$orden ,$tipo ,$_SESSION["usuario"]);
+        $re = $client->insertInformacionTabla($titulo,$objetivo,$orden ,$_SESSION["usuario"]);
         $resultado = "".$re;
         $image = $_POST['Himagen'];
         if ($resultado!="false" && $image!=null){
@@ -137,7 +137,7 @@ if (isset($_POST["tipo"])) {
         $titulo = $_POST['nombre'];
         $objetivo = $_POST['descripcion'];
         $orden = $_POST['orden'];
-        $re = $client->updateInformacionTabla($id,$titulo,$objetivo,$orden ,$tipo ,$_SESSION["usuario"]);
+        $re = $client->updateInformacionTabla($id,$titulo,$objetivo,$orden  ,$_SESSION["usuario"]);
         $resultado = "".$re;
         $image = $_POST['Himagen'];
         if ($resultado=="true" && $image!=null){
@@ -146,6 +146,13 @@ if (isset($_POST["tipo"])) {
             $path = $path_1.$intalacionesI.$id.".png";
             $status = file_put_contents($path,base64_decode( $img));
         }
+    }else if ( $tipo=="editar_cafe"){
+        $id =  $_POST['id'];
+        $titulo = $_POST['nombre'];
+        $objetivo = $_POST['descripcion'];
+        $orden = "1";
+        $re = $client->updateInformacionTabla($id,$titulo,$objetivo,$orden  ,$_SESSION["usuario"]);
+        $resultado = "".$re;
     }else if ( $tipo=="crear_pregunta"){
         $tipo = $_POST['tipo2'];
         $titulo = $_POST['nombre'];
@@ -162,7 +169,7 @@ if (isset($_POST["tipo"])) {
         $titulo = $_POST['nombre'];
         $objetivo = $_POST['descripcion'];
         $orden = $_POST['orden'];
-        $re = $client->updateInformacionTabla($id,$titulo,$objetivo,$orden ,$tipo ,$_SESSION["usuario"]);
+        $re = $client->updateInformacionTabla($id,$titulo,$objetivo,$orden ,$_SESSION["usuario"]);
         $resultado = "".$re;
     }else if ( $tipo=="editar_galeria"){
         $id =  $_POST['id'];
@@ -263,6 +270,8 @@ if (isset($_POST["tipo"])) {
             $pat=$bannerWlogo;
         }else if  ( $tipo2=="BannerM"){
             $pat=$bannerAlogo;
+        }else if  ( $tipo2=="Bcafe"){
+            $pat=$Bcafe;
         }else if  ( $tipo2=="imagenP"){
             $pat=$imagenP;
         }
@@ -306,6 +315,9 @@ if (isset($_POST["tipo"])) {
                     }else if  ( "<?php echo $tipo2; ?>"=="Bnoticias"){
                         $('#imagenNoticias').load('./tables/web/imagenes/noticias.php', function() {    
                         });
+                    }else if  ( "<?php echo $tipo2; ?>"=="Bcafe"){
+                        $('#imagenCafe').load('./tables/web/imagenes/cafe.php', function() {    
+                    });
                     }else if  ( "<?php echo $tipo2; ?>"=="Bteatro"){
                         $('#imagenTeatro').load('./tables/web/imagenes/teatro.php', function() {    
                     });
@@ -1930,6 +1942,36 @@ if($resultado=="true"){
                 $(".editar_tabla").prop("disabled",false);
             </script>
             <?php
+        }else if ( $tipo=="editar_cafe"){
+            ?>
+            <script type="text/javascript"> 
+            var n = noty({
+                text        : '<div class="alert alert-success "><p><strong>Se editó correctamente</p></div>',
+                layout      : 'topCenter', //or left, right, bottom-right...
+                theme       : 'made',
+                type        : 'error',
+                maxVisible  : 5,
+                animation   : {
+                    open  : 'animated bounceIn',
+                    close : 'animated bounceOut'
+                },
+                timeout: 3000,
+                });
+                $('#cafeInformacion').load('./tables/web/tab_informacion.php', function() {   
+                    CKEDITOR.replace( 'cke-editor', {
+                        toolbar :
+                            [
+                                { name: 'editing', items : [ 'Find','Replace','-','SelectAll','-','Scayt' ] },
+                                { name: 'basicstyles', items : [ 'Bold','Italic','Strike','-','RemoveFormat' ] },
+                                { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent' ] },
+                                { name: 'links', items : [ 'Link','Unlink' ] }
+                            ]
+                        
+                    }); 
+                });
+                $(".editar_cafe").prop("disabled",false);
+            </script>
+            <?php
         }else if ( $tipo=="editar_galeria"){
             ?>
             <script type="text/javascript"> 
@@ -1945,10 +1987,18 @@ if($resultado=="true"){
                 },
                 timeout: 3000,
                 });
-                $('#teatroGaleria').load('./tables/web/galeria.php',{var1:<?php echo $_POST['id1']; ?>,tipo:"espacios"}, function() {  
-                    $('.page-spinner-loader').addClass('hide');
-                    $('#Mteatro').modal('hide');
-                });
+                if("<?php echo $_POST['id1']; ?>"=="127"){
+                    $('#cafeGaleria').load('./tables/web/tab_galeria.php', function() {  
+                        $('.page-spinner-loader').addClass('hide');
+                        $('#Mteatro').modal('hide');
+                    });
+                }else{
+                    $('#teatroGaleria').load('./tables/web/galeria.php',{var1:<?php echo $_POST['id1']; ?>,tipo:"espacios"}, function() {  
+                        $('.page-spinner-loader').addClass('hide');
+                        $('#Mteatro').modal('hide');
+                    });
+                }
+                
                 $(".editar_galeria").prop("disabled",false);
             </script>
             <?php
@@ -1967,10 +2017,18 @@ if($resultado=="true"){
                 },
                 timeout: 3000,
                 });
-                $('#teatroGaleria').load('./tables/web/galeria.php',{var1:<?php echo $id; ?>}, function() {  
-                    $('.page-spinner-loader').addClass('hide');
-                    $('#Mteatro').modal('hide');
-                });
+                if("<?php echo $_POST['id1']; ?>"=="127"){
+                    $('#cafeGaleria').load('./tables/web/tab_galeria.php', function() {  
+                        $('.page-spinner-loader').addClass('hide');
+                        $('#Mteatro').modal('hide');
+                    });
+                }else{
+                    $('#teatroGaleria').load('./tables/web/galeria.php',{var1:<?php echo $id; ?>}, function() {  
+                        $('.page-spinner-loader').addClass('hide');
+                        $('#Mteatro').modal('hide');
+                    });
+                }
+                
                 $(".crear_galeria").prop("disabled",false);
             </script>
             <?php
@@ -1989,10 +2047,18 @@ if($resultado=="true"){
                 },
                 timeout: 3000,
                 });
-                $('#teatroGaleria').load('./tables/web/galeria.php',{var1:<?php echo $_POST['id1']; ?>}, function() {  
-                    $('.page-spinner-loader').addClass('hide');
-                    $('#Mteatro').modal('hide');
-                });
+                if("<?php echo $_POST['id1']; ?>"=="127"){
+                    $('#cafeGaleria').load('./tables/web/tab_galeria.php', function() {  
+                        $('.page-spinner-loader').addClass('hide');
+                        $('#Mteatro').modal('hide');
+                    });
+                }else{
+                    $('#teatroGaleria').load('./tables/web/galeria.php',{var1:<?php echo $_POST['id1']; ?>}, function() {  
+                        $('.page-spinner-loader').addClass('hide');
+                        $('#Mteatro').modal('hide');
+                    });
+                }
+                
                 $(".eliminarGaleria").prop("disabled",false);
             </script>
             <?php
@@ -2846,10 +2912,18 @@ if($resultado=="true"){
                 },
                 timeout: 3000,
                 });
-                $('#teatroGaleria').load('./tables/web/galeria.php',{var1:<?php echo $_POST['id1']; ?>,tipo:"espacios"}, function() {  
-                    $('.page-spinner-loader').addClass('hide');
-                    $('#Mteatro').modal('hide');
-                });
+                if("<?php echo $_POST['id1']; ?>"=="127"){
+                    $('#cafeGaleria').load('./tables/web/tab_galeria.php', function() {  
+                        $('.page-spinner-loader').addClass('hide');
+                        $('#Mteatro').modal('hide');
+                    });
+                }else{
+                    $('#teatroGaleria').load('./tables/web/galeria.php',{var1:<?php echo $_POST['id1']; ?>,tipo:"espacios"}, function() {  
+                        $('.page-spinner-loader').addClass('hide');
+                        $('#Mteatro').modal('hide');
+                    });
+                }
+                
                 $(".estadoGaleria").prop("disabled",false);
             </script>
             <?php
@@ -3076,7 +3150,7 @@ if($resultado=="true"){
                 $(".crear_tabla").prop("disabled",false);
             </script>
             <?php
-        }else if ( $tipo=="editar_tabla"){
+        }else if ( $tipo=="editar_tabla" | $tipo=="editar_cafe" ){
             ?>
             <script type="text/javascript"> 
                 var n = noty({
@@ -3092,6 +3166,7 @@ if($resultado=="true"){
                     timeout: 3000,
                 });
                 $(".editar_tabla").prop("disabled",false);
+                $(".editar_cafe").prop("disabled",false);
             </script>
             <?php
         }else if ( $tipo=="crear_pregunta"){

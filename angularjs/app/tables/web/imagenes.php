@@ -71,6 +71,14 @@ include ("../../directorio.php");
                         </tab>
                         <tab>
                             <tab-heading>
+                                Café Vino Bar- Plazoleta 
+                            </tab-heading>
+                            <div class="imagenCafe" id="imagenCafe">
+
+                            </div>
+                        </tab>
+                        <tab>
+                            <tab-heading>
                                 Responsabilidad Ambiental
                             </tab-heading>
                             <div class="imagenAmbiental" id="imagenAmbiental">

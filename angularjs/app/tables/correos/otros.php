@@ -18,7 +18,7 @@ $txt1='';
 $txt2='';
 $txt3='';
 foreach($usuarios as $llave => $valores1) { 
-    if($valores1==="28"){
+    if($valores1==="65"){
         $TprocesosAmigosB="";
         $modulo5=false;
         if($band){
@@ -26,20 +26,11 @@ foreach($usuarios as $llave => $valores1) {
             $band=false;
         }
     }
-    if($valores1==="42"){
+    if($valores1==="66"){
         $TprocesosAmigosP="";
         $modulo5=false;
         if($band){
             $txt2=$txt;
-            $band=false;
-        }
-    }
-    
-    if($valores1==="43"){
-        $TprocesosAmigosI="";
-        $modulo5=false;
-        if($band){
-            $txt3=$txt;
             $band=false;
         }
     }

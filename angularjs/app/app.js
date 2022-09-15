@@ -427,6 +427,10 @@ var MakeApp = angular
             templateUrl: 'tables/web/publicidad.php',
             controller: 'webCtrl'
         })
+        .when('/cafe-vino', {
+            templateUrl: 'tables/web/cafe.php',
+            controller: 'webCtrl'
+        })
         .when('/bannerPrincipal', {
             templateUrl: 'tables/web/principal.php',
             controller: 'webCtrl'

@@ -349,6 +349,8 @@ angular.module('newApp')
         });
         $('#imagenTeatro').load('./tables/web/imagenes/teatro.php', function() {    
         });
+        $('#imagenCafe').load('./tables/web/imagenes/cafe.php', function() {    
+        });
         $('#imagenPromocion').load('./tables/web/imagenes/promociones.php', function() {    
         });
         $('#imagenAlquiler').load('./tables/web/imagenes/alquiler.php', function() {    
@@ -358,8 +360,21 @@ angular.module('newApp')
 
         $('#imagenContacto').load('./tables/web/imagenes/contacto.php', function() {    
         });
-
-        $('#imagenAmigos').load('./tables/web/imagenes/amigos.php', function() {    
+        $('#imagenContacto').load('./tables/web/imagenes/contacto.php', function() {    
+        });
+        $('#cafeInformacion').load('./tables/web/tab_informacion.php', function() {   
+            CKEDITOR.replace( 'cke-editor', {
+                toolbar :
+                    [
+                        { name: 'editing', items : [ 'Find','Replace','-','SelectAll','-','Scayt' ] },
+                        { name: 'basicstyles', items : [ 'Bold','Italic','Strike','-','RemoveFormat' ] },
+                        { name: 'paragraph', items : [ 'NumberedList','BulletedList','-','Outdent','Indent' ] },
+                        { name: 'links', items : [ 'Link','Unlink' ] }
+                    ]
+                
+              }); 
+        });
+        $('#cafeGaleria').load('./tables/web/tab_galeria.php', function() {    
         });
 
         $('#imagenNoticias').load('./tables/web/imagenes/noticias.php', function() {    
@@ -2022,7 +2037,53 @@ angular.module('newApp')
                 $(this).prop("disabled",false); 
             } 
         });
-
+        $(document).on('click', '.editar_cafe', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            var nombre=$(this).parents().find('#Inombre')[0].value;
+            var objEditor2 = CKEDITOR.instances["cke-editor"];
+            var descripcion = objEditor2.getData();
+            var band=true;
+            if(nombre.length<5){
+                var n = noty({
+                    text        : '<div class="alert alert-warning "><p><strong>Ingrese nombre correcto</p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
+                });
+                band=false;
+            }           
+            if(descripcion.length<5){
+                var n = noty({
+                    text        : '<div class="alert alert-warning "><p><strong>Ingrese descripción correcta</p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
+                });
+                band=false;
+            }
+            if (band){
+                $('.page-spinner-loader').removeClass('hide'); 
+                $('#alerta').load('./tables/web/alerta.php', {tipo:"editar_cafe",id:"127",nombre:nombre,descripcion:descripcion},function() {    
+                    $('.page-spinner-loader').addClass('hide');
+                });
+            }else{
+                $(this).prop("disabled",false); 
+            } 
+        });
         $(document).on('click', '.crearGaleria', function (e) {
             e.preventDefault();
             e.stopImmediatePropagation();
@@ -2886,6 +2947,58 @@ angular.module('newApp')
             if (band){
                 $('.page-spinner-loader').removeClass('hide'); 
                 $('#alerta').load('./tables/web/alerta.php', {tipo:"guardarImagen",tipo2:"Bteatro", Himagen:Himagen,},function() {    
+                    $('.page-spinner-loader').addClass('hide');
+                });
+            }else{
+                $(this).prop("disabled",false); 
+            } 
+        });
+        $(document).on('click', '.guardarBcafe', function (e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+            $(this).prop("disabled",true); 
+            var imagen=$(this).parents().find('.Bcafe').children()[0];
+            var Himagen="";
+            var band=true;
+            if (imagen != null) {
+                Himagen = imagen.src;
+                var image1 = new Image();
+                image1.src = Himagen;
+                if (image1.width.toFixed(0) != 1396 | image1.height.toFixed(0) != 390) {
+                    var n = noty({
+                        text        : '<div class="alert alert-warning "><p><strong>La Imagen debe ser: 1396 x 390</p></div>',
+                        layout      : 'topCenter', //or left, right, bottom-right...
+                        theme       : 'made',
+                        type        : 'error',
+                        maxVisible  : 5,
+                        animation   : {
+                            open  : 'animated bounceIn',
+                            close : 'animated bounceOut'
+                        },
+                        timeout: 3000,
+                    });
+                    $(this).prop("disabled",false); 
+                    band=false;
+                } 
+            }else{
+                var n = noty({
+                    text        : '<div class="alert alert-warning "><p><strong>Seleccioné una imagen</p></div>',
+                    layout      : 'topCenter', //or left, right, bottom-right...
+                    theme       : 'made',
+                    type        : 'error',
+                    maxVisible  : 5,
+                    animation   : {
+                        open  : 'animated bounceIn',
+                        close : 'animated bounceOut'
+                    },
+                    timeout: 3000,
+                });
+                $(this).prop("disabled",false); 
+                band=false;
+            }
+            if (band){
+                $('.page-spinner-loader').removeClass('hide'); 
+                $('#alerta').load('./tables/web/alerta.php', {tipo:"guardarImagen",tipo2:"Bcafe", Himagen:Himagen,},function() {    
                     $('.page-spinner-loader').addClass('hide');
                 });
             }else{

@@ -84,7 +84,11 @@ if ($_POST["tipo"]==="realizados") {
     $tipo="Beneficios";
     $tipo2="amigos";
     $nombreT="Beneficios";
-}       
+}   else if ($_POST["tipo"]==="CafeVino") {
+    $tipo="Café Vino Bar- Plazoleta";
+    $tipo2="CafeVino";
+    $nombreT="Café Vino Bar- Plazoleta";
+}      
 $var1="";
 if (isset($_POST["var1"])) {
     $var1 = $_POST['var1'];

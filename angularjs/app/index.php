@@ -90,6 +90,7 @@ $TwebTeatroQuienes="hide";
 $TwebTeatroInstalaciones="hide";
 $TwebTeatroNoticias="hide";
 $TwebAlquilerEspacios="hide";
+$TwebCafeVino="";
 $TwebAlquilerEventos="hide";
 $TwebFundacionQ="hide";
 $TwebFundacionP="hide";
@@ -324,6 +325,10 @@ foreach($usuarios as $llave => $valores1) {
         $TwebTeatroQuienes="";
         $modulo6=true;
     }
+    if($valores1==="70"){
+        $TwebCafeVino="";
+        $modulo6=true;
+    }
     if($valores1==="34"){
         $TwebAlquilerEspacios="";
         $modulo6=true;
@@ -408,7 +413,7 @@ foreach($usuarios as $llave => $valores1) {
 <html class="no-js">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=0.3, maximum-scale=1.0">
         <meta name="description" content="admin-themes-lab">
         <meta name="author" content="themes-lab">
         <link rel="shortcut icon" href="../../../assets/global/images/favicon.png" type="image/png">
@@ -619,6 +624,7 @@ foreach($usuarios as $llave => $valores1) {
                                 <li class="<?php echo $TwebOtrasImagen; ?> " ng-class="{ active  : isActive('/imagenes_webO')}"><a href="#imagenes_webO"> Otras Imágenes</a></li>
                                 <li class="<?php echo $TwebTeatroQuienes; ?> " ng-class="{ active  : isActive('/quienes_somos')}"><a href="#quienes_somos"> El Teatro</a></li>
                                 <li class="<?php echo $TwebAlquilerEspacios; ?> " ng-class="{ active  : isActive('/alquiler')}"><a href="#alquiler"> Alquiler</a></li>
+                                <li class="<?php echo $TwebCafeVino; ?> " ng-class="{ active  : isActive('/cafe-vino')}"><a href="#cafe-vino"> Café Vino Bar</a></li>
                                 <li class="<?php echo $TwebFundacionQ; ?> " ng-class="{ active  : isActive('/fundacion_sanchez')}"><a href="#fundacion_sanchez"> Fundación Sánchez Aguilar</a></li>
                                 <li class="<?php echo $TwebInformacion; ?> " ng-class="{ active  : isActive('/informacionAdicional')}"><a href="#informacionAdicional"> Información adicional</a></li>
                                 <li class="<?php echo $TwebPublicidad; ?> " ng-class="{ active  : isActive('/publicidadWeb')}"><a href="#publicidadWeb"> Publicidad</a></li>
