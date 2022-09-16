@@ -1546,9 +1546,10 @@ interface CRUDServerIf {
   /**
    * @param string $usuario
    * @param string $contrasena
+   * @param string $tipo
    * @return string
    */
-  public function login($usuario, $contrasena);
+  public function login($usuario, $contrasena, $tipo);
   /**
    * @param string $celular
    * @param string $correo
@@ -12818,17 +12819,18 @@ class CRUDServerClient implements \CRUDServerIf {
     throw new \Exception("insertUsuarioEvento failed: unknown result");
   }
 
-  public function login($usuario, $contrasena)
+  public function login($usuario, $contrasena, $tipo)
   {
-    $this->send_login($usuario, $contrasena);
+    $this->send_login($usuario, $contrasena, $tipo);
     return $this->recv_login();
   }
 
-  public function send_login($usuario, $contrasena)
+  public function send_login($usuario, $contrasena, $tipo)
   {
     $args = new \CRUDServer_login_args();
     $args->usuario = $usuario;
     $args->contrasena = $contrasena;
+    $args->tipo = $tipo;
     $bin_accel = ($this->output_ instanceof TBinaryProtocolAccelerated) && function_exists('thrift_protocol_write_binary');
     if ($bin_accel)
     {
@@ -57683,6 +57685,11 @@ class CRUDServer_login_args {
       'isRequired' => false,
       'type' => TType::STRING,
       ),
+    3 => array(
+      'var' => 'tipo',
+      'isRequired' => false,
+      'type' => TType::STRING,
+      ),
     );
 
   /**
@@ -57693,6 +57700,10 @@ class CRUDServer_login_args {
    * @var string
    */
   public $contrasena = null;
+  /**
+   * @var string
+   */
+  public $tipo = null;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -57701,6 +57712,9 @@ class CRUDServer_login_args {
       }
       if (isset($vals['contrasena'])) {
         $this->contrasena = $vals['contrasena'];
+      }
+      if (isset($vals['tipo'])) {
+        $this->tipo = $vals['tipo'];
       }
     }
   }
@@ -57738,6 +57752,13 @@ class CRUDServer_login_args {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 3:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->tipo);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -57759,6 +57780,11 @@ class CRUDServer_login_args {
     if ($this->contrasena !== null) {
       $xfer += $output->writeFieldBegin('contrasena', TType::STRING, 2);
       $xfer += $output->writeString($this->contrasena);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->tipo !== null) {
+      $xfer += $output->writeFieldBegin('tipo', TType::STRING, 3);
+      $xfer += $output->writeString($this->tipo);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();
