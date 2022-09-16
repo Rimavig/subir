@@ -3316,7 +3316,7 @@ class MainController extends BaseController
               if (!in_array($item->id_evento, $eventos)) {
                   $cartelera[$item->id_evento]= array('id'=> $item->id_evento, 'nombre'=> $item->nombre, 'duracion'=> $item->duracion, 'imagen'=> $ruta_evento.$item->id_evento."C.png",
                    'tipo'=> $item->tipo, 'categoria'=> $categoria, 'clasificacion'=> $clasificacion, 'procedencia'=> $procedencia,'cantidad'=> $item->cantidad, 'productora'=> $productora1,'sala'=> $item->sala,'tipo_espectaculo'=> $tipo_espectaculo,
-                   'sinopsis'=> $item->sinopsis, 'descripcion2'=> $item->descripcion2, 'ficha'=> [], 'video'=> $item->ruta_video,'link'=> $ruta_compartir.$item->id_evento);
+                   'sinopsis'=> $item->sinopsis, 'descripcion2'=> $item->descripcion2, 'ficha'=> [], 'video'=> $item->ruta_video,'link'=> $ruta_compartir.$item->id_evento,  'preventa'=> $item->preventa);
                     $eventos[]= $item->id_evento;
                     $horarios[$item->id_evento]=[] ;
                     $ficha[$item->id_evento]=[];
@@ -4061,6 +4061,13 @@ class MainController extends BaseController
         //Realizo consulta de puertas a DB
         $id_evento= trim($body["id_evento"]);
         $id_usuario= trim($body["id_usuario"]);
+	$tipoA="A";
+        if ($request->hasHeader('Canal')) {
+            $YB = $request->getHeader('Canal');
+            if ($YB[0]==="web") {
+              $tipoA="W";
+            }
+        }
         try {
             $promocion=[];
             $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";
@@ -4069,6 +4076,7 @@ class MainController extends BaseController
             $statement->bindValue(':id_evento', $id_evento, \PDO::PARAM_STR);
             $result = $statement->execute();
             while($item = $statement->fetch()){
+	     if ($item->tipo_acceso=="T" | str_contains($item->tipo_acceso, $tipoA)) {
               $cantidad_ticket=$item->cantidad_ticket;
               if ($cantidad_ticket==0) {
                 $promocion[]= array('id_promocion'=> $item->id_factor_compra, 'nombre'=> $item->nombre, 'compra'=> $item->compra, 'pago'=> $item->pago, 'descripcion'=> $item->descripcion, 'amigo_teatro'=> $item->amigo_teatro,
@@ -4087,12 +4095,14 @@ class MainController extends BaseController
                   }
                 }
               }
+	     }
             }
             $sql = "SELECT * FROM tsa_promocion tp INNER JOIN tsa_cruzados tfc ON tp.id_promocion =tfc.id_promocion and tfc.estado ='A' and fecha_inicio <= NOW() and fecha_final >=NOW() and (tfc.id_evento=:id_evento  OR tfc.id_evento=1) ";
             $statement = $db->prepare($sql);
             $statement->bindValue(':id_evento', $id_evento, \PDO::PARAM_STR);
             $result = $statement->execute();
             while($item = $statement->fetch()){
+	     if ($item->tipo_acceso=="T" | str_contains($item->tipo_acceso, $tipoA)) {
               $cantidad_ticket=$item->cantidad_ticket;
               if ($cantidad_ticket==0) {
                 $promocion[]= array('id_promocion'=> $item->id_cruzados, 'nombre'=> $item->nombre, 'cantidad'=> $item->cantidad, 'id_evento2'=> $item->id_evento2, 'cantidad2'=> $item->cantidad2, 'descuento'=> $item->descuento, 'descripcion'=> $item->descripcion, 'amigo_teatro'=> $item->amigo_teatro,
@@ -4111,13 +4121,14 @@ class MainController extends BaseController
                   }
                 }
               }
-
+	     }
             }
             $sql = "SELECT * FROM tsa_promocion tp INNER JOIN tsa_factor_pago tfc ON tp.id_promocion =tfc.id_promocion and tfc.estado ='A' and fecha_inicio <= NOW() and fecha_final >=NOW() and (tfc.id_evento=:id_evento  OR tfc.id_evento=1)";
             $statement = $db->prepare($sql);
             $statement->bindValue(':id_evento', $id_evento, \PDO::PARAM_STR);
             $result = $statement->execute();
             while($item = $statement->fetch()){
+	     if ($item->tipo_acceso=="T" | str_contains($item->tipo_acceso, $tipoA)) {
               $cantidad_ticket=$item->cantidad_ticket;
               if ($cantidad_ticket==0) {
                 $promocion[]= array('id_promocion'=> $item->id_factor_pago, 'nombre'=> $item->nombre, 'desde'=> $item->desde, 'hasta'=> $item->hasta, 'descuento'=> $item->descuento, 'descripcion'=> $item->descripcion, 'amigo_teatro'=> $item->amigo_teatro,
@@ -4136,7 +4147,7 @@ class MainController extends BaseController
                   }
                 }
               }
-
+	     }
 
             }
             $response->getBody()->write(json_encode($promocion));
@@ -4679,7 +4690,7 @@ class MainController extends BaseController
     public function rembolso($id_transacion)
     {
           $API_LOGIN_DEV     = "TPP3-EC-SERVER";
-          $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6 ";
+          $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6";
           $server_application_code = $API_LOGIN_DEV;
           $server_app_key = $API_KEY_DEV ;
           $date = new \DateTime();
@@ -5112,6 +5123,1119 @@ class MainController extends BaseController
         return $response;
     }
 
+   public function verify($user, $id_transacion, $otp)
+    {
+          //$API_LOGIN_DEV     = "TEATROSA-EC-SERVER";
+          //$API_KEY_DEV       = "5W1BGgglGnWx9bVYJlatix2d7TY7xj";
+          $API_LOGIN_DEV     = "TPP3-EC-SERVER";
+          $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6 ";
+          $server_application_code = $API_LOGIN_DEV;
+          $server_app_key = $API_KEY_DEV ;
+          $date = new \DateTime();
+          //$date = date("Y-m-d H:i:s");
+          $unix_timestamp = $date->getTimestamp();
+          // $unix_timestamp = "1546543146";
+          $uniq_token_string = $server_app_key.$unix_timestamp;
+          $uniq_token_hash = hash('sha256', $uniq_token_string);
+          $auth_token = base64_encode($server_application_code.";".$unix_timestamp.";".$uniq_token_hash);
+          $data = array();
+          $data["user"]["id"] =$user;
+          $data["transaction"]["id"] =$id_transacion;
+          $data["type"] ="BY_OTP";
+          $data["value"] =$otp;
+          $url="https://ccapi-stg.paymentez.com/v2/transaction/verify";
+          //$url="https://ccapi.paymentez.com/v2/transaction/verify";
+          $curl = curl_init($url);
+          $headers = array();
+          $result = false;
+          $headers[] = 'Cache-Control: no-cache';
+          $headers[] = 'Auth-Token:'.$auth_token;
+          $headers[] = 'Content-Type: application/json; charset= utf-8';
+          curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+          curl_setopt($curl, CURLOPT_POST, true);
+          curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+          curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+          $result = curl_exec($curl);
+          curl_close($curl);
+          $resultado =json_decode($result, true);
+          if (isset($resultado['status'])) {
+            if ($resultado["status"]==1) {
+                $result=true;
+            }else{
+              $this->rembolso($id_transacion);
+              $result = false;
+              $out["codigo"] = "232";
+              $out["mensaje"] = $error_232_mensaje;
+              $out["causa"] = $error_232_causa;
+              $response->getBody()->write(json_encode($out));
+              return $response->withStatus(400);
+            }
+
+          }else{
+            $this->rembolso($id_transacion);
+            $result = false;
+            $out["codigo"] = "232";
+            $out["mensaje"] = $error_232_mensaje;
+            $out["causa"] = $error_232_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(400);
+          }
+          return $result;
+    }
+    public function compra_diners_verify($request, $response, $args){
+        include("error.php");
+        include ("conect.php");
+        include ("conect0.php");
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $out["codigo"] = "100";
+            $out["mensaje"] = $error_100_mensaje;
+            $out["causa"] =  $error_100_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            $out["codigo"] = "101";
+            $out["mensaje"] = $error_101_mensaje;
+            $out["causa"] = $error_101_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(401);
+        }
+
+        // FIN VALIDACION
+        $json = $request->getBody();
+        $body = json_decode($json, true);
+        if (!(isset($body["id_facturacion"]) && isset($body["email"])  && isset($body["donacion"]) && isset($body["user_id"]) && isset($body["id_transacion"]) && isset($body["dolares_canjeados"]) &&
+        isset($body["eventos"]) && isset($body["sub_total"]) && isset($body["total_descuento"]) && isset($body["iva"]) && isset($body["total"]) && isset($body["otp"]))){
+          $out["codigo"] = "201";
+          $out["mensaje"] = $error_201_mensaje;
+          $out["causa"] = $error_201_causa;
+          $response->getBody()->write(json_encode($out));
+          return $response->withStatus(400);
+        }
+        $email= trim($body["email"]);
+        $id_facturacion= trim($body["id_facturacion"]);
+        $donacion= trim($body["donacion"]);
+        $user_id= trim($body["user_id"]);
+        $id_transacion= trim($body["id_transacion"]);
+        $dolares_canjeados= trim($body["dolares_canjeados"]);
+        $sub_total= trim($body["sub_total"]);
+        $total_descuento= trim($body["total_descuento"]);
+        $iva= trim($body["iva"]);
+        $total= trim($body["total"]);
+        $otp= trim($body["otp"]);
+        $eventos= explode(';',trim($body["eventos"]));
+        $total_iva= $sub_total-$dolares_canjeados-$total_descuento;
+        $ivaC= number_format($total_iva*0, 3, '.', '');
+        $totalC=  number_format($total_iva+$donacion+$ivaC, 2, '.', '');
+
+        if ($total_iva < 0) {
+          $out["codigo"] = "218";
+          $out["mensaje"] = $error_218_mensaje;
+          $out["causa"] = $error_218_causa;
+          $out["Valor sin iva"] = $total_iva;
+          $response->getBody()->write(json_encode($out));
+          return $response->withStatus(400);
+        }
+        if ($ivaC != $iva) {
+          $out["codigo"] = "217";
+          $out["mensaje"] = $error_217_mensaje;
+          $out["causa"] = $error_217_causa;
+          $out["Iva calculado"] = $ivaC;
+          $response->getBody()->write(json_encode($out));
+          return $response->withStatus(400);
+        }
+        if ($totalC != $total) {
+          $out["codigo"] = "218";
+          $out["mensaje"] = $error_218_mensaje;
+          $out["causa"] = $error_218_causa;
+          $out["total calculado"] = $totalC;
+          $response->getBody()->write(json_encode($out));
+          return $response->withStatus(400);
+        }
+        //VALIDACIONES
+        $cantidadT=0;
+
+        $descuentoT=0;
+        $lista2=[];
+        $ban=false;
+        $factorDA =0;
+        $descuentoDA =0;
+        $totalDA =0;
+        $sql = "SELECT *  FROM tsa_factor_amigos ts WHERE ts.id_factor_amigos=1";
+        $statement = $db->prepare($sql);
+        $result = $statement->execute();
+        while($item = $statement->fetch()){
+          $factorDA =$item->factor;
+          $descuentoDA =$item->descuento;
+          $totalDA =$factorDA/$descuentoDA ;
+        }
+        $sql = "SELECT tuc.puntos_acumulados  from tsa_usuario_cliente tuc WHERE id_usuario_cliente=:id_usuario";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':id_usuario', $user_id, \PDO::PARAM_STR);
+        $result = $statement->execute();
+        $item = $statement->fetch();
+        if (!$item){
+          $out["codigo"] = "202";
+          $out["mensaje"] = $error_202_mensaje;
+          $out["causa"] =  $error_202_causa;
+          $response->getBody()->write(json_encode($out));
+          return $response->withStatus(400);
+        }else{
+          $val=$dolares_canjeados*$totalDA;
+          if ($val>$item->puntos_acumulados) {
+            $out["codigo"] = "224";
+            $out["mensaje"] = $error_224_mensaje;
+            $out["causa"] =  $error_224_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(400);
+          }
+
+        }
+
+        foreach($eventos as $llave => $valores) {
+            if($valores!=""){
+              $valor= explode(',',trim($valores));
+              if (isset($valor[8])) {
+                $tipo=$valor[0];
+                $id_evento=$valor[1];
+                $id_funcion=$valor[2];
+                $asientosT=$valor[3];
+                $asientos= explode('-',trim($asientosT));
+                $id_promocion=$valor[4];
+                $tipo_promocion=$valor[5];
+                $totalP=$valor[6];
+                $descuentoP=$valor[7];
+                $cantidadT=$cantidadT+$totalP;
+                $descuentoT=$descuentoT+$descuentoP;
+                $cantidadT2=0;
+                if ($id_promocion!=0) {
+                  if ($tipo_promocion=="FC" | $tipo_promocion=="CD" | $tipo_promocion=="FP" | $tipo_promocion=="BT" | $tipo_promocion=="CP") {
+                  }else{
+                    $out["codigo"] = "220";
+                    $out["mensaje"] = $error_220_mensaje;
+                    $out["causa"] = $error_220_causa;
+                    $response->getBody()->write(json_encode($out));
+                    return $response->withStatus(400);
+                  }
+                }
+                foreach($asientos as $llave => $valores1) {
+                  $Pcantidad= explode(':',trim($valores1));
+                  if ($tipo==1) {
+                      if (isset($Pcantidad[2])) {
+                          $id_platea=$Pcantidad[0];
+                          $cantidad=$Pcantidad[1];
+                          $precio=$Pcantidad[2];
+                          $cantidadT2=$cantidadT2+$precio;
+                      }else{
+                        $out["codigo"] = "213";
+                        $out["mensaje"] = $error_213_mensaje;
+                        $out["causa"] = $error_213_causa;
+                        $response->getBody()->write(json_encode($out));
+                        return $response->withStatus(400);
+                      }
+                      $sql = "SELECT bc.id_bloqueo_cantidad FROM tsa_platea tp  INNER JOIN tsa_platea_funcion tpf ON tp.id_platea = tpf.id_platea INNER JOIN tsa_bloqueo_cantidad bc ON bc.id_platea_funcion = tpf.id_platea_funcion and id_funcion=:funcion and tpf.id_platea =:platea and bc.id_usuario_cliente =:id_usuario and bc.cantidad =:cantidad";
+                      $statement = $db->prepare($sql);
+                      $statement->bindValue(':platea', $id_platea, \PDO::PARAM_STR);
+                      $statement->bindValue(':funcion', $id_funcion, \PDO::PARAM_STR);
+                      $statement->bindValue(':id_usuario', $user_id, \PDO::PARAM_STR);
+                      $statement->bindValue(':cantidad', $cantidad, \PDO::PARAM_STR);
+                      $result = $statement->execute();
+                      $item = $statement->fetch();
+                      if (!$item){
+                        $out["codigo"] = "212";
+                        $out["mensaje"] = $error_212_mensaje;
+                        $out["causa"] =  $error_212_causa;
+                        $out["funcion"] =  $id_funcion;
+                        $response->getBody()->write(json_encode($out));
+                          return $response->withStatus(400);
+                      }else{
+                        $lista2[]=["1",$item->id_bloqueo_cantidad];
+                      }
+                  }else if($tipo==2){
+                      if (isset($Pcantidad[3])) {
+                        $id_platea=$Pcantidad[0];
+                        $id_asiento=$Pcantidad[1];
+                        $asiento=$Pcantidad[2];
+                        $precio=$Pcantidad[3];
+                        $cantidadT2=$cantidadT2+$precio;
+                      }else{
+                        $out["codigo"] = "213";
+                        $out["mensaje"] = $error_213_mensaje;
+                        $out["causa"] = $error_213_causa;
+                        $response->getBody()->write(json_encode($out));
+                        return $response->withStatus(400);
+                      }
+                      $sql = "SELECT * FROM tsa_bloqueo_asiento WHERE id_usuario_cliente=:id_usuario and id_distribucion=:asiento";
+                      $statement = $db->prepare($sql);
+                      $statement->bindValue(':id_usuario', $user_id, \PDO::PARAM_STR);
+                      $statement->bindValue(':asiento', $id_asiento, \PDO::PARAM_STR);
+                      $result = $statement->execute();
+                      $item = $statement->fetch();
+                      if (!$item){
+                        $out["codigo"] = "212";
+                        $out["mensaje"] = $error_212_mensaje;
+                        $out["causa"] =  $error_212_causa;
+                        $out["id_asiento"] =  $id_asiento;
+                        $response->getBody()->write(json_encode($out));
+                        return $response;
+                      }else{
+                        $lista2[]=["2",$item->id_bloqueo_asiento];
+                      }
+                  }else{
+                    $out["codigo"] = "214";
+                    $out["mensaje"] = $error_214_mensaje;
+                    $out["causa"] = $error_214_causa;
+                    $response->getBody()->write(json_encode($out));
+                    return $response->withStatus(400);
+                  }
+                }
+                if ($cantidadT2 != $totalP) {
+                  $out["codigo"] = "215";
+                  $out["mensaje"] = $error_215_mensaje;
+                  $out["causa"] = $error_215_causa;
+                  $out["Total"] = $cantidadT2;
+                  $out["evento"] = $id_evento;
+                  $response->getBody()->write(json_encode($out));
+                  return $response->withStatus(400);
+                }
+              }else{
+                $out["codigo"] = "213";
+                $out["mensaje"] = $error_213_mensaje;
+                $out["causa"] = $error_213_causa;
+                $response->getBody()->write(json_encode($out));
+                return $response->withStatus(400);
+              }
+            }
+        }
+        if ($sub_total != $cantidadT) {
+          $out["codigo"] = "215";
+          $out["mensaje"] = $error_215_mensaje;
+          $out["causa"] = $error_215_causa;
+          $out["Cantidad Total"] = $cantidadT;
+          $response->getBody()->write(json_encode($out));
+          return $response->withStatus(400);
+        }
+        if ($total_descuento!=$descuentoT) {
+          $out["codigo"] = "216";
+          $out["mensaje"] = $error_216_mensaje;
+          $out["causa"] = $error_216_causa;
+          $out["Descuento Total"] = $total_descuento;
+          $response->getBody()->write(json_encode($out));
+          return $response->withStatus(400);
+        }
+        //tipo 1 : cantidad
+        //tipo 2 : asientos
+        //tipo,id_evento,id_funcion,id_platea:cantidad-id_platea:cantidad,id_promocion,total, descuento;
+        //tipo,id_evento,id_funcion,asiento1-asiento2,id_promocion,total, descuento;
+        $verify=$this->verify($user_id, $id_transacion, $otp);
+        if ($verify != true) {
+          $this->rembolso($id_transacion);
+          $out["codigo"] = "232";
+          $out["mensaje"] = $error_232_mensaje;
+          $out["causa"] = $error_232_causa;
+          $response->getBody()->write(json_encode($out));
+          return $response->withStatus(400);
+        }
+        try {
+            $API_LOGIN_DEV     = "TEATROSA-EC-SERVER";
+            $API_KEY_DEV       = "5W1BGgglGnWx9bVYJlatix2d7TY7xj";
+            $server_application_code = $API_LOGIN_DEV;
+            $server_app_key = $API_KEY_DEV ;
+            $date = new \DateTime();
+            //$date = date("Y-m-d H:i:s");
+            $unix_timestamp = $date->getTimestamp();
+            // $unix_timestamp = "1546543146";
+            $uniq_token_string = $server_app_key.$unix_timestamp;
+            $uniq_token_hash = hash('sha256', $uniq_token_string);
+            $auth_token = base64_encode($server_application_code.";".$unix_timestamp.";".$uniq_token_hash);
+            $url="https://ccapi.paymentez.com/v2/transaction/".$id_transacion;
+            $curl = curl_init($url);
+            $headers = array();
+            $headers[] = 'Cache-Control: no-cache';
+            $headers[] = 'Auth-Token:'.$auth_token;
+            $headers[] = 'Content-Type: application/json; charset= utf-8';
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+            $result = curl_exec($curl);
+            curl_close($curl);
+            $resultado =json_decode($result, true);
+            if (isset($resultado['transaction'])) {
+              if ($resultado["transaction"]["status"]=="success") {
+                  $id_transacion=$resultado["transaction"]["id"];
+                  $authorization_code=$resultado["transaction"]["authorization_code"];
+                  $status_transacion="S";
+                  $ban=true;
+              }else{
+                $this->rembolso($id_transacion);
+                $result = false;
+                $out["codigo"] = "221";
+                $out["mensaje"] = $error_221_mensaje;
+                $out["causa"] = $error_221_causa;
+                $response->getBody()->write(json_encode($out));
+                return $response->withStatus(400);
+
+              }
+
+            }else{
+               $this->rembolso($id_transacion);
+              $result = false;
+              $out["codigo"] = "219";
+              $out["mensaje"] = $error_219_mensaje;
+              $out["causa"] = $error_219_causa;
+              $response->getBody()->write(json_encode($out));
+              return $response->withStatus(400);
+            }
+
+        } catch (\PDOException $th) {
+            $this->rembolso($id_transacion);
+            $result = false;
+            $out["codigo"] = "219";
+            $out["mensaje"] = $error_219_mensaje;
+            $out["causa"] = $error_219_causa;
+            $out["error"] = $th->getMessage();
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        $tipoA="A";
+        if ($request->hasHeader('Canal')) {
+            $YB = $request->getHeader('Canal');
+            if ($YB[0]==="web") {
+              $tipoA="W";
+            }
+        }
+        $id_compra=0;
+        try {
+            if ($ban) {
+              try {
+                  $sql = "INSERT INTO teatro.tsa_compra (id_facturacion,id_usuario_cliente,dolares_canjeados,donacion,sub_total,descuento,iva,total,usuario_creacion,id_transacion,authorization_code,status_transacion,tipo,email)
+                  VALUES (:id_facturacion,:id_usuario_cliente,:dolares_canjeados,:donacion,:sub_total,:descuento,:iva,:total,:usuario_creacion,:id_transacion,:authorization_code,:status_transacion,:tipo,:email)";
+                  $statement = $db->prepare($sql);
+                  $statement->bindValue(':id_facturacion', $id_facturacion, \PDO::PARAM_STR);
+                  $statement->bindValue(':id_usuario_cliente', $user_id, \PDO::PARAM_STR);
+                  $statement->bindValue(':dolares_canjeados', $dolares_canjeados, \PDO::PARAM_STR);
+                  $statement->bindValue(':donacion', $donacion, \PDO::PARAM_STR);
+                  $statement->bindValue(':sub_total', $sub_total, \PDO::PARAM_STR);
+                  $statement->bindValue(':descuento', $total_descuento, \PDO::PARAM_STR);
+                  $statement->bindValue(':iva', $iva, \PDO::PARAM_STR);
+                  $statement->bindValue(':total', $totalC, \PDO::PARAM_STR);
+                  $statement->bindValue(':id_transacion', $id_transacion, \PDO::PARAM_STR);
+                  $statement->bindValue(':authorization_code', $authorization_code, \PDO::PARAM_STR);
+                  $statement->bindValue(':status_transacion', $status_transacion, \PDO::PARAM_STR);
+                  $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
+                  $statement->bindValue(':tipo', $tipoA, \PDO::PARAM_STR);
+                  $statement->bindValue(':email', $email, \PDO::PARAM_STR);
+                  $statement->execute();
+                  $id_compra=$db->lastInsertId();
+              } catch(\PDOException $th) {
+                $this->rembolso($id_transacion);
+                $result = false;
+                $out["codigo"] = "102";
+                $out["mensaje"] = $error_102_mensaje;
+                $out["causa"] = $error_102_causa;
+                $out["error"] = $th->getMessage();
+                $response->getBody()->write(json_encode($out));
+                return $response->withStatus(500);
+              }
+              $lista=[];
+              $lista3=[];
+              foreach($eventos as $llave => $valores) {
+                  if($valores!=""){
+                    $valor= explode(',',trim($valores));
+                      $tipo=$valor[0];
+                      $id_evento=$valor[1];
+                      $id_funcion=$valor[2];
+                      $asientosT=$valor[3];
+                      $asientos= explode('-',trim($asientosT));
+                      $id_promocion=$valor[4];
+                      $tipo_promocion=$valor[5];
+                      $totalP=$valor[6];
+                      $descuentoP=$valor[7];
+                      $sala=$valor[8];
+                      $cantidadT=$cantidadT+$totalP;
+                      $descuentoT=$descuentoT+$descuentoP;
+                      try {
+                          $id_ticket=0;
+                          if ($id_compra!=0) {
+                            $puntos_canjeadosT=$totalP*$dolares_canjeados/$sub_total;
+                            $puntos_canjeadosTK=number_format($puntos_canjeadosT, 2);
+                            $sql = "INSERT INTO teatro.tsa_ticket (id_funcion,id_usuario_cliente,id_compra,sala,precio,tipo,usuario_creacion,descuento,puntos_canjeados)
+                            VALUES (:id_funcion,:id_usuario_cliente,:id_compra,:sala,:precio,:tipo,:usuario_creacion,:descuento,:puntos_canjeados)";
+                            $statement = $db->prepare($sql);
+                            $statement->bindValue(':id_funcion', $id_funcion, \PDO::PARAM_STR);
+                            $statement->bindValue(':id_usuario_cliente', $user_id, \PDO::PARAM_STR);
+                            $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
+                            $statement->bindValue(':sala', $sala, \PDO::PARAM_STR);
+                            $statement->bindValue(':precio', $totalP, \PDO::PARAM_STR);
+                            $statement->bindValue(':tipo', $tipo, \PDO::PARAM_STR);
+                            $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
+                            $statement->bindValue(':descuento', $descuentoP, \PDO::PARAM_STR);
+                            $statement->bindValue(':puntos_canjeados', $puntos_canjeadosTK, \PDO::PARAM_STR);
+                            $statement->execute();
+                            $id_ticket=$db->lastInsertId();
+                            if ($id_promocion!=0) {
+                              if ($tipo_promocion=="FC" | $tipo_promocion=="CD" | $tipo_promocion=="FP" | $tipo_promocion=="BT" | $tipo_promocion=="CP") {
+                                  if ($tipo_promocion=="FC") {
+                                    $sql = "INSERT INTO teatro.tsa_ticket_promocion_factor_compra (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
+                                    VALUES (:id_promocion,:id_ticket,:descuento,:id_usuario_cliente,:usuario_creacion)";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':id_promocion', $id_promocion, \PDO::PARAM_STR);
+                                    $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                    $statement->bindValue(':descuento', $descuentoP, \PDO::PARAM_STR);
+                                    $statement->bindValue(':id_usuario_cliente', $user_id, \PDO::PARAM_STR);
+                                    $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
+                                    $statement->execute();
+                                  }else if ($tipo_promocion=="CD") {
+                                    $sql = "INSERT INTO teatro.tsa_ticket_promocion_cruzados (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
+                                    VALUES (:id_promocion,:id_ticket,:descuento,:id_usuario_cliente,:usuario_creacion)";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':id_promocion', $id_promocion, \PDO::PARAM_STR);
+                                    $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                    $statement->bindValue(':descuento', $descuentoP, \PDO::PARAM_STR);
+                                    $statement->bindValue(':id_usuario_cliente', $user_id, \PDO::PARAM_STR);
+                                    $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
+                                    $statement->execute();
+                                  }else if ( $tipo_promocion=="FP") {
+                                    $sql = "INSERT INTO teatro.tsa_ticket_promocion_factor_pago (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
+                                    VALUES (:id_promocion,:id_ticket,:descuento,:id_usuario_cliente,:usuario_creacion)";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':id_promocion', $id_promocion, \PDO::PARAM_STR);
+                                    $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                    $statement->bindValue(':descuento', $descuentoP, \PDO::PARAM_STR);
+                                    $statement->bindValue(':id_usuario_cliente', $user_id, \PDO::PARAM_STR);
+                                    $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
+                                    $statement->execute();
+                                  }else if ( $tipo_promocion=="BT") {
+                                    $sql = "INSERT INTO teatro.tsa_ticket_promocion_tarjeta (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
+                                    VALUES (:id_promocion,:id_ticket,:descuento,:id_usuario_cliente,:usuario_creacion)";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':id_promocion', $id_promocion, \PDO::PARAM_STR);
+                                    $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                    $statement->bindValue(':descuento', $descuentoP, \PDO::PARAM_STR);
+                                    $statement->bindValue(':id_usuario_cliente', $user_id, \PDO::PARAM_STR);
+                                    $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
+                                    $statement->execute();
+                                  }else {
+                                    $sql = "INSERT INTO teatro.tsa_ticket_promocion_codigo (id_promocion,id_ticket,descuento,id_usuario_cliente,usuario_creacion)
+                                    VALUES (:id_promocion,:id_ticket,:descuento,:id_usuario_cliente,:usuario_creacion)";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':id_promocion', $id_promocion, \PDO::PARAM_STR);
+                                    $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                    $statement->bindValue(':descuento', $descuentoP, \PDO::PARAM_STR);
+                                    $statement->bindValue(':id_usuario_cliente', $user_id, \PDO::PARAM_STR);
+                                    $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
+                                    $statement->execute();
+                                  }
+                              }else{
+                                $out["codigo"] = "220";
+                                $out["mensaje"] = $error_220_mensaje;
+                                $out["causa"] = $error_220_causa;
+                                $response->getBody()->write(json_encode($out));
+                                return $response->withStatus(400);
+                              }
+
+                            }
+
+                          }
+                      } catch(\PDOException $th) {
+                          $this->rembolso($id_transacion);
+                          $sql = "DELETE FROM teatro.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
+                          $statement = $db->prepare($sql);
+                          $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                          $statement->execute();
+                          $sql = "DELETE FROM teatro.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
+                          $statement = $db->prepare($sql);
+                          $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                          $statement->execute();
+                          $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
+                          $statement = $db->prepare($sql);
+                          $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                          $statement->execute();
+                          $sql = "DELETE FROM teatro.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
+                          $statement = $db->prepare($sql);
+                          $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                          $statement->execute();
+                          $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
+                          $statement = $db->prepare($sql);
+                          $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                          $statement->execute();
+                          foreach($lista3 as $llave => $valo) {
+                            $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                            $statement = $db->prepare($sql);
+                            $statement->bindValue(':id_ticket', $valo, \PDO::PARAM_STR);
+                            $statement->execute();
+                          }
+                          $sql = "DELETE FROM teatro.tsa_ticket WHERE id_compra=:id_compra";
+                          $statement = $db->prepare($sql);
+                          $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
+                          $statement->execute();
+                          foreach($lista as $llave => $valo) {
+                            if ($valo[0]=="1") {
+                              $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                              $statement = $db->prepare($sql);
+                              $statement->bindValue(':cantidad', $valo[1], \PDO::PARAM_STR);
+                              $statement->bindValue(':id_funcion', $valo[2], \PDO::PARAM_STR);
+                              $statement->bindValue(':id_platea',$valo[3], \PDO::PARAM_STR);
+                              $statement->execute();
+                            }
+                            if ($valo[0]=="2") {
+                              $sql = "UPDATE teatro.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
+                              $statement = $db->prepare($sql);
+                              $statement->bindValue(':id_distribucion',  $valo[1], \PDO::PARAM_STR);
+                              $statement->execute();
+                            }
+                          }
+                          foreach($lista2 as $llave => $valores) {
+                            if ($valores[0]=="1") {
+                              $sql = "UPDATE tsa_bloqueo_cantidad set fecha_creacion=now() WHERE id_bloqueo_cantidad=:id_bloqueo_cantidad";
+                              $statement = $db->prepare($sql);
+                              $statement->bindValue(':id_bloqueo_cantidad', $valores[1], \PDO::PARAM_STR);
+                              $result = $statement->execute();
+                            }
+                            if ($valores[0]=="2") {
+                              $sql = "UPDATE tsa_bloqueo_asiento set fecha_creacion=now() WHERE id_bloqueo_asiento=:id_bloqueo_asiento";
+                              $statement = $db->prepare($sql);
+                              $statement->bindValue(':id_bloqueo_asiento', $valores[1], \PDO::PARAM_STR);
+                              $result = $statement->execute();
+                            }
+                          }
+                          $sql = "DELETE FROM teatro.tsa_compra WHERE id_compra=:id_compra";
+                          $statement = $db->prepare($sql);
+                          $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
+                          $statement->execute();
+                          $result = false;
+                          $out["codigo"] = "102";
+                          $out["mensaje"] = $error_102_mensaje;
+                          $out["causa"] = $error_102_causa;
+                          $out["error"] = $th->getMessage();
+                          $response->getBody()->write(json_encode($out));
+                          return $response->withStatus(500);
+                      }
+                      foreach($asientos as $llave => $valores1) {
+                        $Pcantidad= explode(':',trim($valores1));
+                        if ($tipo==1) {
+                            $id_platea=$Pcantidad[0];
+                            $cantidad=$Pcantidad[1];
+                            $precio=$Pcantidad[2];
+                            try {
+                                if ($id_ticket!=0) {
+                                  $sql = "INSERT INTO teatro.tsa_ticket_asiento (id_ticket,asiento,precio,usuario_creacion,id_platea)
+                                  VALUES (:id_ticket,:asiento,:precio,:usuario_creacion,:id_platea)";
+                                  $statement = $db->prepare($sql);
+                                  $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                  $statement->bindValue(':asiento', $cantidad, \PDO::PARAM_STR);
+                                  $statement->bindValue(':precio',   $precio, \PDO::PARAM_STR);
+                                  $statement->bindValue(':id_platea', $id_platea, \PDO::PARAM_STR);
+                                  $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
+                                  $statement->execute();
+
+                                  $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido+:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                                  $statement = $db->prepare($sql);
+                                  $statement->bindValue(':cantidad', $cantidad, \PDO::PARAM_STR);
+                                  $statement->bindValue(':id_funcion', $id_funcion, \PDO::PARAM_STR);
+                                  $statement->bindValue(':id_platea', $id_platea, \PDO::PARAM_STR);
+                                  $statement->execute();
+                                  $lista[]= array("1", $cantidad,$id_funcion,$id_platea);
+                                  $lista3[]= $id_ticket;
+                                }else{
+                                  $this->rembolso($id_transacion);
+                                  $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                  $statement = $db->prepare($sql);
+                                  $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                  $statement->execute();
+                                  $sql = "DELETE FROM teatro.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
+                                  $statement = $db->prepare($sql);
+                                  $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                  $statement->execute();
+                                  $sql = "DELETE FROM teatro.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
+                                  $statement = $db->prepare($sql);
+                                  $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                  $statement->execute();
+                                  $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
+                                  $statement = $db->prepare($sql);
+                                  $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                  $statement->execute();
+                                  $sql = "DELETE FROM teatro.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
+                                  $statement = $db->prepare($sql);
+                                  $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                  $statement->execute();
+                                  $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
+                                  $statement = $db->prepare($sql);
+                                  $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                  $statement->execute();
+                                  foreach($lista3 as $llave => $valo) {
+                                    $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':id_ticket', $valo, \PDO::PARAM_STR);
+                                    $statement->execute();
+
+                                  }
+                                  $sql = "DELETE FROM teatro.tsa_ticket WHERE id_compra=:id_compra";
+                                  $statement = $db->prepare($sql);
+                                  $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
+                                  $statement->execute();
+                                  $sql = "DELETE FROM teatro.tsa_compra WHERE id_compra=:id_compra";
+                                  $statement = $db->prepare($sql);
+                                  $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
+                                  $statement->execute();
+                                  foreach($lista as $llave => $valo) {
+                                    if ($valo[0]=="1") {
+                                      $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                                      $statement = $db->prepare($sql);
+                                      $statement->bindValue(':cantidad', $valo[1], \PDO::PARAM_STR);
+                                      $statement->bindValue(':id_funcion', $valo[2], \PDO::PARAM_STR);
+                                      $statement->bindValue(':id_platea',$valo[3], \PDO::PARAM_STR);
+                                      $statement->execute();
+                                    }
+                                    if ($valo[0]=="2") {
+                                      $sql = "UPDATE teatro.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
+                                      $statement = $db->prepare($sql);
+                                      $statement->bindValue(':id_distribucion',  $valo[1], \PDO::PARAM_STR);
+                                      $statement->execute();
+                                    }
+                                  }
+                                  foreach($lista2 as $llave => $valores) {
+                                    if ($valores[0]=="1") {
+                                      $sql = "UPDATE tsa_bloqueo_cantidad set fecha_creacion=now() WHERE id_bloqueo_cantidad=:id_bloqueo_cantidad";
+                                      $statement = $db->prepare($sql);
+                                      $statement->bindValue(':id_bloqueo_cantidad', $valores[1], \PDO::PARAM_STR);
+                                      $result = $statement->execute();
+                                    }
+                                    if ($valores[0]=="2") {
+                                      $sql = "UPDATE tsa_bloqueo_asiento set fecha_creacion=now() WHERE id_bloqueo_asiento=:id_bloqueo_asiento";
+                                      $statement = $db->prepare($sql);
+                                      $statement->bindValue(':id_bloqueo_asiento', $valores[1], \PDO::PARAM_STR);
+                                      $result = $statement->execute();
+                                    }
+                                  }
+                                  $out["codigo"] = "102";
+                                  $out["mensaje"] = $error_102_mensaje;
+                                  $out["causa"] = $error_102_causa;
+                                  $response->getBody()->write(json_encode($out));
+                                  return $response->withStatus(500);
+                                }
+                            } catch(\PDOException $th) {
+                                $this->rembolso($id_transacion);
+                                $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                foreach($lista3 as $llave => $valo) {
+                                  $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                  $statement = $db->prepare($sql);
+                                  $statement->bindValue(':id_ticket', $valo, \PDO::PARAM_STR);
+                                  $statement->execute();
+                                }
+                                $sql = "DELETE FROM teatro.tsa_ticket WHERE id_compra=:id_compra";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_compra WHERE id_compra=:id_compra";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
+                                $statement->execute();
+                                foreach($lista as $llave => $valo) {
+                                  if ($valo[0]=="1") {
+                                    $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':cantidad', $valo[1], \PDO::PARAM_STR);
+                                    $statement->bindValue(':id_funcion', $valo[2], \PDO::PARAM_STR);
+                                    $statement->bindValue(':id_platea',$valo[3], \PDO::PARAM_STR);
+                                    $statement->execute();
+                                  }
+                                  if ($valo[0]=="2") {
+                                    $sql = "UPDATE teatro.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':id_distribucion',  $valo[1], \PDO::PARAM_STR);
+                                    $statement->execute();
+                                  }
+                                }
+                                foreach($lista2 as $llave => $valores) {
+                                  if ($valores[0]=="1") {
+                                    $sql = "UPDATE tsa_bloqueo_cantidad set fecha_creacion=now() WHERE id_bloqueo_cantidad=:id_bloqueo_cantidad";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':id_bloqueo_cantidad', $valores[1], \PDO::PARAM_STR);
+                                    $result = $statement->execute();
+                                  }
+                                  if ($valores[0]=="2") {
+                                    $sql = "UPDATE tsa_bloqueo_asiento set fecha_creacion=now() WHERE id_bloqueo_asiento=:id_bloqueo_asiento";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':id_bloqueo_asiento', $valores[1], \PDO::PARAM_STR);
+                                    $result = $statement->execute();
+                                  }
+                                }
+                                $result = false;
+                                $out["codigo"] = "102";
+                                $out["mensaje"] = $error_102_mensaje;
+                                $out["causa"] = $error_102_causa;
+                                $out["error"] = $th->getMessage();
+                                $response->getBody()->write(json_encode($out));
+                                return $response->withStatus(500);
+                            }
+                        }else if($tipo==2){
+                          $id_platea=$Pcantidad[0];
+                          $id_asiento=$Pcantidad[1];
+                          $asiento=$Pcantidad[2];
+                          $precio=$Pcantidad[3];
+                            try {
+                              if ($id_ticket!=0) {
+                                $sql = "INSERT INTO teatro.tsa_ticket_asiento (id_ticket,asiento,precio,usuario_creacion,id_platea)
+                                VALUES (:id_ticket,:asiento,:precio,:usuario_creacion,:id_platea)";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->bindValue(':asiento', $asiento, \PDO::PARAM_STR);
+                                $statement->bindValue(':precio',  $precio, \PDO::PARAM_STR);
+                                $statement->bindValue(':id_platea', $id_platea, \PDO::PARAM_STR);
+                                $statement->bindValue(':usuario_creacion', $user_id, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "UPDATE teatro.tsa_distribucion SET estado='V' WHERE id_distribucion=:id_distribucion";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_distribucion', $id_asiento, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $lista[]= array("2", $id_asiento,$id_funcion,$id_platea);
+                                  $lista3[]= $id_ticket;
+                              }else{
+                                $this->rembolso($id_transacion);
+                                $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                foreach($lista3 as $llave => $valo) {
+                                  $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                  $statement = $db->prepare($sql);
+                                  $statement->bindValue(':id_ticket', $valo, \PDO::PARAM_STR);
+                                  $statement->execute();
+
+                                }
+                                $sql = "DELETE FROM teatro.tsa_ticket WHERE id_compra=:id_compra";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_compra WHERE id_compra=:id_compra";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
+                                $statement->execute();
+                                foreach($lista as $llave => $valo) {
+                                  if ($valo[0]=="1") {
+                                    $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':cantidad', $valo[1], \PDO::PARAM_STR);
+                                    $statement->bindValue(':id_funcion', $valo[2], \PDO::PARAM_STR);
+                                    $statement->bindValue(':id_platea',$valo[3], \PDO::PARAM_STR);
+                                    $statement->execute();
+                                  }
+                                  if ($valo[0]=="2") {
+                                    $sql = "UPDATE teatro.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':id_distribucion',  $valo[1], \PDO::PARAM_STR);
+                                    $statement->execute();
+                                  }
+                                }
+                                foreach($lista2 as $llave => $valores) {
+                                  if ($valores[0]=="1") {
+                                    $sql = "UPDATE tsa_bloqueo_cantidad set fecha_creacion=now() WHERE id_bloqueo_cantidad=:id_bloqueo_cantidad";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':id_bloqueo_cantidad', $valores[1], \PDO::PARAM_STR);
+                                    $result = $statement->execute();
+                                  }
+                                  if ($valores[0]=="2") {
+                                    $sql = "UPDATE tsa_bloqueo_asiento set fecha_creacion=now() WHERE id_bloqueo_asiento=:id_bloqueo_asiento";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':id_bloqueo_asiento', $valores[1], \PDO::PARAM_STR);
+                                    $result = $statement->execute();
+                                  }
+                                }
+                                $out["codigo"] = "102";
+                                $out["mensaje"] = $error_102_mensaje;
+                                $out["causa"] = $error_102_causa;
+                                $response->getBody()->write(json_encode($out));
+                                return $response->withStatus(500);
+                              }
+                            } catch(\PDOException $th) {
+                                $this->rembolso($id_transacion);
+                                $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_codigo WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_cruzados WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_pago WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_tarjeta WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_ticket_promocion_factor_compra WHERE id_ticket=:id_ticket";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_ticket', $id_ticket, \PDO::PARAM_STR);
+                                $statement->execute();
+                                foreach($lista3 as $llave => $valo) {
+                                  $sql = "DELETE FROM teatro.tsa_ticket_asiento WHERE id_ticket=:id_ticket";
+                                  $statement = $db->prepare($sql);
+                                  $statement->bindValue(':id_ticket', $valo, \PDO::PARAM_STR);
+                                  $statement->execute();
+
+                                }
+                                $sql = "DELETE FROM teatro.tsa_ticket WHERE id_compra=:id_compra";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
+                                $statement->execute();
+                                $sql = "DELETE FROM teatro.tsa_compra WHERE id_compra=:id_compra";
+                                $statement = $db->prepare($sql);
+                                $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
+                                $statement->execute();
+                                foreach($lista as $llave => $valo) {
+                                  if ($valo[0]=="1") {
+                                    $sql = "UPDATE teatro.tsa_platea_funcion SET vendido=vendido-:cantidad WHERE id_platea=:id_platea and id_funcion=:id_funcion;";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':cantidad', $valo[1], \PDO::PARAM_STR);
+                                    $statement->bindValue(':id_funcion', $valo[2], \PDO::PARAM_STR);
+                                    $statement->bindValue(':id_platea',$valo[3], \PDO::PARAM_STR);
+                                    $statement->execute();
+                                  }
+                                  if ($valo[0]=="2") {
+                                    $sql = "UPDATE teatro.tsa_distribucion SET estado='E' WHERE id_distribucion=:id_distribucion";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':id_distribucion',  $valo[1], \PDO::PARAM_STR);
+                                    $statement->execute();
+                                  }
+                                }
+                                foreach($lista2 as $llave => $valores) {
+                                  if ($valores[0]=="1") {
+                                    $sql = "UPDATE tsa_bloqueo_cantidad set fecha_creacion=now() WHERE id_bloqueo_cantidad=:id_bloqueo_cantidad";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':id_bloqueo_cantidad', $valores[1], \PDO::PARAM_STR);
+                                    $result = $statement->execute();
+                                  }
+                                  if ($valores[0]=="2") {
+                                    $sql = "UPDATE tsa_bloqueo_asiento set fecha_creacion=now() WHERE id_bloqueo_asiento=:id_bloqueo_asiento";
+                                    $statement = $db->prepare($sql);
+                                    $statement->bindValue(':id_bloqueo_asiento', $valores[1], \PDO::PARAM_STR);
+                                    $result = $statement->execute();
+                                  }
+                                }
+                                $result = false;
+                                $out["codigo"] = "102";
+                                $out["mensaje"] = $error_102_mensaje;
+                                $out["causa"] = $error_102_causa;
+                                $out["error"] = $th->getMessage();
+                                $response->getBody()->write(json_encode($out));
+                                return $response->withStatus(500);
+                            }
+
+                        }else{
+                          $this->rembolso($id_transacion);
+                          $out["codigo"] = "214";
+                          $out["mensaje"] = $error_214_mensaje;
+                          $out["causa"] = $error_214_causa;
+                          $response->getBody()->write(json_encode($out));
+                          return $response->withStatus(400);
+                        }
+                      }
+                  }
+              }
+
+              foreach($lista2 as $llave => $valores) {
+                if ($valores[0]=="1") {
+                  $sql = "DELETE FROM tsa_bloqueo_cantidad WHERE id_bloqueo_cantidad=:id_bloqueo_cantidad";
+                  $statement = $db->prepare($sql);
+                  $statement->bindValue(':id_bloqueo_cantidad', $valores[1], \PDO::PARAM_STR);
+                  $result = $statement->execute();
+                }
+                if ($valores[0]=="2") {
+                  $sql = "DELETE FROM tsa_bloqueo_asiento WHERE id_bloqueo_asiento=:id_bloqueo_asiento";
+                  $statement = $db->prepare($sql);
+                  $statement->bindValue(':id_bloqueo_asiento', $valores[1], \PDO::PARAM_STR);
+                  $result = $statement->execute();
+                }
+              }
+              $ticketT=null;
+              $lista4=[];
+
+              //puntos amigos teatro
+              $sql = "SELECT te.nombre,tc.total, tta.asiento, tc.id_compra, tta.id_ticket_asiento FROM tsa_ticket tt INNER JOIN  tsa_funcion tf ON tf.id_funcion =tt.id_funcion
+                  INNER JOIN  tsa_evento te ON te.id_evento =tf.id_evento INNER JOIN tsa_compra tc ON tc.id_compra =tt.id_compra inner join tsa_ticket_asiento tta on tta.id_ticket =tt.id_ticket anD tc.id_compra=:id_compra";
+              $statement = $db->prepare($sql);
+              $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
+              $result = $statement->execute();
+              $eve= [];
+              $eve1= "";
+              $cantidadT=0;
+              $cantidad=0;
+              while($item = $statement->fetch()){
+                if (!in_array($item->nombre, $eve)) {
+                    $eve[]= $item->nombre;
+                    $eve1= $eve1.$item->nombre.",";
+                }
+                if (is_numeric($item->asiento)) {
+                    $cantidad=$cantidad+$item->asiento;
+                }else{
+                    $cantidad=$cantidad+1;
+                }
+                $cantidadT=$item->total;
+              }
+              if ($total_descuento==0) {
+                $whole = floor($cantidadT);
+              }else{
+                $whole = 0;
+              }
+              $whole = floor($cantidadT);
+              $puntos= $whole-$dolares_canjeados;
+              $sql = "INSERT INTO teatro.tsa_amigos_puntos (id_usuario_cliente,id_compra,evento,cantidad,puntos,puntos_ganados,fecha_consumo) VALUES (:id_usuario_cliente,:id_compra,:evento,:cantidad,:puntos,:puntos_ganados,now());";
+              $statement = $db->prepare($sql);
+              $statement->bindValue(':id_usuario_cliente', $user_id, \PDO::PARAM_STR);
+              $statement->bindValue(':id_compra', $id_compra, \PDO::PARAM_STR);
+              $statement->bindValue(':evento', substr($eve1, 0, -1), \PDO::PARAM_STR);
+              $statement->bindValue(':cantidad', $cantidad, \PDO::PARAM_STR);
+              $statement->bindValue(':puntos', $dolares_canjeados, \PDO::PARAM_STR);
+              $statement->bindValue(':puntos_ganados', $whole, \PDO::PARAM_STR);
+              $statement->execute();
+              $nombreU="TEATRO";
+              $apellidoU="SANCHEZ AGUILAR";
+              $client1->compraFactura($id_compra,"C",$user_id);
+              foreach($lista3 as $llave => $valores) {
+                if (!in_array($valores, $lista4)) {
+                  $sql = "SELECT tuc.nombres as nombreU, tuc.apellidos as apellidosU, te.*, tt.precio ,tt.sala, tf.fecha, tt.id_ticket, tta.asiento,tt.estado as estado_ticket FROM tsa_ticket tt
+                  INNER JOIN  tsa_usuario_cliente tuc ON tuc.id_usuario_cliente=tt.id_usuario_cliente
+                  INNER JOIN  tsa_funcion tf ON tf.id_funcion =tt.id_funcion
+                  INNER JOIN  tsa_ticket_asiento tta ON tta.id_ticket =tt.id_ticket
+                  INNER JOIN  tsa_evento te ON te.id_evento =tf.id_evento and tt.id_ticket=:id_ticket and tuc.id_usuario_cliente =:id_usuario  ORDER BY tf.fecha ASC ";
+                  $statement = $db->prepare($sql);
+                  $statement->bindValue(':id_usuario', $user_id, \PDO::PARAM_STR);
+                  $statement->bindValue(':id_ticket', $valores, \PDO::PARAM_STR);
+                  $result = $statement->execute();
+                  $tickets= [];
+                  $ticket= [];
+                  $asientos2= [];
+                  $asientos3= [];
+                  $asientos= [];
+                  $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";
+                  while($item = $statement->fetch()){
+                    if (!in_array($item->id_ticket, $tickets)) {
+                        $cad = "000000000000";
+                        $miCadena = strval($item->id_ticket);
+                        $cant=strlen($miCadena);
+                        $xx=11-$cant;
+                        $miCadena=substr($cad, 0, $xx).$miCadena."1";
+                        $auth_token = base64_encode($miCadena);
+                        $auth_token1 = base64_encode($auth_token);
+                        $nombreU=$item->nombreU;
+                        $apellidoU=$item->apellidosU;
+                        $client->sendMail1("3", $email,  $item->id_ticket,($nombreU),$auth_token1);
+                        $ticket[$item->id_ticket]= array('id_ticket'=> $item->id_ticket, 'nombre'=> $item->nombre, 'duracion'=> $item->duracion, 'imagen'=> $ruta_evento.$item->id_evento."H.png",
+                         'tipo'=> $item->tipo,'sala'=> $item->sala,'precio'=> $item->precio,'fecha'=> $item->fecha,'estado'=> $item->estado_ticket,'qr'=>$auth_token1);
+                        $tickets[]= $item->id_ticket;
+                    }
+                    if (in_array($item->id_ticket, $asientos3)) {
+                         if (is_numeric($item->asiento)) {
+                                $asientos2[$item->id_ticket]= $asientos2[$item->id_ticket]+ $item->asiento;
+                        } else {
+                             $asientos2[$item->id_ticket]=$asientos2[$item->id_ticket]+1;
+                        }
+                    }else{
+                        if (is_numeric($item->asiento)) {
+                                $asientos2[$item->id_ticket]= $item->asiento;
+                         } else {
+                                $asientos2[$item->id_ticket]=1;
+                        }
+                        $asientos3[]=$item->id_ticket;
+                    }
+                    $asientos[$item->id_ticket][]=$item->asiento;
+                  }
+                  foreach ($tickets as $clave) {
+                      $ticket[$clave]['asientos']=  $asientos[$clave];
+                      $ticket[$clave]['cantidad_asientos']= (string)$asientos2[$clave] ;
+                      $ticketT[]=$ticket[$clave];
+                  }
+                  $lista4[]=$valores;
+                }
+
+              }
+
+              if ($donacion!="0") {
+                $client->sendMail1("4", $email, "",($nombreU),"");
+              }
+              $out =$ticketT;
+              $response->getBody()->write(json_encode($out));
+            }else{
+              $this->rembolso($id_transacion);
+              $result = false;
+              $out["codigo"] = "221";
+              $out["mensaje"] = $error_221_mensaje;
+              $out["causa"] = $error_221_causa;
+              $response->getBody()->write(json_encode($out));
+              return $response->withStatus(400);
+
+            }
+        } catch (\PDOException $th) {
+      $this->rembolso($id_transacion);
+            $result = false;
+            $out["codigo"] = "102";
+            $out["mensaje"] = $error_102_mensaje;
+            $out["causa"] = $error_102_causa;
+            $out["error"] = $th->getMessage();
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        return $response;
+    }
 
     public function compra_diners($request, $response, $args){
         include("error.php");
@@ -6078,7 +7202,8 @@ class MainController extends BaseController
                   $result = $statement->execute();
                   $tickets= [];
                   $ticket= [];
-
+		  $asientos2= [];
+		  $asientos3= [];
                   $asientos= [];
                   $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";
                   while($item = $statement->fetch()){
@@ -6097,10 +7222,25 @@ class MainController extends BaseController
                          'tipo'=> $item->tipo,'sala'=> $item->sala,'precio'=> $item->precio,'fecha'=> $item->fecha,'estado'=> $item->estado_ticket,'qr'=>$auth_token1);
                         $tickets[]= $item->id_ticket;
                     }
+		    if (in_array($item->id_ticket, $asientos3)) {
+               		 if (is_numeric($item->asiento)) {
+                      		$asientos2[$item->id_ticket]= $asientos2[$item->id_ticket]+ $item->asiento;
+                	} else {
+               		     $asientos2[$item->id_ticket]=$asientos2[$item->id_ticket]+1;
+                	}
+              	    }else{
+                	if (is_numeric($item->asiento)) {
+                      		$asientos2[$item->id_ticket]= $item->asiento;
+               		 } else {
+                    		$asientos2[$item->id_ticket]=1;
+                	}
+                	$asientos3[]=$item->id_ticket;
+              	    }
                     $asientos[$item->id_ticket][]=$item->asiento;
                   }
                   foreach ($tickets as $clave) {
                       $ticket[$clave]['asientos']=  $asientos[$clave];
+		        $ticket[$clave]['cantidad_asientos']= (string)$asientos2[$clave] ;
                       $ticketT[]=$ticket[$clave];
                   }
                   $lista4[]=$valores;
@@ -6194,6 +7334,13 @@ class MainController extends BaseController
           $out["mensaje"] = $error_217_mensaje;
           $out["causa"] = $error_217_causa;
           $out["Iva calculado"] = $ivaC;
+          $response->getBody()->write(json_encode($out));
+          return $response->withStatus(400);
+        }
+	if ( $total >= 200 &&  $id_facturacion=="1") {
+          $out["codigo"] = "231";
+          $out["mensaje"] = $error_231_mensaje;
+          $out["causa"] = $error_231_causa;
           $response->getBody()->write(json_encode($out));
           return $response->withStatus(400);
         }
@@ -6429,15 +7576,20 @@ class MainController extends BaseController
                   $ban=true;
               }else{
                 if ($resultado["transaction"]["status"]=="pending") {
-                    $id_transacion=$resultado["transaction"]["id"];
+		    $id_transacion=$resultado["transaction"]["id"];
                     $authorization_code="";
                     $status_transacion="P";
-                    $ban=true;
+                    $ban=false;
                 }else{
                     $ban=false;
+		    $out["codigo"] = "219";
+              	    $out["mensaje"] = $error_219_mensaje;
+              	    $out["causa"] = $error_219_causa;
+              	    $response->getBody()->write(json_encode($out));
+                    return $response->withStatus(400);
                 }
-                $response->getBody()->write(json_encode($resultado["transaction"]["status"]));
-
+                $response->getBody()->write(json_encode($resultado));
+		  return $response;
               }
             }else{
               $result = false;
@@ -7114,7 +8266,8 @@ class MainController extends BaseController
                   $result = $statement->execute();
                   $tickets= [];
                   $ticket= [];
-
+		  $asientos2= [];
+                  $asientos3= [];
                   $asientos= [];
                   $ruta= "https://teatrosanchezaguilar.org/imagenes/evento/";
                   while($item = $statement->fetch()){
@@ -7133,10 +8286,25 @@ class MainController extends BaseController
                          'tipo'=> $item->tipo,'sala'=> $item->sala,'precio'=> $item->precio,'fecha'=> $item->fecha,'estado'=> $item->estado_ticket,'qr'=>$auth_token1);
                         $tickets[]= $item->id_ticket;
                     }
+		    if (in_array($item->id_ticket, $asientos3)) {
+                         if (is_numeric($item->asiento)) {
+                                $asientos2[$item->id_ticket]= $asientos2[$item->id_ticket]+ $item->asiento;
+                        } else {
+                             $asientos2[$item->id_ticket]=$asientos2[$item->id_ticket]+1;
+                        }
+                    }else{
+                        if (is_numeric($item->asiento)) {
+                                $asientos2[$item->id_ticket]= $item->asiento;
+                         } else {
+                                $asientos2[$item->id_ticket]=1;
+                        }
+                        $asientos3[]=$item->id_ticket;
+                    }
                     $asientos[$item->id_ticket][]=$item->asiento;
                   }
                   foreach ($tickets as $clave) {
                       $ticket[$clave]['asientos']=  $asientos[$clave];
+		       $ticket[$clave]['cantidad_asientos']= (string)$asientos2[$clave] ;
                       $ticketT[]=$ticket[$clave];
                   }
                   $lista4[]=$valores;
@@ -7446,7 +8614,73 @@ class MainController extends BaseController
         }
 
     }
+      public function getCafeVino($request, $response, $args){
+        include("error.php");
+        $response = $response->withHeader('Content-Type', 'application/json');
+        $corpName = $request->getAttribute('corpName');
+        $db = $this->container->get('db');
+        // VALIDACION DE TOKEN
+        $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+        $statement = $db->prepare($sql);
+        $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+        try {
+            $result = $statement->execute();
+        } catch (\PDOException $th) {
+            $result = false;
+            $out["codigo"] = "100";
+            $out["mensaje"] = $error_100_mensaje;
+            $out["causa"] =  $error_100_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+        if ($result && count($statement->fetchAll())==0){
+            $out["codigo"] = "101";
+            $out["mensaje"] = $error_101_mensaje;
+            $out["causa"] = $error_101_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(401);
+        }
+        // FIN VALIDACION
 
+        try {
+            $sql = "SELECT * FROM tsa_imagen_banner WHERE estado='A' and id_imagen=11";
+            //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
+            $statement = $db->prepare($sql);
+            $result = $statement->execute();
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/banner/";
+            while($item = $statement->fetch()){
+              $categorias['nombre_banner']=  $item->nombre;
+              $categorias['imagen_banner']=  $ruta.$item->imagen;
+            }
+            $sql = "SELECT * FROM tsa_informacion_tabla WHERE id_informacion_tabla=127";
+            $statement = $db->prepare($sql);
+            $result = $statement->execute();
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/banner/";
+            while($item = $statement->fetch()){
+              $categorias['titulo']=  $item->titulo;
+              $categorias['descripcion']= $item->descripcion;
+            }
+            $sql = "SELECT * FROM tsa_informacion_galeria WHERE id_informacion_tabla=127  ORDER BY  CAST(  orden AS DECIMAL) ASC";
+            $statement = $db->prepare($sql);
+            $result = $statement->execute();
+            $ruta= "https://teatrosanchezaguilar.org/imagenes/galeria/";
+            $categorias['galeria']=[];
+            while($item = $statement->fetch()){
+              $categorias['galeria'][]= $ruta.($item->id_informacion_galeria).".png";
+            }
+            $response->getBody()->write(json_encode($categorias));
+            return $response;
+        } catch (\PDOException $th) {
+            $result = false;
+            $out["codigo"] = "102";
+            $out["mensaje"] = $error_102_mensaje;
+            $out["causa"] = $error_102_causa;
+            $out["error"] = $th->getMessage();
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+        }
+
+    }
     public function getAlquiler_id($request, $response, $args){
         include("error.php");
         $response = $response->withHeader('Content-Type', 'application/json');
