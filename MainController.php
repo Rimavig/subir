@@ -3971,8 +3971,8 @@ class MainController extends BaseController
             $response->getBody()->write(json_encode($out));
             return $response->withStatus(401);
           }
-          $API_LOGIN_DEV     = "TPP3-EC-SERVER";
-          $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6";
+          $API_LOGIN_DEV     = "TPP-EC-SERVER";
+          $API_KEY_DEV       = "mYmEhYuLxNkCZrw8FkFVTeZxx4rfY9";
           $server_application_code = $API_LOGIN_DEV;
           $server_app_key = $API_KEY_DEV ;
           $date = new \DateTime();
@@ -4016,8 +4016,8 @@ class MainController extends BaseController
             $response->getBody()->write(json_encode($out));
             return $response->withStatus(401);
           }
-          $API_LOGIN_DEV     = "TPP3-EC-CLIENT";
-          $API_KEY_DEV       = "ZfapAKOk4QFXheRNvndVib9XU3szzg";
+          $API_LOGIN_DEV     = "TPP-EC-CLIENT";
+          $API_KEY_DEV       = "JfjHyC1y1xJQH4MrfxJFWUV56d963K";
           $server_application_code = $API_LOGIN_DEV;
           $server_app_key = $API_KEY_DEV ;
           $date = new \DateTime();
@@ -4918,15 +4918,15 @@ class MainController extends BaseController
             $response->getBody()->write(json_encode($out));
             return $response->withStatus(401);
           }
-          $categorias=  array('LOGIN_DEV_SERVER'=> 'TPP3-EC-SERVER', 'KEY_DEV_SERVER'=> 'JdXTDl2d0o0B8ANZ1heJOq7tf62PC6','LOGIN_DEV_CLIENT'=> 'TPP3-EC-CLIENT', 'KEY_DEV_CLIENT'=> 'ZfapAKOk4QFXheRNvndVib9XU3szzg');
+          $categorias=  array('LOGIN_DEV_SERVER'=> 'TPP-EC-SERVER', 'KEY_DEV_SERVER'=> 'mYmEhYuLxNkCZrw8FkFVTeZxx4rfY9','LOGIN_DEV_CLIENT'=> 'TPP-EC-CLIENT', 'KEY_DEV_CLIENT'=> 'JfjHyC1y1xJQH4MrfxJFWUV56d963K');
           $response->getBody()->write(json_encode($categorias));
           return $response;
         }
 
         public function rembolso($id_transacion)
         {
-          $API_LOGIN_DEV     = "TPP3-EC-SERVER";
-          $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6";
+          $API_LOGIN_DEV     = "TPP-EC-SERVER";
+          $API_KEY_DEV       = "mYmEhYuLxNkCZrw8FkFVTeZxx4rfY9";
           $server_application_code = $API_LOGIN_DEV;
           $server_app_key = $API_KEY_DEV ;
           $date = new \DateTime();
@@ -5210,8 +5210,8 @@ class MainController extends BaseController
           $authorization_code="";
           $status_transacion="";
           try {
-            $API_LOGIN_DEV     = "TPP3-EC-SERVER";
-            $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6";
+            $API_LOGIN_DEV     = "TPP-EC-SERVER";
+            $API_KEY_DEV       = "mYmEhYuLxNkCZrw8FkFVTeZxx4rfY9";
             $server_application_code = $API_LOGIN_DEV;
             $server_app_key = $API_KEY_DEV ;
             $date = new \DateTime();
@@ -5363,8 +5363,8 @@ class MainController extends BaseController
         {
           //$API_LOGIN_DEV     = "TEATROSA-EC-SERVER";
           //$API_KEY_DEV       = "5W1BGgglGnWx9bVYJlatix2d7TY7xj";
-          $API_LOGIN_DEV     = "TPP3-EC-SERVER";
-          $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6 ";
+          $API_LOGIN_DEV     = "TPP-EC-SERVER";
+          $API_KEY_DEV       = "mYmEhYuLxNkCZrw8FkFVTeZxx4rfY9 ";
           $server_application_code = $API_LOGIN_DEV;
           $server_app_key = $API_KEY_DEV ;
           $date = new \DateTime();
@@ -6729,8 +6729,8 @@ class MainController extends BaseController
           //tipo,id_evento,id_funcion,asiento1-asiento2,id_promocion,total, descuento;
 
           try {
-            $API_LOGIN_DEV     = "TPP3-EC-SERVER";
-            $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6";
+            $API_LOGIN_DEV     = "TPP-EC-SERVER";
+            $API_KEY_DEV       = "mYmEhYuLxNkCZrw8FkFVTeZxx4rfY9";
             $server_application_code = $API_LOGIN_DEV;
             $server_app_key = $API_KEY_DEV ;
             $date = new \DateTime();
@@ -7767,8 +7767,8 @@ class MainController extends BaseController
           $authorization_code="";
           $status_transacion="";
           try {
-            $API_LOGIN_DEV     = "TPP3-EC-SERVER";
-            $API_KEY_DEV       = "JdXTDl2d0o0B8ANZ1heJOq7tf62PC6";
+            $API_LOGIN_DEV     = "TPP-EC-SERVER";
+            $API_KEY_DEV       = "mYmEhYuLxNkCZrw8FkFVTeZxx4rfY9";
             $server_application_code = $API_LOGIN_DEV;
             $server_app_key = $API_KEY_DEV ;
             $date = new \DateTime();
