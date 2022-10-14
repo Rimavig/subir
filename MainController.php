@@ -204,6 +204,32 @@ class MainController extends BaseController
               $response->getBody()->write(json_encode($out));
               return $response->withStatus(400);
             }else{
+              $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+              $codigo=substr(str_shuffle($permitted_chars), 0, 5);
+              if (!$item->codigo_identificador) {
+                $band=true;
+                while($band){
+                  $sql = "SELECT codigo_identificador FROM tsa_usuario_cliente WHERE codigo_identificador=:codigo";
+                  $statement = $db->prepare($sql);
+                  $statement->bindValue(':codigo', $codigo, \PDO::PARAM_STR);
+                  $result = $statement->execute();
+                  $band=true;
+                  if($statement->fetch()){
+                    $codigo=substr(str_shuffle($permitted_chars), 0, 5);
+                    $response->getBody()->write(json_encode($codigo));
+                  }else{
+                    $band=false;
+                    break;
+                  }
+                }
+                $sql = "UPDATE tsa_usuario_cliente SET  codigo_identificador=:codigo_identificador WHERE id_usuario_cliente=:id_usuario";
+                $statement1 = $db->prepare($sql);
+                $statement1->bindValue(':id_usuario',  $item->id_usuario_cliente, \PDO::PARAM_STR);
+                $statement1->bindValue(':codigo_identificador',  $codigo, \PDO::PARAM_STR);
+                $result = $statement1->execute();
+              }
+
+
               if (password_verify($password, $item->contrasena)) {
                 $out = array('id'=> $item->id_usuario_cliente, 'nombres'=> $item->nombres,'apellidos'=> $item->apellidos, 'usuario'=> $item->usuario, 'cedula'=> $item->cedula, 'correo'=> $item->correo, 'sexo'=> $item->sexo, 'celular'=> $item->celular,
                 'fecha_nacimiento'=> $item->fecha_nacimiento, 'direccion'=> $item->direccion, 'estado'=> $item->estado, 'amigo_teatro'=> $item->amigo_teatro, 'tokenFCM'=> $item->tokenFCM );
@@ -393,12 +419,33 @@ class MainController extends BaseController
                   $response->getBody()->write(json_encode($out));
                   return $response->withStatus(400);
                 }else{
+                  $permitted_chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                  $codigo=substr(str_shuffle($permitted_chars), 0, 5);
+                  if (!$item->codigo_identificador) {
+                    $band=true;
+                    while($band){
+                      $sql = "SELECT codigo_identificador FROM tsa_usuario_cliente WHERE codigo_identificador=:codigo";
+                      $statement = $db->prepare($sql);
+                      $statement->bindValue(':codigo', $codigo, \PDO::PARAM_STR);
+                      $result = $statement->execute();
+                      $band=true;
+                      if($statement->fetch()){
+                        $codigo=substr(str_shuffle($permitted_chars), 0, 5);
+                        $response->getBody()->write(json_encode($codigo));
+                      }else{
+                        $band=false;
+                        break;
+                      }
+                    }
+                  }
+
                   $six_digit_random_number = random_int(10000, 99999);
                   $client->sendMail1("1", $item->correo, "",($item->nombres).' '.($item->apellidos), $six_digit_random_number);
-                  $sql = "UPDATE tsa_usuario_cliente SET codigo=:codigo, fecha_reseteo=now() WHERE id_usuario_cliente=:id_usuario";
+                  $sql = "UPDATE tsa_usuario_cliente SET codigo=:codigo, fecha_reseteo=now(), codigo_identificador=:codigo_identificador WHERE id_usuario_cliente=:id_usuario";
                   $statement1 = $db->prepare($sql);
                   $statement1->bindValue(':id_usuario',  $item->id_usuario_cliente, \PDO::PARAM_STR);
                   $statement1->bindValue(':codigo',  $six_digit_random_number, \PDO::PARAM_STR);
+                  $statement1->bindValue(':codigo_identificador',  $codigo, \PDO::PARAM_STR);
                   $result = $statement1->execute();
                   $out["status"] = $status_reseteo;
                   $response->getBody()->write(json_encode($out));
@@ -749,6 +796,7 @@ class MainController extends BaseController
                 }
               }
             }
+
             $band=true;
             while($band){
               $sql = "SELECT codigo_identificador FROM tsa_usuario_cliente WHERE codigo_identificador=:codigo";
@@ -2436,6 +2484,71 @@ class MainController extends BaseController
             $response->getBody()->write(json_encode($out));
             return $response->withStatus(500);
           }
+        }
+
+        public function isDiners($request, $response, $args){
+          include("error.php");
+          $response = $response->withHeader('Content-Type', 'application/json');
+          $corpName = $request->getAttribute('corpName');
+          $db = $this->container->get('db');
+          // VALIDACION DE TOKEN
+          $sql = "SELECT * FROM info_corp WHERE name_corp=:name_corp";
+          $statement = $db->prepare($sql);
+          $statement->bindValue(':name_corp', $corpName, \PDO::PARAM_STR);
+          try {
+            $result = $statement->execute();
+          } catch (\PDOException $th) {
+            $result = false;
+            $out["codigo"] = "100";
+            $out["mensaje"] = $error_100_mensaje;
+            $out["causa"] =  $error_100_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+          }
+          if ($result && count($statement->fetchAll())==0){
+            $out["codigo"] = "101";
+            $out["mensaje"] = $error_101_mensaje;
+            $out["causa"] = $error_101_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(401);
+          }
+          // FIN VALIDACION
+          $json = $request->getBody();
+          $body = json_decode($json, true);
+          if (!(isset($body["bin"]))){
+            $out["codigo"] = "201";
+            $out["mensaje"] = $error_201_mensaje;
+            $out["causa"] =  $error_201_causa;
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(400);
+          }
+          $bin = trim($body['bin']);
+          $sql = "SELECT * FROM tsa_tarjetas_diners WHERE bin=:bin";
+          //$sql = "SELECT * FROM categorias where  id_tienda =:tienda";
+          $statement = $db->prepare($sql);
+          $statement->bindValue(':bin', $bin, \PDO::PARAM_STR);
+          try {
+            $result = $statement->execute();
+          } catch (\PDOException $th) {
+            $result = false;
+            $out["codigo"] = "102";
+            $out["mensaje"] = $error_102_mensaje;
+            $out["causa"] = $error_102_causa;
+            $out["error"] = $th->getMessage();
+            $response->getBody()->write(json_encode($out));
+            return $response->withStatus(500);
+          }
+          $band=true;
+          $facturacion = [] ;
+          while($item = $statement->fetch()){
+            $band=false;
+            $facturacion=  array('isDiners'=>"true");
+          }
+          if ($band) {
+              $facturacion=  array('isDiners'=>"false");
+          }
+          $response->getBody()->write(json_encode($facturacion));
+          return $response;
         }
 
         public function getTokenFCM($request, $response, $args){
