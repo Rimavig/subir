@@ -1,0 +1,34 @@
+<?php
+  $path_imagen='/imagenes/';
+  //$path_imagen1='/var/www/html/imagenes/';
+  $path_imagen1='C:\xampp\htdocs\imagenes/';
+  //$path_1='/var/www/html/';
+  $path_1='C:\xampp\htdocs';
+  //$path_imagen2='../../../assets/global/images/';
+  $quienes_somosI='/imagenes/banner/teatro-about.png';
+  $misionI='/imagenes/banner/mision.png';
+  $visionI='/imagenes/banner/vision.png';
+  $quienes_somosI='/imagenes/banner/teatro-about.png';
+  $misionF='/imagenes/banner/mision-fundacion.png';
+  $visionF='/imagenes/banner/vision-fundacion.png';
+  $sobre_nosotrosI='/imagenes/banner/sobre-nosotros-banner-2.png';
+  $intalacionesI='/imagenes/otras/';
+  $publicidadI='/imagenes/publicidad/';
+  $bannerI='/imagenes/banner/';
+  $galeriaI='/imagenes/galeria/';
+  $archivos='/imagenes/descargable/';
+  $Balquiler='/imagenes/banner/alquiler.png';
+  $Bambiental='/imagenes/banner/ambiental.png';
+  $Bamigos='/imagenes/banner/amigos.png';
+  $Bcontacto='/imagenes/banner/contacto.png';
+  $Bfundacion='/imagenes/banner/fundacion.png';
+  $Bpreguntas='/imagenes/banner/preguntas.png';
+  $Bnoticias='/imagenes/banner/noticias.png';
+  $Bteatro='/imagenes/banner/teatro.png';
+  $Bcafe='/imagenes/banner/cafe.png';
+  $Bpromociones='/imagenes/banner/promociones.png';
+  $imagenP='/imagenes/banner/principal.png';
+  $bannerWlogo='/imagenes/banner/bannerW.png';
+  $bannerAlogo='/imagenes/banner/bannerM.png';
+  $imagenCorreo='/imagenes/correos/';
+?>
