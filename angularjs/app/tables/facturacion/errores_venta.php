@@ -22,7 +22,7 @@ foreach($usuarios as $llave => $valores1) {
         <div class="col-lg-12 portlets">
             <div class="panel">
                 <div class="panel-header panel-controls">
-                    <h3><i class="fa fa-table"></i> Tabla de Errores <strong>Facturacion</strong> </h3>
+                    <h3><i class="fa fa-table"></i> Tabla de Errores <strong>Facturación</strong> </h3>
                 </div>
                 <div class="panel-content pagination2 table-responsive">
                     <table class="table filter-footer errorF_data table-dynamic table-errorF " data-table-name="Ventas" id="table-ventas" style="table-layout: fixed;">

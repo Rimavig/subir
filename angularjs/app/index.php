@@ -592,6 +592,8 @@ foreach($usuarios as $llave => $valores1) {
                                 <li class="<?php echo $TprocesosContactos; ?> " ng-class="{ active  : isActive('/contactos')}"><a href="#contactos"> Contactos</a></li>
                                 <li class="<?php echo $TprocesosFundacion; ?> " ng-class="{ active  : isActive('/fundacion')}"><a href="#fundacion"> Fundación</a></li>
                                 <li class="<?php echo $TprocesosPromocionF; ?> " ng-class="{ active  : isActive('/otras-promo')}"><a href="#otras-promo"> Promoción Fidelidad</a></li>
+                                <li class="<?php echo $TprocesosPromocionF; ?> " ng-class="{ active  : isActive('/notificaciones')}"><a href="#notificaciones"> Notificaciones</a></li>
+                                <li class="<?php echo $TprocesosPromocionF; ?> " ng-class="{ active  : isActive('/calendario')}"><a href="#calendario"> Calendario</a></li>
                             </ul>
                         </li>
                         <?php } ?>
@@ -653,6 +655,7 @@ foreach($usuarios as $llave => $valores1) {
                                 <li class="<?php echo $TVentasReporte; ?> "  class="" ng-class="{ active  : isActive('/reportes-venta')}"><a href="#reportes-venta"> Reporte Ventas Facturadas</a></li>
                                 <li class="<?php echo $ErrorFacturacion; ?> "  class="" ng-class="{ active  : isActive('/error-facturacion')}"><a href="#error-facturacion"> Error Facturación</a></li>
                                 <li class="<?php echo $ErrorPagos; ?> "  class="" ng-class="{ active  : isActive('/error-pagos')}"><a href="#error-pagos"> Error Pagos</a></li>
+                                <li class="<?php echo $ErrorPagos; ?> "  class="" ng-class="{ active  : isActive('/error-compras')}"><a href="#error-compras"> Error Compras</a></li>
                                 <!--li class="hide" ng-class="{ active  : isActive('/reportes-cierres')}"><a href="#reportes-cierres"> Reporte Cierres de Caja</a></li>
                                 <li class="hide" ng-class="{ active  : isActive('/generarxml')}"><a href="#generarxml"> Generar Xml</a></li-->
                             </ul>
@@ -1244,10 +1247,13 @@ foreach($usuarios as $llave => $valores1) {
         <script src="tables/procesos/bloqueosCtrl.js"></script>
         <script src="tables/procesos/promocionesCtrl.js"></script>
         <script src="tables/procesos/procesosCtrl.js"></script>
+        <script src="tables/procesos/notificacion/notificacionCtrl.js"></script>
         <script src="tables/reportes/reportesCtrl.js"></script>
         <script src="tables/web/webCtrl.js"></script>
         <script src="tables/facturacion/facturacionCtrl.js"></script>
         <script src="tables/correos/correosCtrl.js"></script>
+        <script src="tables/calendario/fullCalendarCtrl.js"></script>
+
         <!-- BOLETO SCRIPS -->
         <script src="../../../assets/boleto/js/modernizr-3.6.0.min.js"></script>
         <script src="../../../assets/boleto/js/plugins.js"></script>

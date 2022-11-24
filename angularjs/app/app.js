@@ -151,10 +151,7 @@ var MakeApp = angular
         })
             
           //extra
-        .when('/extra-fullCalendar', {
-            templateUrl: 'extra/fullCalendar/fullCalendar.html',
-            controller: 'fullCalendarCtrl'
-        })
+        
         .when('/extra-google', {
             templateUrl: 'extra/google/google.html',
             controller: 'googleCtrl'
@@ -328,6 +325,14 @@ var MakeApp = angular
             templateUrl: 'tables/procesos/ganancia.php',
             controller: 'procesosCtrl'
         })
+        .when('/notificaciones', {
+            templateUrl: 'tables/procesos/notificacion/notificacion.php',
+            controller: 'notificacionCtrl'
+        })
+        .when('/calendario', {
+            templateUrl: 'tables/calendario/fullCalendar.php',
+            controller: 'fullCalendarCtrl'
+        })
         //reportes 
         .when('/reporte-eventos', {
             templateUrl: 'tables/reportes/reporte.php',
@@ -458,6 +463,10 @@ var MakeApp = angular
         })
         .when('/error-pagos', {
             templateUrl: 'tables/facturacion/errores_pagos.php',
+            controller: 'facturacionCtrl'
+        })
+        .when('/error-compras', {
+            templateUrl: 'tables/facturacion/errores_compra.php',
             controller: 'facturacionCtrl'
         })
         .when('/reportes-venta', {

@@ -13,11 +13,7 @@
         "_layout/_forms.scss",
         "_layout/_header.scss",
         "_layout/_banner.scss",
-        "_layout/_navigation.scss",
-        "_layout/_sidebar.scss",
-        "_layout/_section.scss",
-        "_layout/_blog.scss",
-        "_components/_buttons.scss"
+        "_layout/_navigation.scss"
     ],
     "names": [],
     "file": "main.css"

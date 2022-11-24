@@ -19,7 +19,7 @@ $idPlantilla=$datos2[2];
 <div class="modal-dialog modal-mantenimiento">
     <div class="modal-content">
         <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
+            <button type="button" class="close" title="Editar destinatario" data-dismiss="modal" aria-hidden="true"><i class="icons-office-52"></i></button>
             <h4 class="modal-title">Editar <strong>Destinatario</strong> </h4>
         </div>
         <div class="modal-body">

@@ -18,7 +18,7 @@ $correo="";
 
 foreach($usuarios1 as $llave => $valores1) {
     if($valores1==="2"){
-        $editar='<a class="facturarA btn btn-sm btn-dark" style="margin: 5px 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
+        $editar='<a title="Actualizar Factura" class="facturarA btn btn-sm btn-dark" style="margin: 5px 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
     }
 }
 $text=$editar." ".$correo;     

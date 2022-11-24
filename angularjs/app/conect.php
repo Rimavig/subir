@@ -22,7 +22,7 @@ use Thrift\Transport\TSocketPool;
 use Thrift\Transport\TFramedTransport;
 use Thrift\Transport\TBufferedTransport;
 
-
+date_default_timezone_set("America/Bogota");
 $host = 'localhost';
 $port = 7911;
 $socket = new Thrift\Transport\TSocket($host,$port);

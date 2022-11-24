@@ -552,6 +552,7 @@ angular.module('newApp')
         $(tables).each(function () {
             $(this).dataTable().fnDestroy();
         });
+        $(document).off('click','.buscarRP');
         $(document).off('click','.correoR');
         $(document).off('click','.editar');
         $(document).off('click','.editarG');

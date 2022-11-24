@@ -13,22 +13,22 @@ $facturacion="";
 $correo="";
 foreach($usuarios1 as $llave => $valores1) {
     if($valores1==="2"){
-        $editar='<a class="editarC btn btn-sm btn-dark" style="margin: 5px 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
+        $editar='<a title="Editar" class="editarC btn btn-sm btn-dark" style="margin: 5px 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
     }
     if($valores1==="3"){
-        $eliminar='<a class="deleteC btn btn-sm btn-danger" style="margin: 5px 0px;  " href="javascript:;"><i class="icon-trash"></i></a>';
+        $eliminar='<a title="Eliminar" class="deleteC btn btn-sm btn-danger" style="margin: 5px 0px;  " href="javascript:;"><i class="icon-trash"></i></a>';
     }
     if($valores1==="5"){
-        $estado='<a class="estadoC btn btn-sm btn-warning" style="margin: 5px 0px;" href="javascript:;"><i class="icon-lock"></i></a>';
+        $estado='<a title="Activar/inactivar" class="estadoC btn btn-sm btn-warning" style="margin: 5px 0px;" href="javascript:;"><i class="icon-lock"></i></a>';
     }
     if($valores1==="4"){
-        $reset='<a class="claveC btn btn-sm btn-blue" style="margin: 5px 0px;" href="javascript:;"><i class="icon-key"></i></a>';
+        $reset='<a title="Enviar Correo de reseteo" class="claveC btn btn-sm btn-blue" style="margin: 5px 0px;" href="javascript:;"><i class="icon-key"></i></a>';
     }
     if($valores1==="15"){
-        $facturacion='<a class="facturacion btn btn-sm btn-info" style="margin: 5px 0px;" href="javascript:;"><i class="icon-credit-card"></i></a>';
+        $facturacion='<a title="Datos de facturaciòn" class="facturacion btn btn-sm btn-info" style="margin: 5px 0px;" href="javascript:;"><i class="icon-credit-card"></i></a>';
     }
     if($valores1==="20"){
-        $correo='<a class="correoR btn btn-sm btn-success" style="margin: 5px 0px;" href="javascript:;"><i class="icon-envelope"></i></a>';
+        $correo='<a title="Enviar Correo de activaciòn cuenta"class="correoR btn btn-sm btn-success" style="margin: 5px 0px;" href="javascript:;"><i class="icon-envelope"></i></a>';
     }
 }
 $re = $client->getAllUsuarioCliente();

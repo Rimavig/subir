@@ -387,6 +387,10 @@ angular.module('newApp').factory('pluginsService', [function () {
                         carga="tables/facturacion/errores_venta_data.php";
                     }else if ($(this).hasClass('error_pago_data')) {
                         carga="tables/facturacion/errores_pagos_data.php";
+                    }else if ($(this).hasClass('error_compra_data')) {
+                        carga="tables/facturacion/errores_compras_data.php";
+                    }else if ($(this).hasClass('notificacion_data')) {
+                        carga="tables/procesos/notificacion/notificacion_data.php";
                     }
                     if ($(this).hasClass('no-descargar')) {
                         esconder=[];
@@ -950,7 +954,38 @@ angular.module('newApp').factory('pluginsService', [function () {
                  //       console.log("1");
 
                     }
-                    
+                    if ($(this).hasClass('notificacion')) {
+                        table =$(this).dataTable({
+                            "bPaginate" : true,
+                            "destroy":true,
+                            "searching": true,
+                            
+                            "select":true,
+                            "language": {
+                                "url": "//cdn.datatables.net/plug-ins/1.10.15/i18n/Spanish.json"
+                                },
+                            "ajax": carga,
+                           
+                            "order": [[ 8, "desc" ],[ 7, "desc" ]],
+                            "autoWidth": true,
+                           
+                            "aoColumnDefs": [
+                                {
+                                    "targets": [ 0],
+                                        "className": "hide_column"
+                                    },
+                                { "sWidth": "6%", "className": "text-center", "aTargets": [ 1,7,8,9]},
+                                { "sWidth": "7%", "className": "text-center", "aTargets": [ 3,4,2]},
+                                { "sWidth": "15%", "className":  "text-center", "aTargets": [ 5,6] }
+                            ],
+                            "lengthMenu": [[10, 25, 50, 75, 100,-1],[10,25,50,75,100,"All"]],
+                            "pageLength": 10,
+                            "dom": "<'row'<'col-xs-6 col-sm-4 col-md-6 tabla-estilo 'l><'col-xs-6 col-sm-5 col-md-5 tabla-estilo'f><'col-xs-6 col-sm-5 col-md-6 tabla-estilo1'B>r>t<'row'<'col-xs-12 col-sm-6 col-md-6 tabla-estilo'i><'spcol-md-6an6'p>>",
+                            "buttons" : esconder
+                        });
+                 //       console.log("1");
+
+                    }
                     if ($(this).hasClass('perfil')) {
                         table =$(this).dataTable({
                         "bPaginate" : true,

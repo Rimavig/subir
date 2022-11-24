@@ -2089,6 +2089,7 @@ angular.module('newApp')
         $(tables).each(function () {
             $(this).dataTable().fnDestroy();
         });
+        $(document).off('click','.buscarRP');
         $(document).off('click','.correoR1');
         $(document).off('click','.correoR');
         $(document).off('click','.editar_facturacion2');

@@ -31,7 +31,7 @@ foreach($usuarios as $llave => $valores) {
                 </label>
             </div>';
  
-        $text=' <a class="btn btn-sm btn-dark editar"  style="margin: 5px;"  href="javascript:;"><i class="icon-note"></i></a>'; 
+        $text=' <a title="Ver promociones del evento" class="btn btn-sm btn-dark editar"  style="margin: 5px;"  href="javascript:;"><i class="icon-note"></i></a>'; 
         
         $data[]=array($usuario[0],$usuario[1],$usuario[10],$usuario[13],$usuario[6],$usuario[14],$est1,$text);
     } 

@@ -31,7 +31,7 @@ foreach($usuarios as $llave => $valores1) {
 }
 ?>
 <div class="btn-group  <?php echo $crear; ?>">
-    <button class="crearDestino btn btn-sm btn-dark "  href="javascript:;"><i class="fa fa-plus"></i> Destinatario</button>
+    <button class="crearDestino btn btn-sm btn-dark "  title="Crear Destinatario" href="javascript:;"><i class="fa fa-plus"></i> Destinatario</button>
 </div>
 <table class="table" data-table-name="Error de Correo" id="table-editable1" >
     <thead>
@@ -53,8 +53,8 @@ foreach($usuarios as $llave => $valores1) {
             <td> <?php if (isset($pregunt[1])) {echo $pregunt[1]; }  ?> </td>
             <td> <?php if (isset($pregunt[2])) {echo $pregunt[2]; }  ?> </td>
             <td class="text-right">
-                <a class="editarD btn btn-sm btn-dark <?php echo $editar; ?>" style="margin: 5px;  "  href="javascript:;"><i class="icon-note"></i></a>
-                <a class="eliminarD btn btn-sm btn-danger <?php echo $eliminar; ?>" style="margin: 5px;  "  href="javascript:;"><i class="icon-trash"></i></a>
+                <a  title="Editar Destinatario" class="editarD btn btn-sm btn-dark <?php echo $editar; ?>" style="margin: 5px;  "  href="javascript:;"><i class="icon-note"></i></a>
+                <a  title="Eliminar Destinatario" class="eliminarD btn btn-sm btn-danger <?php echo $eliminar; ?>" style="margin: 5px;  "  href="javascript:;"><i class="icon-trash"></i></a>
             </td>
         </tr>
         <?php

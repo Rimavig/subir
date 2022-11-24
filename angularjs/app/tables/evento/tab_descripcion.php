@@ -111,8 +111,8 @@ foreach($historial as $llave => $valores) {
                                 <td> <?php if (isset($ficha[2])) {echo $ficha[2]; }  ?> </td>
                                 <td> <?php if (isset($ficha[3])) {echo $ficha[3]; }  ?> </td>
                                 <td class="text-right <?php echo $descripcion; ?>">
-                                    <a class="editarFicha btn btn-sm btn-dark" style="margin: 5px;  "  href="javascript:;"><i class="icon-note"></i></a>
-                                    <a class="deleteFicha btn btn-sm btn-danger" style="margin: 5px;  "  href="javascript:;"><i class="icon-trash"></i></a>
+                                    <a title="Editar Ficha" class="editarFicha btn btn-sm btn-dark" style="margin: 5px;  "  href="javascript:;"><i class="icon-note"></i></a>
+                                    <a title="Eliminar Ficha" class="deleteFicha btn btn-sm btn-danger" style="margin: 5px;  "  href="javascript:;"><i class="icon-trash"></i></a>
                                 </td>
                             </tr>
                             <?php
@@ -125,8 +125,8 @@ foreach($historial as $llave => $valores) {
             </div>
         </div>
         <div class="modal-footer text-center">
-            <button type="submit" class="btn btn-embossed btn-danger editar_sinopsis <?php echo $descripcion; ?>" ><i class="fa fa-save"></i> Guardar</button>
-            <button type="button" class="btn btn-embossed btn-default cancelar " data-dismiss="modal" aria-hidden="true">Salir</button>
+            <button type="submit" title="Guardar Descripciòn" class="btn btn-embossed btn-danger editar_sinopsis <?php echo $descripcion; ?>" ><i class="fa fa-save"></i> Guardar</button>
+            <button type="button" title="Salir del Evento" class="btn btn-embossed btn-default cancelar " data-dismiss="modal" aria-hidden="true">Salir</button>
 
         </div>     
     </div>

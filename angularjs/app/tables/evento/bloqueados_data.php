@@ -12,13 +12,13 @@ $reset="";
 
 foreach($usuarios1 as $llave => $valores1) {
     if($valores1==="2"){
-        $editar='<a class="editar btn btn-sm btn-dark" style="margin: 5px 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
+        $editar='<a  class="editar btn btn-sm btn-dark" style="margin: 5px 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
     }
     if($valores1==="3"){
         $eliminar='<a class="delete btn btn-sm btn-danger" style="margin: 5px 0px;  " href="javascript:;"><i class="icon-trash"></i></a>';
     }
     if($valores1==="5"){
-        $estado='<a class="estadoBloqueados btn btn-sm btn-blue" style="margin: 5px;"  style="margin: 0px;" href="javascript:;"><i class="icon-key"></i></a>';
+        $estado='<a title="Eliminar de bloqueados" class="estadoBloqueados btn btn-sm btn-blue" style="margin: 5px;"  style="margin: 0px;" href="javascript:;"><i class="icon-key"></i></a>';
     }
 }
 $re = $client->getAllEvento("bloqueados");

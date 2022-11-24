@@ -147,7 +147,7 @@ foreach($historial as $llave => $valores) {
 
     </div>
     <div class="modal-footer text-center">
-            <button type="submit" class="btn btn-embossed btn-danger editar_imagenH <?php echo $multimedia; ?>" ><i class="fa fa-save"></i> Guardar Imagen</button>
+            <button type="submit" title="Guardar Imagenes" class="btn btn-embossed btn-danger editar_imagenH <?php echo $multimedia; ?>" ><i class="fa fa-save"></i> Guardar Imagen</button>
             <button type="button" class="btn btn-embossed btn-default cancelar " data-dismiss="modal" aria-hidden="true">Salir</button>
     </div>
 </form>

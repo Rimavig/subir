@@ -15,13 +15,13 @@ $correo="";
 
 foreach($usuarios1 as $llave => $valores1) {
     if($valores1==="2"){
-        $editar='<a class="editar btn btn-sm btn-dark" style="margin: 5px ;  "  href="javascript:;"><i class="icon-note"></i></a>';
+        $editar='<a title="Ver Asientos" class="editar btn btn-sm btn-dark" style="margin: 5px ;  "  href="javascript:;"><i class="icon-note"></i></a>';
     }
     if($valores1==="3"){
-        $eliminar='<a class="delete btn btn-sm btn-danger" style="margin: 5px ;  " href="javascript:;"><i class="icon-trash"></i></a>';
+        $eliminar='<a title="Eliminar cortesia" class="delete btn btn-sm btn-danger" style="margin: 5px ;  " href="javascript:;"><i class="icon-trash"></i></a>';
     }
     if($valores1==="20"){
-        $correo='<a class="correoR btn btn-sm btn-success" style="margin: 5px ;" href="javascript:;"><i class="icon-envelope"></i></a>';
+        $correo='<a title="Enviar Correo" class="correoR btn btn-sm btn-success" style="margin: 5px ;" href="javascript:;"><i class="icon-envelope"></i></a>';
     }
     if($valores1==="21"){
         $ticket=true;
@@ -43,7 +43,7 @@ foreach($usuarios as $llave => $valores) {
             $estadoT="ON";
         } 
         if($ticket){
-            $est2='<a class="btn btn-sm btn-blue" style="margin: 5px;" href="https://teatrosanchezaguilar.org/plantilla/pdf/ticket'.$usuario[0].'.pdf" target="_blank"><i class="fa fa-check-square"></i></a>';
+            $est2='<a title="Ver tickets" class="btn btn-sm btn-blue" style="margin: 5px;" href="https://teatrosanchezaguilar.org/plantilla/pdf/ticket'.$usuario[0].'.pdf" target="_blank"><i class="fa fa-check-square"></i></a>';
         }else{
             $est2="";
         }

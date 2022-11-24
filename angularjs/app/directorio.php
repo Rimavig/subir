@@ -4,7 +4,6 @@
   //$path_imagen1='C:\xampp\htdocs\imagenes/';
   $path_1='/var/www/html/';
   //$path_1='C:\xampp\htdocs';
-  //$path_imagen2='../../../assets/global/images/';
   $quienes_somosI='/imagenes/banner/teatro-about.png';
   $misionI='/imagenes/banner/mision.png';
   $visionI='/imagenes/banner/vision.png';

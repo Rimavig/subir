@@ -18,10 +18,10 @@ $correo="";
 
 foreach($usuarios1 as $llave => $valores1) {
     if($valores1==="2"){
-        $editar='<a class="editarMV btn btn-sm btn-dark" style="margin: 5px 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
+        $editar='<a title="Ver Compra" class="editarMV btn btn-sm btn-dark" style="margin: 5px 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
     }
     if($valores1==="20"){
-        $correo='<a class="correoR1 btn btn-sm btn-success" style="margin: 5px 0px;" href="javascript:;"><i class="icon-envelope"></i></a>';
+        $correo='<a title="Enviar correo" class="correoR1 btn btn-sm btn-success" style="margin: 5px 0px;" href="javascript:;"><i class="icon-envelope"></i></a>';
     }
 }
 $text=$editar." ".$correo;     

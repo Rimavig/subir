@@ -1,5 +1,6 @@
 <?php
 include ("../../conect.php");
+include ("../../conect_dashboard.php");
 include ("../../autenticacion.php");
 include ("../../directorio.php");
 $band=true;
@@ -82,11 +83,32 @@ if (isset($_POST["tipo"])) {
         $re = $client->updateFactorAmigos($id,$factor,$descuento,$_SESSION["usuario"]);
         $resultado = "".$re;
     }
+    if ( $tipo=="notificacion"){
+        $notificacion=$_POST["notificacion"];
+        $destinatario=$_POST["destinatario"];
+        $fecha=$_POST["fecha"];
+        $estado=$_POST["estado"];
+        $evento=$_POST["evento"];
+        $titulo=$_POST["titulo"];
+        $descripcion=$_POST["descripcion"];
+        if ( $destinatario=="evento"){
+            $valuesA=$_POST["eventoV"];
+        }else{
+            $valuesA=$_POST["valuesA"];
+        }
+        $re = $client2->notificacion($destinatario,$notificacion,$valuesA,$titulo,$descripcion,$evento,$fecha,$estado,$_SESSION["usuario"]);
+        $resultado = "".$re;
+    }
+    if ( $tipo=="deleteN"){
+        $id=$_POST["id"];
+        $re = $client2->getGeneral2("eliminarN",$id);
+        $resultado = "".$re;
+    }
 }
 if($resultado=="true"){
     $tipo=$_POST["tipo"];
-    $tipo2=$_POST["tipo2"];
     if($tipo=="editar"){
+        $tipo2=$_POST["tipo2"];
         ?>
         <script type="text/javascript"> 
             var n = noty({
@@ -128,6 +150,7 @@ if($resultado=="true"){
         <?php
     
     }else if($tipo=="crear"){
+        $tipo2=$_POST["tipo2"];
         ?>
         <script type="text/javascript"> 
             var n = noty({
@@ -161,6 +184,7 @@ if($resultado=="true"){
         <?php
     
     }else if($tipo=="eliminar"){
+        $tipo2=$_POST["tipo2"];
         ?>
         <script type="text/javascript"> 
             var n = noty({
@@ -194,6 +218,7 @@ if($resultado=="true"){
         <?php
     
     }else if($tipo=="adminAmigosB"){
+        $tipo2=$_POST["tipo2"];
         ?>
         <script type="text/javascript"> 
             var n = noty({
@@ -212,6 +237,50 @@ if($resultado=="true"){
             $(".adminAmigosB").prop("disabled",false);
             $(".adminCumpleB").prop("disabled",false);
             $(".adminRegaloB").prop("disabled",false);
+        </script>
+        
+        <?php
+    
+    }else if($tipo=="notificacion"){
+        ?>
+        <script type="text/javascript"> 
+            var n = noty({
+            text        : '<div class="alert alert-success "><p><strong>Se envìo correctamente</p></div>',
+            layout      : 'topCenter', //or left, right, bottom-right...
+            theme       : 'made',
+            type        : 'error',
+            maxVisible  : 5,
+            animation   : {
+                open  : 'animated bounceIn',
+                close : 'animated bounceOut'
+            },
+            timeout: 3000,
+            });
+            var table = $('#table-editable').DataTable();
+            table.ajax.reload();
+            $(".enviar").prop("disabled",false);
+        </script>
+        
+        <?php
+    
+    }else if($tipo=="deleteN"){
+        ?>
+        <script type="text/javascript"> 
+            var n = noty({
+            text        : '<div class="alert alert-success "><p><strong>Se eliminó correctamente</p></div>',
+            layout      : 'topCenter', //or left, right, bottom-right...
+            theme       : 'made',
+            type        : 'error',
+            maxVisible  : 5,
+            animation   : {
+                open  : 'animated bounceIn',
+                close : 'animated bounceOut'
+            },
+            timeout: 3000,
+            });
+            var table = $('#table-editable').DataTable();
+            table.ajax.reload();
+            $(".deleteN").prop("disabled",false);
         </script>
         
         <?php
@@ -308,6 +377,48 @@ if($resultado=="true"){
             $(".adminAmigosB").prop("disabled",false);
             $(".adminCumpleB").prop("disabled",false);
             $(".adminRegaloB").prop("disabled",false);
+        </script>
+        
+        <?php
+    
+    }else if($tipo=="notificacion"){
+        ?>
+        <script type="text/javascript"> 
+            var n = noty({
+                text        : '<div class="alert alert-warning "><p><strong><?php echo $resultado;?></p></div>',
+                layout      : 'topCenter', //or left, right, bottom-right...
+                theme       : 'made',
+                type        : 'error',
+                maxVisible  : 5,
+                animation   : {
+                    open  : 'animated bounceIn',
+                    close : 'animated bounceOut'
+                },
+                timeout: 3000,
+            });
+            $('.page-spinner-loader').removeClass('hide');
+            $(".enviar").prop("disabled",false);
+        </script>
+        
+        <?php
+    
+    }else if($tipo=="deleteN"){
+        ?>
+        <script type="text/javascript"> 
+            var n = noty({
+                text        : '<div class="alert alert-warning "><p><strong><?php echo $resultado;?></p></div>',
+                layout      : 'topCenter', //or left, right, bottom-right...
+                theme       : 'made',
+                type        : 'error',
+                maxVisible  : 5,
+                animation   : {
+                    open  : 'animated bounceIn',
+                    close : 'animated bounceOut'
+                },
+                timeout: 3000,
+            });
+            $('.page-spinner-loader').removeClass('hide');
+            $(".deleteN").prop("disabled",false);
         </script>
         
         <?php

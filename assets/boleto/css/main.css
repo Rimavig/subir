@@ -2732,12 +2732,7 @@ input[type="submit"] {
 }
 
 /*Blog-Sedebar Starts Here*/
-.widget {
-  border-radius: 10px;
-  background-color: #032055;
-  padding: 30px;
-  margin-bottom: 30px;
-}
+
 
 .widget:last-child {
   margin-bottom: 0;

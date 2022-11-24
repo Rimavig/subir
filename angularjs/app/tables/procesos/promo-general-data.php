@@ -12,13 +12,13 @@ $reset="";
 
 foreach($usuarios1 as $llave => $valores1) {
     if($valores1==="2"){
-        $editar='<a class="btn btn-sm btn-dark editar_general"  style="margin: 5px;"  href="javascript:;"><i class="icon-note"></i></a>';
+        $editar='<a title="Editar" class="btn btn-sm btn-dark editar_general"  style="margin: 5px;"  href="javascript:;"><i class="icon-note"></i></a>';
     }
     if($valores1==="3"){
-        $eliminar='<a class="btn btn-sm btn-danger delete_general" style="margin: 5px;"  href="javascript:;"><i class="icon-trash"></i></a>';
+        $eliminar='<a title="Eliminar" class="btn btn-sm btn-danger delete_general" style="margin: 5px;"  href="javascript:;"><i class="icon-trash"></i></a>';
     }
     if($valores1==="5"){
-        $estad='<a class="btn btn-sm btn-blue estado_general"  style="margin: 5px;"  style="margin: 0px;" href="javascript:;"><i class="icon-key"></i></a>';
+        $estad='<a title="Activar/inactivar" class="btn btn-sm btn-blue estado_general"  style="margin: 5px;"  style="margin: 0px;" href="javascript:;"><i class="icon-key"></i></a>';
     }
 }
 $re = $client->getAllPromociones();

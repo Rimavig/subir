@@ -13291,6 +13291,19 @@ body.rtl .layout-options .img-sidebar-right {
 .rtl .sidebar-condensed.sidebar-hover:not(.sidebar-collapsed) .main-content {
   margin-right: 0;
 }
+.bg-success {
+  background-color: #216804!important;
+  }
+.bg-warning {
+  background-color: #bda006!important;
+}
+td.fc-event-container{
+  text-align: center !important;
+}
+.fc-time-grid-event {
+  max-width: 200px;
+  text-align: center !important;
+}
 .page-content.page-calendar {min-width: 600px;}
 .main-content .page-content.page-thin .panel {margin-bottom: 10px;}
 .topbar .header-left .topnav > ul > li > a {display: inline-block;}

@@ -145,8 +145,8 @@ foreach($usuarios as $llave => $valores1) {
                         </div>
                     </div>
                     <div class="modal-footer text-center">
-                        <button type="submit" class="btn btn-embossed btn-danger guardarCorreo <?php echo $editar; ?>" ><i class="fa fa-save"></i> Guardar</button>
-                        <button type="submit" class="btn btn-embossed btn-default correoPrueba <?php echo $correo; ?>" ><i class="fa fa-mail-forward"></i> Correo De Prueba</button>
+                        <button type="submit" title="Guardar plantilla de correo" class="btn btn-embossed btn-danger guardarCorreo <?php echo $editar; ?>" ><i class="fa fa-save"></i> Guardar</button>
+                        <button type="submit" title="Enviar Correo" class="btn btn-embossed btn-default correoPrueba <?php echo $correo; ?>" ><i class="fa fa-mail-forward"></i> Correo De Prueba</button>
                     </div>
                 </div>
             </div>

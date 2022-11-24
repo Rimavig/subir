@@ -38,13 +38,13 @@ if (isset($_GET["id"])) {
     $usuarios =explode(';;',$resultado);
     foreach($usuarios1 as $llave => $valores1) {
         if($valores1==="2"){
-            $editar='<a class="editar btn btn-sm btn-dark" style="margin: 5px 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
+            $editar='<a title="Editar imagen" class="editar btn btn-sm btn-dark" style="margin: 5px 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
         }
         if($valores1==="3"){
-            $eliminar='<a class="delete btn btn-sm btn-danger" style="margin: 5px 0px;  " href="javascript:;"><i class="icon-trash"></i></a>';
+            $eliminar='<a title="Eliminar imagen" class="delete btn btn-sm btn-danger" style="margin: 5px 0px;  " href="javascript:;"><i class="icon-trash"></i></a>';
         }
         if($valores1==="5"){
-            $estado='<a class="estado btn btn-sm btn-warning" style="margin: 5px 0px;" href="javascript:;"><i class="icon-lock"></i></a>';
+            $estado='<a title="Activar/inactivar imagen" class="estado btn btn-sm btn-warning" style="margin: 5px 0px;" href="javascript:;"><i class="icon-lock"></i></a>';
         }
     }
 }

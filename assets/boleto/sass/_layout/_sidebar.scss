@@ -381,7 +381,7 @@
 /*Blog-Sedebar Starts Here*/
 .widget {
     @include border-radius(10px);
-    background-color: $bg-one;
+    //background-color: $bg-one;
     padding: 30px;
     margin-bottom: 30px;
     &:last-child {

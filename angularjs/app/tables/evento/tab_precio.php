@@ -114,9 +114,9 @@ $PnombreT="el precio";
                     </div>
                 </th>
                 <td class="text-right <?php echo $precios; ?>">
-                    <a class="editarPrecio btn btn-sm btn-dark" style="margin: 5px;"  href="javascript:;"><i class="icon-note"></i></a>
-                    <a class="deletePrecio  btn btn-sm btn-danger" style="margin: 5px;"  href="javascript:;"><i class="icon-trash"></i></a>
-                    <a class="estadoPrecio  btn btn-sm btn-blue" style="margin: 5px;"  style="margin: 0px;" href="javascript:;"><i class="icon-key"></i></a>
+                    <a title="Editar platea" class="editarPrecio btn btn-sm btn-dark" style="margin: 5px;"  href="javascript:;"><i class="icon-note"></i></a>
+                    <a title="Eliminar platea" class="deletePrecio  btn btn-sm btn-danger" style="margin: 5px;"  href="javascript:;"><i class="icon-trash"></i></a>
+                    <a title="Activas/Inactivar platea" class="estadoPrecio  btn btn-sm btn-blue" style="margin: 5px;"  style="margin: 0px;" href="javascript:;"><i class="icon-key"></i></a>
                 </td>
             </tr>
             <?php

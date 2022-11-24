@@ -532,7 +532,6 @@ angular.module('newApp')
         //editar mapa principal 
             //botones de barra editar
         $(document).on('click', '#btnA', function (e) {
-            console.log("asdsad");
             var selectedItem = $("#filaA option:selected");
             var selectedItem1 = $("#filaB option:selected");
             var selectedItem2= $("#filaC option:selected");
@@ -969,12 +968,6 @@ angular.module('newApp')
                 const valuesD = Array.from(valueD).map(el => el.value);
                 const valuesE = Array.from(valueE).map(el => el.value);
                 const valuesF = Array.from(valueF).map(el => el.value);
-                console.log(valuesA);
-                console.log(valuesB);
-                console.log(valuesC);
-                console.log(valuesD);
-                console.log(valuesE);
-                console.log(valuesF);
                 var asientos="A:"+valuesA+"; B:"+valuesB+";C:"+valuesC+"; D:"+valuesD+";E:"+valuesE+"; F:"+valuesF;
                 $('.page-spinner-loader').removeClass('hide');
                 var nombres=$(this).parents().find('#nombres')[0].value;

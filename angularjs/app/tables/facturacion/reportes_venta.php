@@ -11,6 +11,7 @@ if($resultado==""){
     <a ng-click="reload()">
     <?php
 }
+
 foreach($usuarios as $llave => $valores1) {
     if($valores1==="1"){
         $crear="";
@@ -35,14 +36,14 @@ foreach($usuarios as $llave => $valores1) {
                         </div>
                         <div class="col-lg-3 col-md-4  col-xs-6 text-center">
                             <label for="field-1" class="control-label">Fecha Final</label>
-                            <input type="date" name="fechaF" class="form-control" id="fechaF" style="padding: 0px 10px; width:150px;" value ="<?php echo date('Y-m-d'); ?>" placeholder="07/08/1995"  required>
+                            <input type="date" name="fechaF" class="form-control" id="fechaF" style="padding: 0px 10px; width:150px;" value ="<?php echo date("Y-m-d", strtotime("+1 day")); ?>" placeholder="07/08/1995"  required>
                         </div>
                         <div class="col-md-2  col-xs-12 ">
                             <button type="button" class="btn btn-primary btn-embossed bnt-square buscarRP" style="padding: 0px 10px;" > Buscar</button>
                         </div> 
                     </div>
                     <table class="table filter-footer reportesV_data table-dynamic table-reportesV "  
-                    data-table-fechaf="<?php echo date('Y-m-d'); ?>"  data-table-fechai="<?php echo date("Y-m-d", strtotime(date('Y-m-d')."- 1 week")); ?>" data-table-name="Ventas" id="table-ventas" style="table-layout: fixed;">
+                    data-table-fechaf="<?php echo date("Y-m-d", strtotime("+1 day")); ?>"  data-table-fechai="<?php echo date("Y-m-d", strtotime(date('Y-m-d')."- 1 week")); ?>" data-table-name="Ventas" id="table-ventas" style="table-layout: fixed;">
                         <thead>
                             <tr>
                                 <th>id_compra</th>

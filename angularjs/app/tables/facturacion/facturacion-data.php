@@ -11,10 +11,10 @@ if (isset($_GET["var1"])) {
 
 $datat=NULL;
 $data=[];
-$text=' <a class="editarF btn btn-sm btn-dark" style="margin: 0px;  "  href="javascript:;"><i class="icon-note"></i></a>
-<a class="deleteF btn btn-sm btn-danger" style="margin: 0px;  " href="javascript:;"><i class="icon-trash"></i></a>
-<a class="estadoF btn btn-sm btn-warning" style="margin: 0px;" href="javascript:;"><i class="icon-lock"></i></a>
-<a class="seleccionar btn btn-sm btn-blue" style="margin: 0px;" href="javascript:;"><i class="fa fa-check-square"></i></a>';      
+$text=' <a title="Editar datos de facturación" class="editarF btn btn-sm btn-dark" style="margin: 0px;  "  href="javascript:;"><i class="icon-note"></i></a>
+<a title="Eliminar datos de facturación" class="deleteF btn btn-sm btn-danger" style="margin: 0px;  " href="javascript:;"><i class="icon-trash"></i></a>
+<a title="Activas/Inactivar datos de facturación" class="estadoF btn btn-sm btn-warning" style="margin: 0px;" href="javascript:;"><i class="icon-lock"></i></a>
+<a title="Seleccionar" class="seleccionar btn btn-sm btn-blue" style="margin: 0px;" href="javascript:;"><i class="fa fa-check-square"></i></a>';      
 foreach($usuarios as $llave => $valores) {
     $usuario =explode(',,,',$valores);
     $estado="";

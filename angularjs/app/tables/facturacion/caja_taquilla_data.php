@@ -11,7 +11,7 @@ $estado=false;
 
 foreach($usuarios1 as $llave => $valores1) {
     if($valores1==="2"){
-        $editar='<a class="editarMT btn btn-sm btn-dark" style="margin: 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
+        $editar='<a title="Ver movimientos" class="editarMT btn btn-sm btn-dark" style="margin: 0px;  "  href="javascript:;"><i class="icon-note"></i></a>';
     }
     if($valores1==="27"){
         $estado=true;

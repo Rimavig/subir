@@ -337,12 +337,12 @@ if (isset($_POST["var1"])) {
 </div>    
 <div class="modal-footer text-center">
     <button type="reset" class="atrasRCompra btn btn-embossed btn-default <?php echo  $var3; ?>" >Atras</button>
-    <button type="reset" class="facturar btn btn-embossed btn-warning <?php echo  $var4." ".$actualizarF; ?>" >Actualizar Factura</button>
-    <button type="reset" class="deleteCompra btn btn-embossed btn-danger <?php echo  $var4." ".$eliminarF; ?>" >Eliminar Compra</button>
-    <button type="reset" class="devolucion btn btn-embossed btn-blue <?php echo  $var4." ".$devolucion; ?>" >Devolución Paymentez</button>
-    <button type="reset" class="anularFacura btn btn-embossed btn-blue <?php echo  $var4." ".$anularC; ?>" >Anular Compra</button>
-    <button type="reset" class="notaCredito btn btn-embossed btn-success <?php echo  $var4." ".$notaC; ?>" >Crear Nota Crédito</button>
-    <button type="reset" class="salirRCompra btn btn-embossed btn-danger">Salir</button>
+    <button type="reset" title="Actualizá factura" class="facturar btn btn-embossed btn-warning <?php echo  $var4." ".$actualizarF; ?>" >Actualizar Factura</button>
+    <button type="reset" title="Elimina compra pero no la factura" class="deleteCompra btn btn-embossed btn-danger <?php echo  $var4." ".$eliminarF; ?>" >Eliminar Compra</button>
+    <button type="reset" title="Devolver pago Paymentez" class="devolucion btn btn-embossed btn-blue <?php echo  $var4." ".$devolucion; ?>" >Devolución Paymentez</button>
+    <button type="reset" title="Anula toda la compra si la factura no se generó" class="anularFacura btn btn-embossed btn-blue <?php echo  $var4." ".$anularC; ?>" >Anular Compra</button>
+    <button type="reset" title="Crear nota credito total" class="notaCredito btn btn-embossed btn-success <?php echo  $var4." ".$notaC; ?>" >Crear Nota Crédito</button>
+    <button type="reset" title="Salir" class="salirRCompra btn btn-embossed btn-danger">Salir</button>
 </div>
 <div class="modal fade  Cpromocion" data-keyboard="false" data-backdrop="static" id="Cpromocion" aria-hidden="true">
 </div>

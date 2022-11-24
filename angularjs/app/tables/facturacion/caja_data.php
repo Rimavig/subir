@@ -33,7 +33,7 @@ foreach($usuarios as $llave => $valores1) {
     }
 
     if($valores1==="5"){
-        $estado='<a class="estado btn btn-sm btn-warning" style="margin: 5px 0px;" href="javascript:;"><i class="icon-lock"></i></a>';
+        $estado='<a title="Activas/Inactivar caja" class="estado btn btn-sm btn-warning" style="margin: 5px 0px;" href="javascript:;"><i class="icon-lock"></i></a>';
     }
 }
 $re = $client->getAllCaja($_SESSION["id"]);
@@ -42,7 +42,7 @@ $usuarios= explode(';;',$resultado);
 $datat=NULL;
 $data=[];
 
-$text=' <a class="editar btn btn-sm btn-dark" style="margin: 0px;  "  href="javascript:;"><i class="icon-note"></i></a>'." ".$estado;      
+$text=' <a title="Abrir Venta taquilla" class="editar btn btn-sm btn-dark" style="margin: 0px;  "  href="javascript:;"><i class="icon-note"></i></a>'." ".$estado;      
 foreach($usuarios as $llave => $valores) {
     $usuario =explode(',,,',$valores);
     $estado="";
