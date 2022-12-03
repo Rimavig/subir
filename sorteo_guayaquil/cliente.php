@@ -1,7 +1,7 @@
 <?php
 
-//$GLOBALS['THRIFT_ROOT'] = '/var/www/html/php/thrift-0.11.0/lib/php/lib';
-$GLOBALS['THRIFT_ROOT'] = 'C:\Users\Richard Vivanco\Downloads\thrift-0.11.0\thrift-0.11.0\lib\php\lib';
+$GLOBALS['THRIFT_ROOT'] = '/var/www/html/thrift-0.11.0/thrift-0.11.0/lib/php/lib';
+//$GLOBALS['THRIFT_ROOT'] = 'C:\Users\Richard Vivanco\Downloads\thrift-0.11.0\thrift-0.11.0\lib\php\lib';
 require_once $GLOBALS['THRIFT_ROOT'].'/Types.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/BANCOServer.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/Thrift/Transport/TTransport.php';
@@ -46,7 +46,7 @@ if ($cont>6) {
   ?>
   <div class="d-flex flex-column align-items-center2 padding-top-2 padding-left-2">
       <div class="content-image-employee d-flex">
-          <img class="margin-auto" width="150" src="fotos/<?php echo $codigo; ?>.jpg" id="pic-employee" alt="" srcset="">
+          <img class="margin-auto" width="150" src="fotos/<?php echo $codigo; ?>.png" id="pic-employee" alt="" srcset="">
       </div>
       <div class="margin-top-1"></div>
       <h1 class="winner-text margin-top-1" id="names"><?php echo $nombre; ?></h1>
@@ -71,7 +71,16 @@ if ($cont>6) {
   </div>
 
   <?php
-}else{
+}else if ($resultado=="BIENVENIDO A LA FIESTA DEL AÑO") {
+  ?>
+  <div class="d-flex flex-column">
+      <div class="margin-top-1"></div>
+      <h1 class="winner-name2" id="names-winner">LA FIESTA DEL AÑO</h1>
+      <div class="margin-top-1"></div>
+      <h1 class="info-user2">DESPUÉS DE UN LARGO TIEMPO VOLVEMOS A CELEBRAR JUNTOS</h1>
+  </div>
+  <?php
+} else {
   ?>
   <div class="d-flex flex-column width-100">
 

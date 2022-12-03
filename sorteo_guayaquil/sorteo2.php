@@ -1,7 +1,7 @@
 <?php
 
-//$GLOBALS['THRIFT_ROOT'] = '/var/www/html/php/thrift-0.11.0/lib/php/lib';
-$GLOBALS['THRIFT_ROOT'] = 'C:\Users\Richard Vivanco\Downloads\thrift-0.11.0\thrift-0.11.0\lib\php\lib';
+$GLOBALS['THRIFT_ROOT'] = '/var/www/html/thrift-0.11.0/thrift-0.11.0/lib/php/lib';
+//$GLOBALS['THRIFT_ROOT'] = 'C:\Users\Richard Vivanco\Downloads\thrift-0.11.0\thrift-0.11.0\lib\php\lib';
 require_once $GLOBALS['THRIFT_ROOT'].'/Types.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/BANCOServer.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/Thrift/Transport/TTransport.php';
@@ -46,7 +46,7 @@ if ($cont>6) {
 }
   ?>
   <div class="content-image-winner d-flex margin-auto"  style="width: 180px; height: 180px; margin-top: 30px;">
-      <img class="margin-auto" width="150" src="fotos/<?php echo $codigo; ?>.jpg" id="pic-employee" alt="" srcset="">
+      <img class="margin-auto" width="150" src="fotos/<?php echo $codigo; ?>.png" id="pic-employee" alt="" srcset="">
   </div>
   <div class="margin-top-1"></div>
   <h1 class="winner-name" id="names-winner"><?php echo $nombre." ".$apellido; ?></h1>

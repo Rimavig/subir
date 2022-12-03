@@ -14,7 +14,7 @@ body {
     position: fixed;
     width: 89%;
     height: 83%;
-    border: solid 1px;
+    border: solid 3px;
     border-color: azure;
     /* margin: auto; */
     left: 60px;
@@ -82,7 +82,7 @@ body {
     border: solid #9C855E 0.5px;
     border-radius: 50%;
     overflow: hidden;
-    margin-top: -50px;
+    margin-top: 50px;
 }
 
 .border-2 {
@@ -229,8 +229,8 @@ body {
 .winner-label {
     font-family: bittersweetNF;
     color: white;
-    letter-spacing: 2px;
-    font-size: 50px;
+    letter-spacing: 7px;
+    font-size: 70px;
     margin: auto;
 }
 .winner-label2 {
@@ -270,16 +270,16 @@ body {
 }
 
 .button-select-winner {
-  background-color: #DBB777;
+  background-color: #F2F1EE;
   text-decoration: none;
   border: none;
-  width: 250px;
+  width: 280px;
   height: 50px;
   border-radius: 15px;
   font-family: aftika-regular;
   font-size: 24px;
   letter-spacing: 2px;
-  margin-top: -40px;
+  margin-top: 40px;
   font-weight: bold;
 }
 .selecting-text {

@@ -9,7 +9,7 @@
     <title>Totem</title>
 </head>
 <body>
-    <img src="images/fondo-employee.png" class="backgorund-image-employee" alt="" srcset="">
+    <img src="images/fondo.png" class="backgorund-image-employee" alt="" srcset="">
     <div class="linea-fondo d-flex flex-row cliente">
       <div class="d-flex flex-column width-100">
 

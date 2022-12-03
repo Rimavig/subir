@@ -1,7 +1,7 @@
 <?php
 
-//$GLOBALS['THRIFT_ROOT'] = '/var/www/html/php/thrift-0.11.0/lib/php/lib';
-$GLOBALS['THRIFT_ROOT'] = 'C:\Users\Richard Vivanco\Downloads\thrift-0.11.0\thrift-0.11.0\lib\php\lib';
+$GLOBALS['THRIFT_ROOT'] = '/var/www/html/thrift-0.11.0/thrift-0.11.0/lib/php/lib';
+//$GLOBALS['THRIFT_ROOT'] = 'C:\Users\Richard Vivanco\Downloads\thrift-0.11.0\thrift-0.11.0\lib\php\lib';
 require_once $GLOBALS['THRIFT_ROOT'].'/Types.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/BANCOServer.php';
 require_once $GLOBALS['THRIFT_ROOT'].'/Thrift/Transport/TTransport.php';
@@ -61,11 +61,11 @@ if ($cont>6) {
     <img src="images/fondo-employee.png" class="backgorund-image-employee" alt="" srcset="">
     <div class="linea-fondo d-flex flex-column" style="justify-content: start;">
         <div class="d-flex flex-column align-items-center">
-            <h1 style="margin-top: 120px;" class="selecting-text">Esperando al ganador</h1>
+            <h1 style="margin-top: 120px;" class="selecting-text">¡Y el ganador es....!</h1>
             <img src="images/adorno_ganador.png" style="width: 70%;" alt="" srcset="">
             <div class="d-flex flex-column sorteo2">
                 <div class="content-image-winner d-flex margin-auto"  style="width: 180px; height: 180px; margin-top: 30px;">
-                    <img class="margin-auto" width="150" src="fotos/<?php echo $codigo; ?>.jpg" id="pic-employee" alt="" srcset="">
+                    <img class="margin-auto" width="150" src="fotos/<?php echo $codigo; ?>.png" id="pic-employee" alt="" srcset="">
                 </div>
                 <div class="margin-top-1"></div>
                 <h1 class="winner-name" id="names-winner"><?php echo $nombre." ".$apellido; ?></h1>
@@ -85,7 +85,7 @@ if ($cont>6) {
             if (this.readyState == 4 && this.status == 200) {
                 var names = xhttp.response.nombre + ' ' + xhttp.response.apellido;
                 // document.getElementById('pic-employee').src = xhttp.response.imagen;
-                window.location = ('winner.html?name=' + names + '&image=' + xhttp.response.imagen);
+                window.location = ('winner.php?name=' + names + '&image=' + xhttp.response.imagen);
             }
         };
 
